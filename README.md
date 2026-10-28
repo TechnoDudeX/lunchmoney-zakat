@@ -1,5 +1,7 @@
 # Zakat calculator for Lunch Money
 
+**Use it here: https://lunchmoney-zakat.netlify.app**
+
 A web page that reads your balances from [Lunch Money](https://lunchmoney.app) and calculates your zakat. It gets today's gold and silver prices in your currency, and it checks the hawl (a full year above the nisab) from your month-end balances.
 
 A community project. Lunch Money did not make it and does not support it.
@@ -35,7 +37,7 @@ You can read all the code in [index.html](index.html). There are no other files,
 ## How to use it
 
 1. Go to [my.lunchmoney.app/developers](https://my.lunchmoney.app/developers), and make an access token. Give it a name, for example "Zakat calculator".
-2. Open the page, paste the token, and click **Connect**.
+2. Open https://lunchmoney-zakat.netlify.app, paste the token, and click **Connect**.
 3. Choose your method in section 1, and check the accounts in section 2.
 
 To run it on your own computer:

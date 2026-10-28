@@ -1,0 +1,690 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The page can connect only to the Lunch Money API and the gold and silver price API. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src https://api.lunchmoney.dev https://api.gold-api.com; img-src data:; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="description" content="A zakat calculator that reads your balances from Lunch Money. Read only. Your token goes only to the Lunch Money API.">
+<title>Zakat calculator for Lunch Money</title>
+<style>
+  :root {
+    --bg: #f6f5f1; --card: #ffffff; --text: #1c1c1a; --muted: #67665f; --line: #e2e0d8; --field: #8d8b82;
+    --accent: #0e6a4e; --accent-soft: #e2f0e9; --warn: #8a5300; --warn-soft: #fbf0db; --bad: #a3282c; --zero: #67665f;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #141513; --card: #1e1f1c; --text: #ebeae4; --muted: #a2a198; --line: #33342f; --field: #6f6e66;
+      --accent: #63c49d; --accent-soft: #1b3228; --warn: #e6b062; --warn-soft: #382b15; --bad: #ef8a8d; --zero: #a2a198;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 920px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-size: 26px; margin: 0 0 4px; }
+  h2 { font-size: 17px; margin: 0 0 12px; }
+  a { color: var(--accent); }
+  code { font-size: 13px; }
+  .sub { color: var(--muted); margin: 0 0 16px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 18px; margin: 14px 0; }
+  .warn { background: var(--warn-soft); color: var(--warn); border-radius: 10px; padding: 10px 14px; margin: 10px 0; }
+  .error { color: var(--bad); font-weight: 600; }
+  .result { display: grid; grid-template-columns: minmax(200px, 1fr) 2fr; gap: 18px; align-items: center; }
+  .due-label { color: var(--muted); font-size: 13px; font-weight: 400; margin: 0; text-transform: uppercase; letter-spacing: .04em; }
+  .due { font-size: 40px; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
+  .due.zero { color: var(--zero); }
+  .lines p { margin: 3px 0; }
+  .choices { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  fieldset { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; margin: 0; }
+  legend { font-weight: 600; padding: 0 4px; }
+  label.opt { display: block; margin: 4px 0; cursor: pointer; }
+  .scroll { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 13px; color: var(--muted); font-weight: 600; }
+  td.num, th.num { text-align: right; white-space: nowrap; }
+  tr.off .name { text-decoration: line-through; color: var(--muted); }
+  tr.off td.num input { opacity: .6; }
+  tr.selected td { background: var(--accent-soft); font-weight: 600; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .note { color: var(--muted); font-size: 13px; }
+  .badge { display: inline-block; font-size: 12px; padding: 1px 7px; border-radius: 99px; background: var(--warn-soft); color: var(--warn); }
+  input[type=number], input[type=text] { padding: 6px 8px; font: inherit; color: var(--text);
+    background: var(--bg); border: 1px solid var(--field); border-radius: 6px; }
+  input[type=number] { width: 120px; text-align: right; }
+  /* The token field is type=text, so browsers do not offer to save it as a password. This hides the characters. */
+  #token { width: 100%; max-width: 420px; -webkit-text-security: disc; }
+  ::placeholder { color: var(--muted); opacity: 1; }
+  input:focus, select:focus, button:focus-visible, h2:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  select { padding: 5px 7px; font: inherit; color: var(--text); background: var(--bg); border: 1px solid var(--field); border-radius: 6px; }
+  .fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px 20px; }
+  .field { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+  .bar { height: 8px; border-radius: 4px; background: var(--accent); min-width: 2px; }
+  .bar.below { background: var(--warn); }
+  .barcell { width: 40%; }
+  button { font: inherit; padding: 7px 14px; border-radius: 8px; border: 1px solid var(--line);
+           background: var(--card); color: var(--text); cursor: pointer; }
+  button.primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+  @media (prefers-color-scheme: dark) { button.primary { color: #10231b; } }
+  button:disabled { opacity: .6; cursor: default; }
+  .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 10px 0; }
+  .connected { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; }
+  ul, ol { margin: 6px 0; padding-left: 20px; }
+  footer { color: var(--muted); font-size: 13px; margin-top: 28px; }
+  @media (max-width: 620px) {
+    .result { grid-template-columns: 1fr; }
+    .due { font-size: 34px; }
+    input[type=number] { width: 100px; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>Zakat calculator for Lunch Money</h1>
+  <p class="sub">Reads your account balances from <a href="https://lunchmoney.app" rel="noreferrer">Lunch Money</a>, gets today's gold and silver prices, and calculates your zakat.</p>
+
+  <section class="card" id="connect">
+    <h2>Connect your Lunch Money</h2>
+    <ol>
+      <li>Go to <a href="https://my.lunchmoney.app/developers" rel="noreferrer" target="_blank">my.lunchmoney.app/developers</a>, and make an access token. Give it a name, for example "Zakat calculator".</li>
+      <li>Paste the token here, and click Connect.</li>
+    </ol>
+    <div class="row">
+      <input type="text" id="token" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"
+             data-1p-ignore data-lpignore="true" data-bwignore placeholder="Lunch Money access token" aria-label="Lunch Money access token">
+      <button type="button" class="primary" id="connectBtn">Connect</button>
+      <button type="button" id="sampleBtn">Try with sample data</button>
+    </div>
+    <p id="status" role="status"></p>
+    <p class="note"><strong>Your data stays with you.</strong> This page only reads your data. It has no code that changes or deletes anything. Your token goes only to api.lunchmoney.dev, and the page forgets it after it reads your balances. Nothing is saved on a server: this page has no server. A Lunch Money token can change data, so you can delete it on the developers page when you finish.</p>
+  </section>
+
+  <div id="app" hidden>
+    <section class="card connected">
+      <span id="sub"></span>
+      <button type="button" id="restart">Start again</button>
+    </section>
+    <div class="warn" id="priceWarn" hidden></div>
+    <div class="warn" id="dataWarn" hidden></div>
+    <div class="warn" id="staleWarn" hidden></div>
+
+    <section class="card result">
+      <div>
+        <h2 class="due-label" id="resultHead" tabindex="-1">Zakat due</h2>
+        <div class="due" id="due" aria-live="polite" aria-atomic="true"></div>
+      </div>
+      <div class="lines" id="lines"></div>
+    </section>
+
+    <section class="card">
+      <h2>1. Method</h2>
+      <div class="choices">
+        <fieldset>
+          <legend>Nisab</legend>
+          <label class="opt"><input type="radio" name="nisab" value="silver" checked> Silver</label>
+          <label class="opt"><input type="radio" name="nisab" value="gold"> Gold</label>
+          <div class="field"><label for="silverGramsNisab">Silver nisab (grams)</label><input type="number" id="silverGramsNisab" value="595" step="0.01" min="0" data-save></div>
+          <div class="field" style="margin-top:6px"><label for="goldGramsNisab">Gold nisab (grams)</label><input type="number" id="goldGramsNisab" value="85" step="0.01" min="0" data-save></div>
+        </fieldset>
+        <fieldset>
+          <legend>Mortgage</legend>
+          <label class="opt"><input type="radio" name="mortgage" value="none" checked> Do not deduct</label>
+          <label class="opt"><input type="radio" name="mortgage" value="next"> Deduct the next payment</label>
+          <label class="opt"><input type="radio" name="mortgage" value="year"> Deduct the next 12 months of payments</label>
+        </fieldset>
+        <fieldset>
+          <legend>Prices (<span class="cur"></span> a gram, pure metal)</legend>
+          <div class="field"><label for="goldPrice">Gold</label><input type="number" id="goldPrice" step="0.01" min="0"></div>
+          <div class="field" style="margin-top:6px"><label for="silverPrice">Silver</label><input type="number" id="silverPrice" step="0.001" min="0"></div>
+        </fieldset>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>2. Your accounts in Lunch Money</h2>
+      <p class="note">Clear the box to leave an account out. You can change an amount, for example when a balance is not current.</p>
+      <div class="scroll"><table>
+        <thead><tr><th>Include</th><th>Account</th><th class="num">Amount (<span class="cur"></span>)</th></tr></thead>
+        <tbody id="accountRows"></tbody>
+      </table></div>
+    </section>
+
+    <section class="card">
+      <h2>3. Things that are not in Lunch Money</h2>
+      <div class="fields">
+        <div class="field"><label for="cashHome">Cash at home</label><input type="number" id="cashHome" step="0.01" min="0"></div>
+        <div class="field"><label for="crypto">Other crypto, market value</label><input type="number" id="crypto" step="0.01" min="0"></div>
+        <div class="field"><label for="owed">Money that people owe you and will pay back</label><input type="number" id="owed" step="0.01" min="0"></div>
+        <div class="field"><label for="otherAssets">Other zakat assets, for example business stock</label><input type="number" id="otherAssets" step="0.01" min="0"></div>
+        <div class="field"><label for="goldGrams">Gold that you own (grams)</label><input type="number" id="goldGrams" step="0.01" min="0"></div>
+        <div class="field"><label for="goldKarat">Gold purity</label>
+          <select id="goldKarat" data-save>
+            <option value="24">24 karat</option><option value="22">22 karat</option><option value="21">21 karat</option>
+            <option value="18" selected>18 karat</option><option value="14">14 karat</option><option value="10">10 karat</option>
+          </select></div>
+        <div class="field"><label for="silverGrams">Silver that you own (grams)</label><input type="number" id="silverGrams" step="0.01" min="0"></div>
+        <div class="field"><label for="silverPurity">Silver purity</label>
+          <select id="silverPurity" data-save>
+            <option value="0.999">Fine (999)</option><option value="0.925" selected>Sterling (925)</option><option value="0.8">800</option>
+          </select></div>
+      </div>
+      <p class="note" id="metalValue"></p>
+    </section>
+
+    <section class="card">
+      <h2>4. Debts that are due now</h2>
+      <div class="scroll"><table>
+        <thead><tr><th>Include</th><th>Debt</th><th class="num">Amount (<span class="cur"></span>)</th></tr></thead>
+        <tbody id="debtRows"></tbody>
+      </table></div>
+      <p class="note" id="noDebts" hidden>Lunch Money has no credit card or loan balances.</p>
+      <div class="fields" style="margin-top:12px">
+        <div class="field"><label for="otherDebts">Other debts that are due now</label><input type="number" id="otherDebts" step="0.01" min="0"></div>
+        <div class="field"><label for="mortgagePayment">Mortgage payment</label><input type="number" id="mortgagePayment" step="0.01" min="0"></div>
+        <div class="field"><label for="mortgagePerYear">Mortgage payments a year</label><input type="number" id="mortgagePerYear" step="1" min="0" value="12"></div>
+      </div>
+      <p class="note" id="mortgageInfo"></p>
+      <p class="note">The mortgage is used only when you choose a mortgage method in section 1.</p>
+    </section>
+
+    <section class="card">
+      <h2>5. All methods</h2>
+      <div class="scroll"><table>
+        <thead><tr><th>Nisab</th><th>Mortgage</th><th class="num">Nisab value</th><th class="num">Total after debts</th><th class="num">Zakat</th></tr></thead>
+        <tbody id="methodRows"></tbody>
+      </table></div>
+      <p class="note">Your choice in section 1 is highlighted.</p>
+    </section>
+
+    <section class="card">
+      <h2>6. A full year above the nisab (hawl)</h2>
+      <p id="hawlSummary"></p>
+      <div class="scroll"><table>
+        <thead><tr><th>Month</th><th class="num">Total</th><th class="barcell"></th></tr></thead>
+        <tbody id="hawlRows"></tbody>
+      </table></div>
+      <p class="note">The table uses the month-end balances from Lunch Money for the accounts that you included in section 2, less the included debts in section 4. Closed accounts count for the months when they were open. The last row is today, with the amounts in sections 2 and 4. Section 3, the other debts and the mortgage are not in this table. The hawl is a lunar year (354 days), so 12 months is close but not exact.</p>
+    </section>
+
+    <section class="card">
+      <h2>Notes</h2>
+      <ul>
+        <li>Zakat is 2.5% of the money that you kept above the nisab for one lunar year.</li>
+        <li>Your home and your cars are not subject to zakat, so the calculator does not include them.</li>
+        <li>Scholars do not agree about the mortgage. Some deduct only the payment that is due now. Others deduct the payments that are due in the next 12 months.</li>
+        <li>Scholars do not agree about retirement accounts, and about gold jewellery that a woman wears. Ask about them before you include them.</li>
+        <li>If money in an account belongs to another person (for example your spouse), it is part of their zakat. Clear the box for that account.</li>
+        <li>Your choices (nisab, mortgage method, purity) are saved in this browser. Amounts and your token are never saved.</li>
+        <li>This is an estimate. Ask your imam or a zakat scholar to confirm the method that you follow.</li>
+      </ul>
+      <button type="button" id="reset">Clear my saved choices</button>
+    </section>
+  </div>
+
+  <footer>
+    <p>A community project. Lunch Money did not make it and does not support it. Prices from <a href="https://gold-api.com" rel="noreferrer">gold-api.com</a>. <a href="https://github.com/TechnoDudeX/lunchmoney-zakat" rel="noreferrer">Source code</a>.</p>
+  </footer>
+</main>
+
+<script>
+(function () {
+  "use strict";
+  var API = "https://api.lunchmoney.dev/v2";
+  var OUNCE_GRAMS = 31.1034768;
+  var SAVE_KEY = "lunchmoney-zakat-choices-v1";
+  var RETIREMENT = /\b(rrsp|rrif|lira|lif|lrsp|dpsp|prpp|pension|401\s?\(?k\)?|403\s?\(?b\)?|457b?|ira|roth|tsp|sep[- ]?ira|simple[- ]?ira|retire\w*)\b/i;
+  var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+  var $ = function (id) { return document.getElementById(id); };
+  var num = function (el) { var v = parseFloat(el.value); return isFinite(v) ? v : 0; };
+  var pos = function (el) { return Math.max(0, num(el)); };  // fields that cannot be less than 0
+  var radio = function (name) { return document.querySelector("input[name=" + name + "]:checked").value; };
+  var pad = function (n) { return String(n).padStart(2, "0"); };
+  var esc = function (s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  };
+  var fdate = function (iso) {
+    if (!iso) return "unknown";
+    var p = iso.split("-");
+    return (p[2] ? (+p[2]) + " " : "") + MONTHS[+p[1] - 1] + " " + p[0];
+  };
+  function todayIso() { var t = new Date(); return t.getFullYear() + "-" + pad(t.getMonth() + 1) + "-" + pad(t.getDate()); }
+  function lastMonths(n) {
+    var t = new Date(), out = [];
+    for (var i = n - 1; i >= 0; i--) {
+      var d = new Date(t.getFullYear(), t.getMonth() - i, 1);
+      out.push(d.getFullYear() + "-" + pad(d.getMonth() + 1));
+    }
+    return out;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Reading data. The only request method in this file is GET.
+  // ---------------------------------------------------------------------------
+
+  function lmGet(token, path) {
+    return fetch(API + path, {
+      method: "GET", credentials: "omit", cache: "no-store", redirect: "error", referrerPolicy: "no-referrer",
+      headers: { "Authorization": "Bearer " + token, "Accept": "application/json" }
+    }).then(function (r) {
+      if (r.status === 401 || r.status === 403) throw new Error("The token does not work. Copy all of it again, or make a new token.");
+      if (r.status === 429) throw new Error("Lunch Money received too many requests. Wait 1 minute, then try again.");
+      if (!r.ok) throw new Error("Lunch Money sent error " + r.status + " for " + path.split("?")[0] + ".");
+      return r.json();
+    }, function () {
+      throw new Error("The page cannot connect to Lunch Money. Check your internet connection.");
+    });
+  }
+
+  function metalPrices(currency) {
+    var cur = currency.toUpperCase();
+    var one = function (symbol) {
+      return fetch("https://api.gold-api.com/price/" + symbol + "/" + encodeURIComponent(cur),
+                   { method: "GET", credentials: "omit", cache: "no-store", redirect: "error", referrerPolicy: "no-referrer" })
+        .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); });
+    };
+    return Promise.all([one("XAU"), one("XAG")]).then(function (p) {
+      if (!(p[0].price > 0) || !(p[1].price > 0) || p[0].currency !== cur || p[1].currency !== cur) throw new Error("no price");
+      return { gold: p[0].price / OUNCE_GRAMS, silver: p[1].price / OUNCE_GRAMS,
+               date: (p[0].updatedAt || todayIso()).slice(0, 10), source: "gold-api.com", fallback: false };
+    }).catch(function () {
+      return { gold: 0, silver: 0, date: "", source: "", fallback: true };
+    });
+  }
+
+  function loadFromLunchMoney(token) {
+    var months = lastMonths(13), warnings = [];
+    // The parts that the calculator can work without: show a warning, not an error.
+    var optional = function (key, text) {
+      return function () { warnings.push(text); var o = {}; o[key] = []; return o; };
+    };
+    return lmGet(token, "/me").then(function (me) {
+      return Promise.all([
+        lmGet(token, "/plaid_accounts"),
+        lmGet(token, "/manual_accounts"),
+        lmGet(token, "/crypto/manual").catch(optional("crypto_manual",
+          "The page could not read your manual crypto from Lunch Money. Try again, or type its value in section 3.")),
+        lmGet(token, "/crypto/synced").catch(optional("crypto_synced",
+          "The page could not read your synced crypto from Lunch Money. Try again, or type its value in section 3.")),
+        // end_month is last month: the current month can be in the future for the server (time zones),
+        // and the hawl uses the amounts on the page for today.
+        lmGet(token, "/balance_history?start_month=" + months[0] + "&end_month=" + months[months.length - 2]).catch(
+          optional("balance_history", "The page could not read your balance history, so the hawl table is not complete.")),
+        metalPrices(me.primary_currency || "usd")
+      ]).then(function (r) {
+        var data = buildData(me, r[0].plaid_accounts || [], r[1].manual_accounts || [], r[2].crypto_manual || [],
+                             r[3].crypto_synced || [], r[4].balance_history || [], r[5], months);
+        data.warnings = warnings.concat(data.warnings);
+        return data;
+      });
+    });
+  }
+
+  function kindOf(type, subtype, name) {
+    var t = (type || "").toLowerCase();
+    if (t === "loan" && /mortgage/i.test((subtype || "") + " " + name)) return "mortgage";
+    return { cash: "cash", depository: "cash", checking: "cash", savings: "cash", investment: "investment",
+             brokerage: "investment", cryptocurrency: "investment", credit: "card", loan: "loan",
+             "other liability": "loan", "other asset": "other", "employee compensation": "other" }[t] || "skip";
+  }
+
+  function buildData(me, plaid, manual, cryptoManual, cryptoSynced, history, prices, months) {
+    var currency = (me.primary_currency || "usd").toLowerCase();
+    var hist = {};
+    history.forEach(function (s) {
+      var src = s.source || {};
+      var id = src.plaid_account_id || src.manual_account_id || src.crypto_manual_id || src.crypto_synced_id || src.deleted_account_id;
+      // A synced crypto account has 1 source for each coin. A manual crypto entry is 1 coin, and its symbol can be null.
+      var key = src.type + ":" + id + (src.type === "crypto_synced" ? ":" + String(src.symbol || "").toLowerCase() : "");
+      var byMonth = {};
+      (s.balances || []).forEach(function (b) { byMonth[b.month] = Number(b.to_base) || 0; });
+      hist[key] = { source: src, months: byMonth };
+    });
+    var series = function (key) {
+      var h = hist[key];
+      return months.map(function (m) { return h && (m in h.months) ? h.months[m] : null; });
+    };
+    var accounts = [], debts = [], mortgages = [], used = {}, warnings = [];
+    var CLOSED_NOTE = "Closed account. It counts only for the months when it was open.";
+
+    function add(o) {
+      var h = series(o.key);
+      used[o.key] = true;
+      if (!o.amount && !o.keep && !h.some(Boolean)) return;
+      var kind = kindOf(o.type, o.subtype, o.name);
+      var row = { key: o.key, name: o.name, amount: o.amount, status: o.status || "", history: h,
+                  updated: (o.updated || "").slice(0, 10), note: o.note || "", include: o.include !== false };
+      if (o.currency && o.currency.toLowerCase() !== currency && o.status !== "closed") {
+        row.note = ("The account is in " + o.currency.toUpperCase() + ". The amount is at the Lunch Money exchange rate. " + row.note).trim();
+      }
+      if (o.status === "closed" && (kind === "loan" || kind === "mortgage")) return;  // a closed loan is not due now
+      if (kind === "mortgage") { if (o.amount) mortgages.push({ name: o.name, balance: o.amount }); return; }
+      if (kind === "skip") return;
+      if (kind === "cash" || kind === "investment") {
+        // Test the account's own name, not the bank name ("Wealthsimple" must not look like "SIMPLE IRA").
+        if (o.status !== "closed" && RETIREMENT.test((o.subtype || "") + " " + (o.ownName || o.name))) {
+          row.note = (row.note + " Retirement account. Some scholars delay zakat on this money until you take it out.").trim();
+        }
+        accounts.push(row);
+      } else if (kind === "other") {
+        row.include = false;
+        row.note = (row.note + " Include it if it is cash, savings, trade goods or investments.").trim();
+        accounts.push(row);
+      } else {
+        row.amount = Math.max(o.amount, 0);  // a card paid in full stays, for its past month-end balances
+        if (kind === "card" && o.status === "deactivated") {
+          row.include = false;
+          row.note = (row.note + " This card is deactivated. Include it only if you still owe this balance.").trim();
+        } else if (kind === "loan") {
+          row.include = false;
+          row.note = (row.note + " Include only the part that is due now.").trim();
+        }
+        debts.push(row);
+      }
+    }
+    // Plaid and manual accounts always have to_base. For crypto, to_base is null when Lunch Money has no price,
+    // and balance is then a number of coins, not money.
+    var amountOf = function (a) { return Number(a.to_base != null ? a.to_base : a.balance) || 0; };
+    var cryptoValue = function (c) { return c.to_base != null ? Number(c.to_base) || 0 : null; };
+
+    plaid.forEach(function (a) {
+      // Closed and inactive accounts count only for the months when they were open.
+      var closed = a.status === "inactive" || a.status === "closed";
+      var name = a.display_name || ((a.institution_name || "") + " " + a.name).trim();
+      add({ key: "plaid:" + a.id, type: a.type, subtype: a.subtype, status: closed ? "closed" : a.status, currency: a.currency,
+            name: name + (closed ? " (closed)" : ""), ownName: a.name, amount: closed ? 0 : amountOf(a),
+            note: closed ? CLOSED_NOTE : "", updated: a.balance_last_update || a.plaid_last_successful_update });
+    });
+    manual.forEach(function (a) {
+      var closed = a.status === "closed" || !!a.closed_on;
+      add({ key: "manual:" + a.id, type: a.type, subtype: a.subtype, status: closed ? "closed" : "manual", currency: a.currency,
+            name: (a.display_name || a.name) + (closed ? " (closed)" : ""), ownName: a.name, amount: closed ? 0 : amountOf(a),
+            note: closed ? CLOSED_NOTE : "", updated: a.balance_as_of || a.updated_at });
+    });
+    var cryptoNote = "Crypto that you keep as an investment is usually subject to zakat at its market value.";
+    var noPrice = "Lunch Money has no price for this coin. Type its value, and select the box.";
+    cryptoManual.forEach(function (c) {
+      var value = cryptoValue(c);
+      add({ key: "crypto_manual:" + c.id, type: "cryptocurrency", status: "manual", include: value !== null, keep: value === null,
+            name: c.display_name || c.name || String(c.symbol || "").toUpperCase(), amount: value || 0,
+            updated: c.balance_as_of, note: value === null ? noPrice : cryptoNote });
+    });
+    cryptoSynced.forEach(function (acc) {
+      (acc.balances || []).forEach(function (b) {
+        var value = cryptoValue(b);
+        add({ key: "crypto_synced:" + acc.id + ":" + String(b.symbol || "").toLowerCase(), type: "cryptocurrency",
+              status: acc.status === "active" ? "active" : "relink", include: value !== null, keep: value === null,
+              name: ((acc.display_name || acc.provider || "") + " " + (b.display_name || b.name || String(b.symbol || "").toUpperCase())).trim(),
+              amount: value || 0, updated: b.balance_as_of, note: value === null ? noPrice : cryptoNote });
+      });
+    });
+    // Deleted accounts: only their past month-end balances, for the hawl. A deleted home, car or loan is not used.
+    Object.keys(hist).forEach(function (key) {
+      var src = hist[key].source;
+      if (used[key] || src.type !== "deleted") return;
+      var type = src.account_type || "cash";
+      var kind = kindOf(type, src.subtype, src.display_name || src.name || "");
+      if (kind === "skip" || kind === "loan" || kind === "mortgage") return;
+      add({ key: key, type: type, subtype: src.subtype, status: "closed", amount: 0,
+            name: (src.display_name || src.name || "Deleted account") + " (closed)", note: CLOSED_NOTE });
+    });
+
+    return { generated: todayIso(), budget: me.budget_name || "", currency: currency, months: months,
+             accounts: accounts, debts: debts, mortgages: mortgages, prices: prices, sample: false, warnings: warnings };
+  }
+
+  function sampleData() {
+    var months = lastMonths(13);
+    var grow = function (start, step, today) {
+      return months.map(function (m, i) { return i === months.length - 1 ? today : Math.round((start + step * i) * 100) / 100; });
+    };
+    return metalPrices("cad").then(function (prices) {
+      return {
+        generated: todayIso(), budget: "Sample budget", currency: "cad", months: months, sample: true, prices: prices, warnings: [],
+        accounts: [
+          { key: "s1", name: "Sample Bank Chequing", amount: 4200, status: "active", updated: todayIso(), note: "", include: true, history: grow(2500, 150, 4200) },
+          { key: "s2", name: "Sample Bank Savings", amount: 8500, status: "active", updated: todayIso(), note: "", include: true, history: grow(5000, 300, 8500) },
+          { key: "s3", name: "Sample Broker TFSA", amount: 6300, status: "active", updated: todayIso(), note: "", include: true, history: grow(4000, 200, 6300) },
+          { key: "s4", name: "Sample Broker RRSP", amount: 12000, status: "relink", updated: lastMonths(1)[0] + "-01", include: true, history: grow(9000, 250, 12000),
+            note: "Retirement account. Some scholars delay zakat on this money until you take it out." },
+          { key: "s5", name: "Sample Wallet BTC", amount: 2100, status: "manual", updated: todayIso(), include: true, history: grow(1200, 80, 2100),
+            note: "Crypto that you keep as an investment is usually subject to zakat at its market value." }
+        ],
+        debts: [
+          { key: "s6", name: "Sample Bank Visa", amount: 650, status: "active", updated: todayIso(), note: "", include: true, history: grow(900, -20, 650) }
+        ],
+        mortgages: [{ name: "Sample Bank Mortgage", balance: 420000 }]
+      };
+    });
+  }
+
+  // ---------------------------------------------------------------------------
+  // The calculator
+  // ---------------------------------------------------------------------------
+
+  var D, money, price, accountRows, debtRows;
+  var METAL = { silver: "Silver", gold: "Gold" };
+  var MORTGAGE = { none: "Not deducted", next: "Next payment", year: "Next 12 months" };
+
+  function show(data) {
+    D = data;
+    var cur = D.currency.toUpperCase();
+    money = new Intl.NumberFormat(undefined, { style: "currency", currency: cur });
+    price = new Intl.NumberFormat(undefined, { style: "currency", currency: cur, maximumFractionDigits: 3 });
+    document.querySelectorAll(".cur").forEach(function (el) { el.textContent = cur; });
+
+    $("sub").textContent = (D.sample ? "Sample data, not real accounts. " : "Balances from Lunch Money (" + D.budget + ") on " + fdate(D.generated) + ". ") +
+      (D.prices.fallback ? "" : "Gold and silver prices from " + D.prices.source + " (" + fdate(D.prices.date) + ").");
+    $("priceWarn").hidden = !D.prices.fallback;
+    $("priceWarn").textContent = "The page could not get gold and silver prices in " + cur + ". Type today's prices in section 1.";
+    $("goldPrice").value = D.prices.gold ? D.prices.gold.toFixed(3) : "";
+    $("silverPrice").value = D.prices.silver ? D.prices.silver.toFixed(4) : "";
+
+    accountRows = buildRows(D.accounts, "accountRows");
+    debtRows = buildRows(D.debts, "debtRows");
+    $("noDebts").hidden = D.debts.length > 0;
+    $("mortgageInfo").textContent = D.mortgages.length
+      ? "Mortgage in Lunch Money: " + D.mortgages.map(function (m) { return m.name + " (balance " + money.format(m.balance) + ")"; }).join(", ") +
+        ". Type your payment above to use the mortgage methods."
+      : "";
+    var stale = accountRows.concat(debtRows).filter(function (r) { return r.stale && r.data.include && r.data.amount; })
+      .map(function (r) { return r.data.name; });
+    $("staleWarn").hidden = !stale.length;
+    $("staleWarn").textContent = "Some balances are not current, because the bank connection has a problem or the balance is old: " +
+      stale.join(", ") + ". Check them in your bank app, and type the current amounts in section 2.";
+    $("dataWarn").hidden = !(D.warnings && D.warnings.length);
+    $("dataWarn").textContent = (D.warnings || []).join(" ");
+
+    $("connect").hidden = true;
+    $("app").hidden = false;
+    load();
+    render();
+    $("resultHead").focus();  // screen readers and keyboard users start at the result
+  }
+
+  function buildRows(list, tbodyId) {
+    var tbody = $(tbodyId), rows = [];
+    tbody.innerHTML = "";
+    list.forEach(function (a) {
+      var tr = document.createElement("tr");
+      var old = a.updated ? (new Date(D.generated) - new Date(a.updated)) / 86400000 > 3 : false;
+      var stale = old || ["relink", "error", "revoked", "not found"].indexOf(a.status) >= 0;
+      tr.innerHTML =
+        '<td><input type="checkbox" aria-label="Include ' + esc(a.name) + '"' + (a.include ? " checked" : "") + "></td>" +
+        '<td><span class="name">' + esc(a.name) + "</span>" +
+        (a.status === "closed" ? "" : '<div class="note">Balance from ' + esc(fdate(a.updated)) +
+          (stale ? ' <span class="badge">not current</span>' : "") + "</div>") +
+        (a.note ? '<div class="note">' + esc(a.note) + "</div>" : "") + "</td>" +
+        '<td class="num"><input type="number" step="0.01" aria-label="Amount for ' + esc(a.name) + '"></td>';
+      var cb = tr.querySelector("input[type=checkbox]"), input = tr.querySelector("input[type=number]");
+      input.value = Number(a.amount).toFixed(2);
+      tbody.appendChild(tr);
+      rows.push({ data: a, cb: cb, input: input, tr: tr, stale: stale });
+    });
+    return rows;
+  }
+
+  // Only the choices are saved. Amounts and the token are never saved.
+  function load() {
+    try {
+      var s = JSON.parse(localStorage.getItem(SAVE_KEY) || "{}");
+      document.querySelectorAll("[data-save]").forEach(function (el) {
+        if (s[el.id] == null) return;
+        if (el.tagName === "SELECT" ? el.querySelector('option[value="' + s[el.id] + '"]') : parseFloat(s[el.id]) > 0) el.value = s[el.id];
+      });
+      ["nisab", "mortgage"].forEach(function (n) {
+        var el = s[n] && document.querySelector('input[name=' + n + '][value="' + s[n] + '"]');
+        if (el) el.checked = true;
+      });
+    } catch (e) { /* storage is not available: use the defaults */ }
+  }
+  function save() {
+    try {
+      var s = { nisab: radio("nisab"), mortgage: radio("mortgage") };
+      document.querySelectorAll("[data-save]").forEach(function (el) { s[el.id] = el.value; });
+      localStorage.setItem(SAVE_KEY, JSON.stringify(s));
+    } catch (e) { /* storage is not available */ }
+  }
+
+  function totals(metal, mortgageMode) {
+    var gold = pos($("goldPrice")), silver = pos($("silverPrice"));
+    var assets = 0, debts = 0;
+    accountRows.forEach(function (r) { if (r.cb.checked) assets += num(r.input); });  // an overdraft can be < 0
+    var goldValue = pos($("goldGrams")) * (num($("goldKarat")) / 24) * gold;
+    var silverValue = pos($("silverGrams")) * num($("silverPurity")) * silver;
+    assets += pos($("cashHome")) + pos($("crypto")) + pos($("owed")) + pos($("otherAssets")) + goldValue + silverValue;
+    debtRows.forEach(function (r) { if (r.cb.checked) debts += pos(r.input); });
+    debts += pos($("otherDebts"));
+    var pay = pos($("mortgagePayment"));
+    var mortgage = mortgageMode === "next" ? pay : mortgageMode === "year" ? pay * pos($("mortgagePerYear")) : 0;
+    var net = assets - debts - mortgage;
+    var grams = pos($(metal + "GramsNisab"));
+    var unit = metal === "gold" ? gold : silver;
+    var nisab = grams * unit;
+    var ready = unit > 0 && grams > 0;
+    var due = ready && net > 0 && net >= nisab ? net * 0.025 : 0;
+    return { assets: assets, debts: debts, mortgage: mortgage, net: net, nisab: nisab, due: due, ready: ready,
+             grams: grams, unit: unit, goldValue: goldValue, silverValue: silverValue };
+  }
+
+  function render() {
+    var metal = radio("nisab"), mode = radio("mortgage"), t = totals(metal, mode);
+    accountRows.concat(debtRows).forEach(function (r) { r.tr.classList.toggle("off", !r.cb.checked); });
+
+    $("due").textContent = money.format(t.due);
+    $("due").classList.toggle("zero", t.due === 0);
+    var gap = t.net - t.nisab;
+    var lines = [
+      "Zakat assets: " + money.format(t.assets) + ".",
+      "Less debts due now: " + money.format(t.debts) + (t.mortgage ? ", and the mortgage: " + money.format(t.mortgage) : "") + ".",
+      "<strong>Total after debts: " + money.format(t.net) + ".</strong>"
+    ].concat(!t.ready ? ["Type the " + metal + " price and the nisab weight in section 1."] : [
+      METAL[metal] + " nisab: " + money.format(t.nisab) + " (" + t.grams + " g at " + price.format(t.unit) + " a gram).",
+      gap >= 0 ? "Your total is " + money.format(gap) + " more than the nisab. Zakat is 2.5% of " + money.format(t.net) + "."
+               : "Your total is " + money.format(-gap) + " less than the nisab, so no zakat is due."
+    ]);
+    $("lines").innerHTML = lines.map(function (l) { return "<p>" + l + "</p>"; }).join("");
+    $("metalValue").textContent = (t.goldValue || t.silverValue)
+      ? "Value of your gold: " + money.format(t.goldValue) + ". Value of your silver: " + money.format(t.silverValue) + "." : "";
+
+    var rows = "";
+    ["silver", "gold"].forEach(function (m) {
+      ["none", "next", "year"].forEach(function (mm) {
+        var x = totals(m, mm), sel = m === metal && mm === mode;
+        rows += "<tr" + (sel ? ' class="selected"' : "") + "><td>" + METAL[m] + (sel ? '<span class="sr"> (your choice)</span>' : "") +
+          "</td><td>" + MORTGAGE[mm] + "</td>" +
+          '<td class="num">' + (x.ready ? money.format(x.nisab) : "no price") + '</td><td class="num">' + money.format(x.net) +
+          '</td><td class="num">' + money.format(x.due) + "</td></tr>";
+      });
+    });
+    $("methodRows").innerHTML = rows;
+
+    var last = D.months.length - 1;
+    var months = D.months.map(function (m, i) {
+      // Past months use Lunch Money's month-end balances. Today uses the amounts in sections 2 and 4.
+      // A past month with no balance for any included account has no data (for example before you used Lunch Money).
+      var total = 0, has = i === last;
+      accountRows.forEach(function (r) {
+        if (!r.cb.checked) return;
+        if (i === last) total += num(r.input);
+        else if (r.data.history[i] != null) { has = true; total += r.data.history[i]; }
+      });
+      debtRows.forEach(function (r) {
+        if (!r.cb.checked) return;
+        if (i === last) total -= pos(r.input);
+        else if (r.data.history[i] != null) { has = true; total -= r.data.history[i]; }
+      });
+      return { month: m, total: total, has: has, above: t.ready && total >= t.nisab };
+    });
+    var known = months.filter(function (m) { return m.has; });
+    var missing = months.length - known.length;
+    var max = Math.max.apply(null, known.map(function (m) { return Math.abs(m.total); }).concat([t.nisab, 1]));
+    var below = known.filter(function (m) { return !m.above; });
+    var low = known.reduce(function (a, b) { return b.total < a.total ? b : a; });
+    $("hawlSummary").textContent = !t.ready ? "Type the " + metal + " price and the nisab weight in section 1 to check the hawl." :
+      "Lowest total: " + money.format(low.total) + " (" + fdate(low.month) + "). " +
+      (below.length ? "It was below the " + metal + " nisab in " + below.length + " of " + known.length + " months: " +
+        below.map(function (m) { return fdate(m.month); }).join(", ") + ". Ask a scholar how this affects your zakat year."
+        : "It was above the " + metal + " nisab in all " + known.length + " months" + (missing ? " that have data." : ".")) +
+      (missing ? " Lunch Money has no balances for " + missing + " of " + months.length + " months, so the table cannot check them." : "");
+    $("hawlRows").innerHTML = months.map(function (m, i) {
+      var w = Math.max(0, m.total) / max * 100;
+      return "<tr><td>" + fdate(m.month) + (i === last ? " (today)" : "") + '</td><td class="num">' +
+        (m.has ? money.format(m.total) : '<span class="note">No data</span>') + '</td><td class="barcell">' +
+        (m.has ? '<div class="bar' + (m.above ? "" : " below") + '" style="width:' + w.toFixed(1) + '%"></div>' : "") + "</td></tr>";
+    }).join("");
+  }
+
+  // ---------------------------------------------------------------------------
+  // Start
+  // ---------------------------------------------------------------------------
+
+  function busy(on, text, isError) {
+    $("connectBtn").disabled = on;
+    $("sampleBtn").disabled = on;
+    $("status").textContent = text || "";
+    $("status").className = isError ? "error" : "";
+  }
+
+  $("connectBtn").addEventListener("click", function () {
+    var token = $("token").value.trim();
+    $("token").value = "";  // the token is not kept in the page
+    if (!token) { busy(false, "Paste your Lunch Money access token first.", true); return; }
+    busy(true, "The page reads your balances from Lunch Money...");
+    loadFromLunchMoney(token).then(function (data) {
+      token = null;
+      busy(false, "");
+      show(data);
+    }, function (e) {
+      token = null;
+      busy(false, e.message, true);
+    });
+  });
+  $("token").addEventListener("keydown", function (e) { if (e.key === "Enter") $("connectBtn").click(); });
+  $("sampleBtn").addEventListener("click", function () {
+    $("token").value = "";  // sample mode does not use a token, so do not keep one in the page
+    busy(true, "The page gets today's gold and silver prices...");
+    sampleData().then(function (data) { busy(false, ""); show(data); });
+  });
+  $("restart").addEventListener("click", function () { location.reload(); });
+  // Go back to the default choices. The page does not reload, so your amounts and the connection stay.
+  $("reset").addEventListener("click", function () {
+    try { localStorage.removeItem(SAVE_KEY); } catch (e) { /* nothing saved */ }
+    document.querySelectorAll("[data-save]").forEach(function (el) {
+      el.value = el.tagName === "SELECT" ? el.querySelector("option[selected]").value : el.defaultValue;
+    });
+    document.querySelector("input[name=nisab][value=silver]").checked = true;
+    document.querySelector("input[name=mortgage][value=none]").checked = true;
+    render();
+  });
+  // Save only after the user changes something, so the first view does not store the defaults.
+  document.addEventListener("input", function (e) { if (D && e.target.id !== "token") { render(); save(); } });
+  document.addEventListener("change", function (e) { if (D && e.target.id !== "token") { render(); save(); } });
+})();
+</script>
+</body>
+</html>

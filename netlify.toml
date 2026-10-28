@@ -1,0 +1,14 @@
+# Static site: the page is index.html, with no build step.
+[build]
+  publish = "."
+
+# The same policy as the meta tag in index.html, plus the headers that a meta tag cannot set
+# (frame-ancestors stops other sites from showing the page in a frame and reading the token field).
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Content-Security-Policy = "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src https://api.lunchmoney.dev https://api.gold-api.com; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+    Referrer-Policy = "no-referrer"
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=()"

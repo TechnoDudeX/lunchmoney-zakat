@@ -1,8 +1,10 @@
-# Zakat calculator for Lunch Money
+# Mizan: zakat calculator for Lunch Money
 
 **Use it here: https://lunchmoney-zakat.netlify.app**
 
-A web page that reads your balances from [Lunch Money](https://lunchmoney.app) and calculates your zakat. It gets today's gold and silver prices in your currency, and it checks the hawl (a full year above the nisab) from your month-end balances.
+Made by Mazin Kanuga. Mizan is the Arabic word for "balance".
+
+Mizan is a web page that reads your balances from [Lunch Money](https://lunchmoney.app) and calculates your zakat. It gets today's gold and silver prices in your currency, and it checks the hawl (a full year above the nisab) from your month-end balances.
 
 A community project. Lunch Money did not make it and does not support it.
 
@@ -26,13 +28,13 @@ A community project. Lunch Money did not make it and does not support it.
 ## Your data and your token
 
 - **Read only.** The page sends only GET requests. It has no code that changes or deletes anything in Lunch Money.
-- **No server.** The page is 1 static HTML file. Your browser talks directly to the Lunch Money API. Nothing goes to the author.
+- **No server.** The page is 1 static HTML file and 2 font files. Your browser talks directly to the Lunch Money API. Nothing goes to the author.
 - **The token is not kept.** The page sends your token only to `api.lunchmoney.dev`, then forgets it. The page does not save the token in the browser, in a cookie or anywhere else. If your browser or a password manager asks to save it, click Never.
-- **Only 2 hosts.** A Content Security Policy lets the page connect only to `api.lunchmoney.dev` and `api.gold-api.com`. Requests to gold-api.com include only your currency code (for example CAD). They do not include your token or your balances. Redirects are refused, so the token cannot follow a redirect to another host.
+- **Only 2 hosts.** A Content Security Policy lets the page connect only to `api.lunchmoney.dev` and `api.gold-api.com`. The fonts come from the same site as the page. Requests to gold-api.com include only your currency code (for example CAD). They do not include your token or your balances. Redirects are refused, so the token cannot follow a redirect to another host.
 - **Saved in your browser:** only your choices (nisab, mortgage method, nisab weights, gold and silver purity). Amounts are never saved.
 - **Lunch Money tokens can change data.** Lunch Money has no read-only tokens. Make a separate token for this page, and delete it on the [developers page](https://my.lunchmoney.app/developers) when you finish.
 
-You can read all the code in [index.html](index.html). There are no other files, no libraries and no build step.
+You can read all the code in [index.html](index.html). The only other files are 2 fonts in [fonts/](fonts/): Nunito Sans and Red Hat Mono. On Apple devices the page uses Avenir. There are no libraries and no build step.
 
 ## How to use it
 
@@ -69,4 +71,8 @@ This page is an estimate. Ask your imam or a zakat scholar to confirm the method
 
 ## Licence
 
-MIT. See [LICENSE](LICENSE).
+MIT, copyright Mazin Kanuga. See [LICENSE](LICENSE).
+
+The fonts use the SIL Open Font License. The licence texts are in [fonts/](fonts/).
+
+The design takes ideas from the Lunch Money style, so that it fits next to Lunch Money. It does not use the Lunch Money logo or mascot.

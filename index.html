@@ -4,638 +4,114 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- The page can connect only to the Lunch Money API and the gold and silver price API. Fonts come only from this site. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; font-src 'self'; connect-src https://api.lunchmoney.dev https://api.gold-api.com; img-src data:; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; connect-src https://api.lunchmoney.dev https://api.gold-api.com; img-src data:; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="author" content="Mazin Kanuga">
 <meta name="description" content="Mizan is a zakat calculator for Lunch Money users. It reads your balances and gets today's gold and silver prices. Read only. Your token goes only to the Lunch Money API.">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#F7FAF9" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121A19" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#faf9f6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#151e1b" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23FBB700' d='M24 2.6 25.05 3.65 26.55 3.65 26.55 5.15 27.6 6.2 26.55 7.25 26.55 8.75 25.05 8.75 24 9.8 22.95 8.75 21.45 8.75 21.45 7.25 20.4 6.2 21.45 5.15 21.45 3.65 22.95 3.65Z'/%3E%3Cg stroke='%232C6A64' stroke-linecap='round' fill='none'%3E%3Cpath stroke-width='3' d='M24 10v29M7.5 15.5h33'/%3E%3Cpath stroke-width='1.5' d='M7.5 15.5 2.8 29M7.5 15.5l4.7 13.5M40.5 15.5l-4.7 13.5M40.5 15.5l4.7 13.5'/%3E%3C/g%3E%3Ccircle cx='7.5' cy='25.2' r='3.7' fill='%23FBB700'/%3E%3Ccircle cx='40.5' cy='25.2' r='3.7' fill='%23C9D3D1' stroke='%237F8E8B'/%3E%3Cg fill='%232C6A64'%3E%3Cpath d='M1.8 29h11.4a5.7 4.6 0 0 1-11.4 0Z'/%3E%3Cpath d='M34.8 29h11.4a5.7 4.6 0 0 1-11.4 0Z'/%3E%3Crect x='15' y='39.2' width='18' height='4.4' rx='2.2'/%3E%3Ccircle cx='24' cy='15.5' r='2.8'/%3E%3C/g%3E%3C/svg%3E">
 <title>Mizan: zakat calculator for Lunch Money</title>
-<style>
-  /* Fonts: 2 OFL families, Latin subset, from this site only. Licences are in fonts/. */
-  @font-face {
-    font-family: "Mizan Sans"; font-style: normal; font-weight: 400 800; font-display: swap;
-    src: url("fonts/nunito-sans.woff2") format("woff2");
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-  }
-  @font-face {
-    font-family: "Mizan Mono"; font-style: normal; font-weight: 400 600; font-display: swap;
-    src: url("fonts/red-hat-mono.woff2") format("woff2");
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-  }
-
-  :root {
-    --font: "Avenir Next", Avenir, "Mizan Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    --mono: "Mizan Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-
-    /* Light: airy page, white cards, dark teal actions, sunny yellow fills. */
-    --bg: #F7FAF9; --card: #FFFFFF; --panel: #EEF4F3; --line: #E2E8E6; --rule: #EAEEED;
-    --ink: #343434; --text: #444444; --muted: #5F6664; --field: #7A8784;
-    --teal: #44958C; --link: #2B6E66; --deep: #2C6A64; --deep-hover: #235752; --on-deep: #FFFFFF;
-    --mint: #68CBBA; --sky: #4FACC5;
-    --sun: #FBB700; --sun-soft: #FFF3CF; --sun-edge: #F2D27A; --sun-ink: #6B4C00; --sun-line: #9A6A00;
-    --icon-bg: #FFEDB8; --good: #2F8A4C; --bad: #B3261E; --bad-soft: #FDECEA;
-    --mark: #2C6A64; --silver: #C9D3D1; --silver-edge: #7F8E8B; --gold-edge: #B07D00; --zero-swash: #D5DCDA;
-    --focus: #2C6A64; --halo: rgba(251, 183, 0, .38);
-    --shadow: 0 1px 2px rgba(31, 61, 57, .05), 0 6px 18px rgba(31, 61, 57, .07);
-    --shadow-btn: 0 2px 4px rgba(44, 106, 100, .18), 0 8px 18px rgba(44, 106, 100, .20);
-    /* Mizan's own pattern: tiny eight-point stars and dots. */
-    --pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='%23DCE7E4'%3E%3Cpath d='M14 8 15.76 9.76 18.24 9.76 18.24 12.24 20 14 18.24 15.76 18.24 18.24 15.76 18.24 14 20 12.24 18.24 9.76 18.24 9.76 15.76 8 14 9.76 12.24 9.76 9.76 12.24 9.76Z'/%3E%3Cpath d='M42 38 43.17 39.17 44.83 39.17 44.83 40.83 46 42 44.83 43.17 44.83 44.83 43.17 44.83 42 46 40.83 44.83 39.17 44.83 39.17 43.17 38 42 39.17 40.83 39.17 39.17 40.83 39.17Z'/%3E%3C/g%3E%3Cg fill='%23D3E0DC'%3E%3Ccircle cx='42' cy='14' r='1.7'/%3E%3Ccircle cx='14' cy='42' r='1.7'/%3E%3C/g%3E%3C/svg%3E");
-
-    /* Icon shapes, used as masks so that they take the theme colour. */
-    --i-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath fill-rule='evenodd' d='M10 0a10 10 0 1 1 0 20a10 10 0 0 1 0-20Zm4.65 6.25a1.05 1.05 0 0 0-1.48.12l-4.4 5.25-2.1-2.02a1.05 1.05 0 1 0-1.46 1.52l2.92 2.8a1.05 1.05 0 0 0 1.53-.08l5.12-6.11a1.05 1.05 0 0 0-.13-1.48Z'/%3E%3C/svg%3E");
-    --i-info: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath fill-rule='evenodd' d='M10 0a10 10 0 1 1 0 20a10 10 0 0 1 0-20Zm0 4.4a1.3 1.3 0 0 0-1.3 1.3v4.8a1.3 1.3 0 0 0 2.6 0V5.7A1.3 1.3 0 0 0 10 4.4Zm0 8.9a1.45 1.45 0 1 0 0 2.9a1.45 1.45 0 0 0 0-2.9Z'/%3E%3C/svg%3E");
-    --i-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M2 8h11M9 4l4 4-4 4' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    --i-star: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M8 .5 10.2 2.7 13.3 2.7 13.3 5.8 15.5 8 13.3 10.2 13.3 13.3 10.2 13.3 8 15.5 5.8 13.3 2.7 13.3 2.7 10.2 .5 8 2.7 5.8 2.7 2.7 5.8 2.7Z'/%3E%3C/svg%3E");
-    --i-swash: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 16' preserveAspectRatio='none'%3E%3Cpath d='M4 11C48 5.5 118 3.6 196 7.2' fill='none' stroke='black' stroke-width='8' stroke-linecap='round'/%3E%3C/svg%3E");
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #121A19; --card: #1A2423; --panel: #20302E; --line: #2C3B39; --rule: #263331;
-      --ink: #F2F4F3; --text: #DDE3E1; --muted: #A3AFAC; --field: #7E8B88;
-      --teal: #68CBBA; --link: #7DD3C4; --deep: #68CBBA; --deep-hover: #85D8C9; --on-deep: #0E2B27;
-      --sun-soft: #3A2F12; --sun-edge: #5C4A16; --sun-ink: #F7CF6A; --sun-line: #F0C04A;
-      --icon-bg: #3A3014; --good: #5CC47D; --bad: #FF8A80; --bad-soft: #3B1F1C;
-      --mark: #68CBBA; --silver: #C9D3D1; --silver-edge: #93A29F; --gold-edge: #FFD45C; --zero-swash: #3A4A48;
-      --focus: #7DD3C4; --halo: rgba(251, 183, 0, .30);
-      --shadow: 0 1px 2px rgba(0, 0, 0, .25), 0 8px 22px rgba(0, 0, 0, .25);
-      --shadow-btn: 0 2px 4px rgba(0, 0, 0, .3), 0 8px 18px rgba(104, 203, 186, .16);
-      --pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='%23243331'%3E%3Cpath d='M14 8 15.76 9.76 18.24 9.76 18.24 12.24 20 14 18.24 15.76 18.24 18.24 15.76 18.24 14 20 12.24 18.24 9.76 18.24 9.76 15.76 8 14 9.76 12.24 9.76 9.76 12.24 9.76Z'/%3E%3Cpath d='M42 38 43.17 39.17 44.83 39.17 44.83 40.83 46 42 44.83 43.17 44.83 44.83 43.17 44.83 42 46 40.83 44.83 39.17 44.83 39.17 43.17 38 42 39.17 40.83 39.17 39.17 40.83 39.17Z'/%3E%3C/g%3E%3Cg fill='%232A3A38'%3E%3Ccircle cx='42' cy='14' r='1.7'/%3E%3Ccircle cx='14' cy='42' r='1.7'/%3E%3C/g%3E%3C/svg%3E");
-    }
-  }
-
-  /* ---------- Base ---------- */
-  [hidden] { display: none !important; }
-  * { box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; }
-  body { margin: 0; position: relative; background: var(--bg); color: var(--text);
-         font: 16px/1.55 var(--font); font-weight: 400; overflow-x: hidden; }
-  /* The pattern shows at the top of the page and fades out. */
-  body::before { content: ""; position: absolute; z-index: -1; inset: 0 0 auto 0; height: 820px; pointer-events: none;
-                 background: var(--pattern) center top / 56px 56px;
-                 -webkit-mask-image: linear-gradient(#000 0, rgba(0,0,0,.85) 40%, transparent 100%);
-                 mask-image: linear-gradient(#000 0, rgba(0,0,0,.85) 40%, transparent 100%); }
-  h1, h2, h3 { color: var(--ink); font-weight: 600; line-height: 1.2; }
-  a { color: var(--link); text-decoration-thickness: 1px; text-underline-offset: 3px; }
-  a:hover { text-decoration-thickness: 2px; }
-  strong, b { color: var(--ink); font-weight: 700; }
-  code { font-family: var(--mono); font-size: .9em; }
-  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
-  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-  .note { color: var(--muted); font-size: 14px; line-height: 1.5; }
-  .error { color: var(--bad); font-weight: 700; }
-
-  :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; box-shadow: 0 0 0 6px var(--halo); }
-  input:focus, select:focus { outline: 2px solid var(--focus); outline-offset: 1px; box-shadow: 0 0 0 5px var(--halo); }
-  #resultHead:focus { outline: 2px solid var(--focus); outline-offset: 4px; border-radius: 4px; box-shadow: 0 0 0 8px var(--halo); }
-  #resultHead:focus:not(:focus-visible) { box-shadow: none; }
-
-  /* ---------- Header ---------- */
-  .top { padding: 18px 0 6px; }
-  .top-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 20px; }
-  .brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
-  .brand h1 { margin: 0; font-size: 26px; font-weight: 700; letter-spacing: -.01em; line-height: 1.05; }
-  .brand .tagline { display: block; font-size: 14px; font-weight: 600; color: var(--muted); letter-spacing: 0; margin-top: 3px; }
-  .mark { width: 46px; height: 46px; flex: none; overflow: visible; }
-  .mk-line { fill: none; stroke: var(--mark); stroke-width: 2.6; stroke-linecap: round; }
-  .mk-thin { fill: none; stroke: var(--mark); stroke-width: 1.3; stroke-linecap: round; }
-  .mk-fill { fill: var(--mark); }
-  .mk-star { fill: var(--sun); }
-  .mk-gold { fill: var(--sun); stroke: var(--gold-edge); stroke-width: .9; }
-  .mk-silver { fill: var(--silver); stroke: var(--silver-edge); stroke-width: .9; }
-  .mk-ring-g { fill: none; stroke: var(--gold-edge); stroke-width: .8; }
-  .mk-ring-s { fill: none; stroke: var(--silver-edge); stroke-width: .8; }
-  .mk-swing { transform-box: view-box; transform-origin: 24px 15.5px; }
-  .top-links { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; font-size: 15px; }
-  .maker { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px 6px 10px; border-radius: 999px;
-           background: var(--card); border: 1px solid var(--line); color: var(--ink); font-weight: 600; box-shadow: 0 1px 2px rgba(31,61,57,.05); }
-  .maker::before { content: ""; width: 14px; height: 14px; background: var(--sun); -webkit-mask: var(--i-star) center / contain no-repeat; mask: var(--i-star) center / contain no-repeat; }
-  .top-links a { font-weight: 600; }
-
-  /* ---------- Connect (the first view) ---------- */
-  .hero { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, .92fr); grid-template-areas: "head card" "trust card";
-          gap: 26px 56px; align-items: start; padding: 44px 0 20px; }
-  .hero-head { grid-area: head; }
-  .connect-card { grid-area: card; }
-  .trust { grid-area: trust; }
-  .pill { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 18px; padding: 5px 14px 5px 10px; border-radius: 999px;
-          background: var(--panel); border: 1px solid var(--line); color: var(--link); font-size: 14px; font-weight: 700; }
-  .pill::before { content: ""; width: 14px; height: 14px; background: var(--sun); -webkit-mask: var(--i-star) center / contain no-repeat; mask: var(--i-star) center / contain no-repeat; }
-  .hero h2 { font-size: clamp(31px, 5vw, 50px); line-height: 1.12; letter-spacing: -.015em; margin: 0 0 18px; font-weight: 600; }
-  .hl { position: relative; z-index: 0; white-space: nowrap; }
-  .hl::after { content: ""; position: absolute; z-index: -1; left: -.08em; right: -.1em; bottom: -.04em; height: .34em;
-               background: var(--sun); -webkit-mask: var(--i-swash) center / 100% 100% no-repeat; mask: var(--i-swash) center / 100% 100% no-repeat; }
-  .lead { font-size: 19px; line-height: 1.55; margin: 0; max-width: 34em; color: var(--text); }
-
-  .trust h3 { font-size: 17px; margin: 6px 0 12px; }
-  .checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
-  .checks li { position: relative; padding-left: 32px; line-height: 1.5; }
-  .checks li::before { content: ""; position: absolute; left: 0; top: 2px; width: 21px; height: 21px; background: var(--teal);
-                       -webkit-mask: var(--i-check) center / contain no-repeat; mask: var(--i-check) center / contain no-repeat; }
-  .checks li.caution::before { background: var(--sun-line); -webkit-mask-image: var(--i-info); mask-image: var(--i-info); }
-
-  .card { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 24px; margin: 16px 0; box-shadow: var(--shadow); min-width: 0; }
-  .connect-card { position: relative; margin: 0; padding: 26px 26px 22px; }
-  .sticker { position: absolute; top: -20px; right: 20px; width: 44px; height: 44px; transform: rotate(12deg); }
-  .sticker path { fill: var(--sun); stroke: var(--card); stroke-width: 3; stroke-linejoin: round; }
-  .card-title { text-align: center; text-transform: uppercase; letter-spacing: .09em; font-size: 13px; font-weight: 700; color: var(--muted); margin: 0 0 16px; }
-  .steps { list-style: none; counter-reset: step; margin: 0 0 18px; padding: 0; display: grid; gap: 12px; }
-  .steps li { counter-increment: step; position: relative; padding-left: 40px; min-height: 28px; }
-  .steps li::before { content: counter(step); position: absolute; left: 0; top: -1px; width: 28px; height: 28px; border-radius: 50%;
-                      background: var(--sun); color: #343434; font-weight: 800; font-size: 15px; line-height: 28px; text-align: center; }
-  .connect-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-  .connect-row #token { flex: 1 1 100%; }
-  #status { margin: 12px 0 0; min-height: 0; font-size: 15px; }
-  #status:empty { margin: 0; }
-  .connect-row:has(button:disabled) + #status:not(.error):not(:empty)::before {
-    content: ""; display: inline-block; width: 14px; height: 14px; margin-right: 8px; vertical-align: -2px; background: var(--sun-line);
-    -webkit-mask: var(--i-star) center / contain no-repeat; mask: var(--i-star) center / contain no-repeat; }
-  .community { display: flex; gap: 10px; align-items: flex-start; margin: 18px 0 0; padding: 12px 14px; border-radius: 8px;
-               background: var(--panel); color: var(--muted); font-size: 14px; line-height: 1.45; }
-  .community::before { content: ""; flex: none; width: 18px; height: 18px; margin-top: 1px; background: var(--muted);
-                       -webkit-mask: var(--i-info) center / contain no-repeat; mask: var(--i-info) center / contain no-repeat; }
-
-  .features-title { margin: 44px 0 6px; }
-  .features { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px 28px; padding: 8px 0 12px; }
-  .feature { text-align: center; padding: 10px 6px; }
-  .icon-circle { display: grid; place-items: center; width: 64px; height: 64px; margin: 0 auto 12px; border-radius: 50%; background: var(--icon-bg); }
-  .icon-circle svg { width: 40px; height: 40px; overflow: visible; }
-  .ic-line { fill: none; stroke: var(--ink); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-  .ic-sun { fill: var(--sun); stroke: var(--ink); stroke-width: 1.6; stroke-linejoin: round; }
-  .ic-silver { fill: var(--silver); stroke: var(--ink); stroke-width: 1.6; stroke-linejoin: round; }
-  .ic-teal { fill: var(--teal); }
-  .ic-star { fill: var(--sun); }
-  .feature h4 { font-size: 18px; margin: 0 0 6px; color: var(--ink); font-weight: 600; line-height: 1.25; }
-  .feature p { margin: 0 auto; max-width: 21em; }
-  .u { color: var(--ink); font-weight: 700; text-decoration: underline; text-decoration-color: var(--sun);
-       text-decoration-thickness: 3px; text-underline-offset: 5px; text-decoration-skip-ink: none; }
-
-  /* ---------- Buttons and fields ---------- */
-  button { font: inherit; font-weight: 700; cursor: pointer; color: var(--link); background: var(--card);
-           border: 1.5px solid var(--deep); border-radius: 999px; padding: 9px 20px; line-height: 1.3;
-           transition: background-color .15s, color .15s, transform .15s, box-shadow .15s; }
-  button:hover { background: var(--panel); }
-  button.primary { display: inline-flex; align-items: center; gap: 8px; background: var(--deep); color: var(--on-deep);
-                   border-color: var(--deep); padding: 12px 26px; box-shadow: var(--shadow-btn); }
-  button.primary::after { content: ""; width: 16px; height: 16px; background: currentColor;
-                          -webkit-mask: var(--i-arrow) center / contain no-repeat; mask: var(--i-arrow) center / contain no-repeat; }
-  button.primary:hover { background: var(--deep-hover); border-color: var(--deep-hover); }
-  #sampleBtn { padding: 11px 22px; }
-  button.small { border-radius: 4px; border-color: var(--field); color: var(--ink); font-weight: 600; padding: 7px 14px; font-size: 15px; }
-  button:disabled { opacity: .6; cursor: default; transform: none; box-shadow: none; }
-
-  input[type=number], input[type=text], select {
-    font: inherit; color: var(--ink); background: var(--card); border: 1px solid var(--field); border-radius: 6px;
-    padding: 8px 10px; min-height: 42px; max-width: 100%; }
-  input[type=number] { width: 132px; text-align: right; font-family: var(--mono); font-size: 15px; font-variant-numeric: tabular-nums; }
-  /* The token field is type=text, so browsers do not offer to save it as a password. This hides the characters. */
-  #token { width: 100%; -webkit-text-security: disc; padding: 11px 14px; min-height: 48px; border-radius: 8px; }
-  ::placeholder { color: var(--muted); opacity: 1; }
-  select { padding-right: 8px; cursor: pointer; }
-  input[type=radio], input[type=checkbox] { accent-color: var(--deep); width: 18px; height: 18px; margin: 0; flex: none; cursor: pointer; }
-
-  /* ---------- After you connect ---------- */
-  .app { padding-top: 20px; }
-  .connected { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; padding: 12px 14px 12px 16px; background: var(--panel); box-shadow: none; }
-  .connected .ok { flex: none; width: 22px; height: 22px; background: var(--teal); -webkit-mask: var(--i-check) center / contain no-repeat; mask: var(--i-check) center / contain no-repeat; }
-  #sub { flex: 1 1 260px; font-size: 15px; color: var(--text); }
-  #restart { padding: 7px 16px; font-size: 15px; }
-
-  .warn { position: relative; margin: 12px 0; padding: 12px 16px 12px 46px; border-radius: 8px; line-height: 1.5;
-          background: var(--sun-soft); color: var(--sun-ink); border: 1px solid var(--sun-edge); font-weight: 600; font-size: 15px; }
-  .warn::before { content: ""; position: absolute; left: 15px; top: 13px; width: 20px; height: 20px; background: var(--sun-line);
-                  -webkit-mask: var(--i-info) center / contain no-repeat; mask: var(--i-info) center / contain no-repeat; }
-
-  .result { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 24px; align-items: center; padding: 18px; }
-  .result-main { position: relative; overflow: hidden; text-align: center; padding: 30px 18px 26px; border-radius: 8px; background: var(--panel); isolation: isolate; }
-  .result-main::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--pattern) center / 56px 56px; opacity: .7; }
-  .due-label { text-align: center; text-transform: uppercase; letter-spacing: .1em; font-size: 13px; font-weight: 700; color: var(--muted); margin: 0 auto 6px; display: table; padding: 2px 6px; }
-  .due { position: relative; display: inline-block; z-index: 0; color: var(--deep); font-weight: 700; letter-spacing: -.02em;
-         font-size: clamp(42px, 7vw, 66px); line-height: 1.12; font-variant-numeric: tabular-nums lining-nums; overflow-wrap: anywhere; }
-  /* The swash sits below the baseline, so that it does not touch the digits (teal on yellow is low contrast in dark mode). */
-  .due::after { content: ""; position: absolute; z-index: -1; left: -.06em; right: -.06em; bottom: -.06em; height: .25em; background: var(--sun);
-                -webkit-mask: var(--i-swash) center / 100% 100% no-repeat; mask: var(--i-swash) center / 100% 100% no-repeat; }
-  .due.zero { color: var(--muted); }
-  .due.zero::after { background: var(--zero-swash); }
-  .due.incomplete { font-size: clamp(26px, 5vw, 40px); color: var(--muted); }
-  .due-hint { margin: 10px auto 0; max-width: 22em; font-size: 14px; color: var(--muted); }
-  .lines { font-size: 15.5px; }
-  .lines p { margin: 0; padding: 9px 2px; border-bottom: 1px dashed var(--line); font-variant-numeric: tabular-nums; }
-  .lines p:nth-child(3) { font-size: 17px; }
-  .lines p:last-child { border: 0; margin-top: 10px; padding: 11px 14px 11px 42px; position: relative; border-radius: 8px; background: var(--panel); color: var(--ink); }
-  .lines p:last-child::before { content: ""; position: absolute; left: 14px; top: 13px; width: 18px; height: 18px; background: var(--sun-line);
-                                -webkit-mask: var(--i-star) center / contain no-repeat; mask: var(--i-star) center / contain no-repeat; }
-
-  .section h2 { display: flex; align-items: center; gap: 12px; font-size: 21px; margin: 0 0 16px; }
-  .step { flex: none; display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 50%;
-          background: var(--sun); color: #343434; font-size: 16px; font-weight: 800; }
-  .section > h2 + .note { margin-top: -6px; }
-
-  .choices { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; }
-  fieldset { margin: 0; padding: 14px 14px 16px; border: 0; border-radius: 8px; background: var(--panel); min-width: 0; }
-  legend { float: left; width: 100%; padding: 0; margin: 0 0 10px; text-align: center; text-transform: uppercase; letter-spacing: .09em;
-           font-size: 12.5px; font-weight: 700; color: var(--muted); }
-  legend + * { clear: both; }
-  label.opt { display: flex; align-items: center; gap: 10px; margin: 0 0 6px; padding: 9px 12px; border-radius: 6px; cursor: pointer;
-              background: var(--card); border: 1px solid var(--line); font-weight: 600; color: var(--ink); line-height: 1.3; }
-  label.opt:hover { border-color: var(--teal); }
-  label.opt:has(input:checked) { border-color: var(--deep); box-shadow: inset 4px 0 0 var(--sun); }
-  .field { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 6px 12px; }
-  .field label { flex: 1 1 150px; min-width: 0; }
-  fieldset .field { margin-top: 10px; flex-wrap: nowrap; }
-  fieldset .field label { flex: 1 1 auto; }
-  fieldset input[type=number] { width: 112px; }
-  .fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 4px 36px; }
-  .fields .field { padding: 6px 0; border-bottom: 1px solid var(--rule); }
-  .gap-top { margin-top: 14px; }
-
-  .scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -4px; padding: 0 4px;
-            background: linear-gradient(to right, var(--card) 30%, rgba(255,255,255,0)) left center / 28px 100% no-repeat local,
-                        linear-gradient(to left, var(--card) 30%, rgba(255,255,255,0)) right center / 28px 100% no-repeat local,
-                        radial-gradient(farthest-side at 0 50%, rgba(0,0,0,.14), transparent) left center / 10px 100% no-repeat scroll,
-                        radial-gradient(farthest-side at 100% 50%, rgba(0,0,0,.14), transparent) right center / 10px 100% no-repeat scroll; }
-  @media (prefers-color-scheme: dark) {
-    .scroll { background: linear-gradient(to right, var(--card) 30%, rgba(26,36,35,0)) left center / 28px 100% no-repeat local,
-                          linear-gradient(to left, var(--card) 30%, rgba(26,36,35,0)) right center / 28px 100% no-repeat local,
-                          radial-gradient(farthest-side at 0 50%, rgba(0,0,0,.5), transparent) left center / 10px 100% no-repeat scroll,
-                          radial-gradient(farthest-side at 100% 50%, rgba(0,0,0,.5), transparent) right center / 10px 100% no-repeat scroll; }
-  }
-  table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
-  th, td { text-align: left; padding: 11px 8px; border-bottom: 1px solid var(--rule); vertical-align: top; }
-  thead th { padding-top: 2px; padding-bottom: 9px; border-bottom: 1px solid var(--line); text-transform: uppercase; letter-spacing: .08em;
-             font-size: 12px; font-weight: 700; color: var(--muted); white-space: nowrap; }
-  tbody tr:last-child td { border-bottom: 0; }
-  td.num, th.num { text-align: right; white-space: nowrap; }
-  td.num { font-family: var(--mono); font-size: 15px; color: var(--ink); }
-  td.num .note { font-family: var(--font); }
-  td:first-child input[type=checkbox] { margin-top: 3px; }
-  .name { font-weight: 700; color: var(--ink); }
-  td .note { margin-top: 2px; }
-  .badge { display: inline-block; margin-left: 4px; padding: 1px 9px; border-radius: 999px; font-size: 12px; font-weight: 700;
-           line-height: 1.5; background: var(--sun-soft); color: var(--sun-ink); border: 1px solid var(--sun-edge); white-space: nowrap; }
-  tr.off .name { text-decoration: line-through; color: var(--muted); font-weight: 600; }
-  tr.off td.num input { color: var(--muted); border-style: dashed; }
-  tr.selected td { background: var(--sun-soft); font-weight: 700; color: var(--ink); }
-  tr.selected td:first-child { box-shadow: inset 4px 0 0 var(--sun); }
-  #methodRows td { vertical-align: middle; white-space: nowrap; }
-  .list thead th:first-child { width: 1%; }
-
-  #hawlSummary { margin: 0 0 14px; padding: 12px 14px; border-radius: 8px; background: var(--panel); color: var(--ink); }
-  #hawlRows td { vertical-align: middle; padding-top: 9px; padding-bottom: 9px; }
-  #hawlRows td:first-child { min-width: 6.4em; }
-  .barcell { width: 42%; }
-  td.barcell { position: relative; padding-left: 12px; padding-right: 12px; }
-  td.barcell::before { content: ""; position: absolute; left: 12px; right: 12px; top: 50%; height: 12px; margin-top: -6px; border-radius: 999px; background: var(--panel); }
-  td.barcell:empty::before { display: none; }
-  .bar { position: relative; height: 12px; border-radius: 999px; background: var(--good); min-width: 4px; }
-  .bar.below { background: repeating-linear-gradient(135deg, var(--sun) 0 5px, #E5A500 5px 10px); box-shadow: inset 0 0 0 1.5px var(--sun-line); }
-  .legend { display: flex; flex-wrap: wrap; gap: 6px 20px; margin: 12px 0 0; font-size: 14px; color: var(--muted); }
-  .legend span { display: inline-flex; align-items: center; gap: 8px; }
-  .legend i { width: 26px; height: 10px; border-radius: 999px; background: var(--good); }
-  .legend i.below { background: repeating-linear-gradient(135deg, var(--sun) 0 5px, #E5A500 5px 10px); box-shadow: inset 0 0 0 1.5px var(--sun-line); }
-
-  .scroll + .note, .scroll + .legend, .legend + .note { margin-top: 14px; }
-  .notes { list-style: none; margin: 0 0 18px; padding: 0; display: grid; gap: 10px; }
-  .notes li { position: relative; padding-left: 28px; }
-  .notes li::before { content: ""; position: absolute; left: 2px; top: 5px; width: 15px; height: 15px; background: var(--sun);
-                      -webkit-mask: var(--i-star) center / contain no-repeat; mask: var(--i-star) center / contain no-repeat; }
-
-  /* ---------- Footer ---------- */
-  .foot { position: relative; margin-top: 48px; padding: 34px 0 40px; background: var(--panel); border-top: 1px solid var(--line); overflow: hidden; isolation: isolate; }
-  .foot::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--pattern) center / 56px 56px; opacity: .8;
-                  -webkit-mask-image: linear-gradient(to top, #000, transparent); mask-image: linear-gradient(to top, #000, transparent); }
-  .foot-inner { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 18px 36px; align-items: start; }
-  .foot-brand { display: flex; align-items: center; gap: 12px; }
-  .foot-brand .mark { width: 40px; height: 40px; }
-  .foot-brand p { margin: 0; line-height: 1.35; font-size: 15px; }
-  .foot-maker { font-weight: 600; color: var(--ink); }
-  .foot-name { display: block; font-size: 20px; font-weight: 700; color: var(--ink); }
-  .foot-text p { margin: 0 0 6px; font-size: 15px; color: var(--text); }
-  .foot-text .disclaim { font-weight: 700; color: var(--ink); }
-
-  /* ---------- Small screens ---------- */
-  @media (max-width: 860px) {
-    .hero { grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "card" "trust"; padding-top: 28px; gap: 24px; }
-    .features { grid-template-columns: minmax(0, 1fr); }
-    .result { grid-template-columns: minmax(0, 1fr); }
-  }
-  @media (max-width: 620px) {
-    body { font-size: 15.5px; }
-    .card { padding: 18px 16px; }
-    .connect-card { padding: 22px 16px 18px; }
-    .sticker { right: 14px; top: -18px; width: 38px; height: 38px; }
-    .result { padding: 12px; }
-    .lead { font-size: 17.5px; }
-    .brand h1 { font-size: 24px; }
-    .mark { width: 40px; height: 40px; }
-    .connect-row button { flex: 1 1 auto; justify-content: center; }
-    .section h2 { font-size: 19px; }
-    .fields { grid-template-columns: minmax(0, 1fr); }
-    input[type=number] { width: 118px; }
-    th, td { padding-left: 6px; padding-right: 6px; }
-    thead th { font-size: 11px; letter-spacing: .05em; }
-    td.num input[type=number] { width: 106px; font-size: 14px; padding-left: 6px; padding-right: 6px; }
-    td.num { font-size: 14px; }
-    .foot-inner { grid-template-columns: minmax(0, 1fr); }
-  }
-
-  /* ---------- Motion (only when the system allows it) ---------- */
-  @media (prefers-reduced-motion: no-preference) {
-    .rise { animation: rise .4s cubic-bezier(.2, .7, .2, 1) both; }
-    .r2 { animation-delay: .04s; } .r3 { animation-delay: .08s; } .r4 { animation-delay: .12s; } .r5 { animation-delay: .16s; }
-    .hero .hl::after { animation: swash .6s .25s cubic-bezier(.3, .7, .2, 1) both; }
-    .top .mk-swing { animation: settle 1.2s .1s cubic-bezier(.3, .6, .3, 1) both; }
-    .sticker { animation: twinkle 4.5s 1s ease-in-out infinite; }
-    #app:not([hidden]) .due { animation: pop .55s cubic-bezier(.2, .9, .3, 1.3) both; }
-    button.primary:hover { transform: translateY(-1px); }
-    .connect-row:has(button:disabled) + #status:not(.error):not(:empty)::before { animation: spin 1.4s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    @keyframes rise { from { opacity: .85; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-    @keyframes swash { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
-    @keyframes settle { 0% { transform: rotate(-8deg); } 35% { transform: rotate(5deg); } 60% { transform: rotate(-2.5deg); } 80% { transform: rotate(1deg); } 100% { transform: rotate(0); } }
-    @keyframes twinkle { 0%, 100% { transform: rotate(12deg) scale(1); } 50% { transform: rotate(32deg) scale(1.08); } }
-    @keyframes pop { from { opacity: .5; transform: translateY(6px) scale(.96); } to { opacity: 1; transform: none; } }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
-  }
-</style>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
-  <defs>
-    <!-- Mizan mark: a balance scale. The 2 pans hold a gold coin and a silver coin, the 2 metals of the nisab. -->
-    <g id="mizanScale">
-      <path class="mk-star" d="M24 2.6 25.05 3.65 26.55 3.65 26.55 5.15 27.6 6.2 26.55 7.25 26.55 8.75 25.05 8.75 24 9.8 22.95 8.75 21.45 8.75 21.45 7.25 20.4 6.2 21.45 5.15 21.45 3.65 22.95 3.65Z"/>
-      <path class="mk-line" d="M24 10v29.5"/>
-      <rect class="mk-fill" x="15" y="39.2" width="18" height="4.4" rx="2.2"/>
-      <g class="mk-swing">
-        <path class="mk-line" d="M7.5 15.5h33"/>
-        <path class="mk-thin" d="M7.5 15.5 2.8 29M7.5 15.5l4.7 13.5M40.5 15.5l-4.7 13.5M40.5 15.5l4.7 13.5"/>
-        <circle class="mk-gold" cx="7.5" cy="25.2" r="3.7"/>
-        <circle class="mk-ring-g" cx="7.5" cy="25.2" r="2.1"/>
-        <circle class="mk-silver" cx="40.5" cy="25.2" r="3.7"/>
-        <circle class="mk-ring-s" cx="40.5" cy="25.2" r="2.1"/>
-        <path class="mk-fill" d="M1.8 29h11.4a5.7 4.6 0 0 1-11.4 0Z"/>
-        <path class="mk-fill" d="M34.8 29h11.4a5.7 4.6 0 0 1-11.4 0Z"/>
-      </g>
-      <circle class="mk-fill" cx="24" cy="15.5" r="2.7"/>
-    </g>
-  </defs>
-</svg>
-
-<header class="top">
-  <div class="wrap top-inner">
-    <div class="brand">
-      <svg class="mark" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
-        <path class="mk-star" d="M24 2.6 25.05 3.65 26.55 3.65 26.55 5.15 27.6 6.2 26.55 7.25 26.55 8.75 25.05 8.75 24 9.8 22.95 8.75 21.45 8.75 21.45 7.25 20.4 6.2 21.45 5.15 21.45 3.65 22.95 3.65Z"/>
-        <path class="mk-line" d="M24 10v29.5"/>
-        <rect class="mk-fill" x="15" y="39.2" width="18" height="4.4" rx="2.2"/>
-        <g class="mk-swing">
-          <path class="mk-line" d="M7.5 15.5h33"/>
-          <path class="mk-thin" d="M7.5 15.5 2.8 29M7.5 15.5l4.7 13.5M40.5 15.5l-4.7 13.5M40.5 15.5l4.7 13.5"/>
-          <circle class="mk-gold" cx="7.5" cy="25.2" r="3.7"/>
-          <circle class="mk-ring-g" cx="7.5" cy="25.2" r="2.1"/>
-          <circle class="mk-silver" cx="40.5" cy="25.2" r="3.7"/>
-          <circle class="mk-ring-s" cx="40.5" cy="25.2" r="2.1"/>
-          <path class="mk-fill" d="M1.8 29h11.4a5.7 4.6 0 0 1-11.4 0Z"/>
-          <path class="mk-fill" d="M34.8 29h11.4a5.7 4.6 0 0 1-11.4 0Z"/>
-        </g>
-        <circle class="mk-fill" cx="24" cy="15.5" r="2.7"/>
-      </svg>
-      <h1>Mizan<span class="sr">: </span><span class="tagline">Zakat calculator for Lunch Money</span></h1>
-    </div>
-    <div class="top-links">
-      <a href="how-it-works.html">How it works</a>
-      <a href="zakat-guide.html">Zakat guide</a>
-      <span class="maker">Made by Mazin Kanuga</span>
-    </div>
-  </div>
-</header>
-
-<main class="wrap">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="top"><div class="wrap top-inner">
+  <a class="brand" href="./" aria-label="Mizan home">
+    <svg viewBox="0 0 40 44" aria-hidden="true" focusable="false" fill="none"><path d="M20 5v32M6 12h28M6 12 1 26h10L6 12Zm28 0-5 14h10l-5-14ZM12 39h16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="20" cy="5" r="3" fill="currentColor"/><path d="M1 26c0 7 10 7 10 0M29 26c0 7 10 7 10 0" fill="currentColor"/></svg>
+    <span class="brand-name">Mizan<span class="brand-sub">Zakat for Lunch Money</span></span>
+  </a>
+  <nav class="nav" aria-label="Main"><a href="index.html" aria-current="page">Calculator</a><a href="token-guide.html">Token guide</a><a href="zakat-guide.html">Zakat guide</a></nav>
+</div></header>
+<main id="main" class="wrap">
   <section id="connect" aria-labelledby="heroHead">
     <div class="hero">
       <div class="hero-head">
-        <p class="pill rise">Free. Read only. Open source.</p>
-        <h2 id="heroHead" class="rise r2">Calculate your <span class="hl">zakat</span> from your Lunch Money balances</h2>
-        <p class="lead rise r3">Mizan reads your account balances from <a href="https://lunchmoney.app" rel="noreferrer">Lunch Money</a>, gets today's gold and silver prices, and estimates your zakat. Its balance history helps you review your hawl.</p>
+        <p class="eyebrow">A little clarity for your zakat</p>
+        <h1 id="heroHead">Your balances.<br>Your zakat.<br>A clearer picture.</h1>
+        <p class="lead">Start with the accounts you already track in Lunch Money. Review what counts, choose your method, and see your estimate.</p>
+        <ol class="journey" aria-label="How it works"><li><span>01</span> Connect</li><li><span>02</span> Review</li><li><span>03</span> Estimate</li></ol>
       </div>
-
-      <div class="card connect-card rise r3">
-        <svg class="sticker" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path d="M50 4 63.47 17.47 82.53 17.47 82.53 36.53 96 50 82.53 63.47 82.53 82.53 63.47 82.53 50 96 36.53 82.53 17.47 82.53 17.47 63.47 4 50 17.47 36.53 17.47 17.47 36.53 17.47Z"/></svg>
-        <h3 class="card-title">Connect your Lunch Money</h3>
-        <ol class="steps">
-          <li>Go to <a href="https://my.lunchmoney.app/developers" rel="noreferrer" target="_blank">my.lunchmoney.app/developers</a>, and make an access token. Give it a name, for example "Zakat calculator".</li>
-          <li>Paste the token here, and click Connect.</li>
-        </ol>
-        <div class="connect-row">
-          <input type="text" id="token" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"
-                 data-1p-ignore data-lpignore="true" data-bwignore placeholder="Lunch Money access token" aria-label="Lunch Money access token">
-          <button type="button" class="primary" id="connectBtn">Connect</button>
-          <button type="button" id="sampleBtn">Try with sample data</button>
-        </div>
+      <div class="connect-card">
+        <h2>Connect Lunch Money</h2>
+        <p class="note">Use an access token to read your account balances.</p>
+        <label for="token">Lunch Money access token</label>
+        <input type="password" id="token" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" data-1p-ignore data-lpignore="true" data-bwignore placeholder="Paste your access token" aria-describedby="tokenNotice">
+        <button type="button" class="primary" id="connectBtn">Connect my accounts</button>
         <p id="status" role="status"></p>
-        <p class="community">A community project. Lunch Money did not make it and does not support it.</p>
-      </div>
-
-      <div class="trust rise r4">
-        <h3>Your data stays with you</h3>
-        <ul class="checks">
-          <li><b>Read only.</b> This page only reads your data. It has no code that changes or deletes anything.</li>
-          <li><b>The page does not keep your token.</b> Your token goes only to api.lunchmoney.dev, and the page forgets it after it reads your balances.</li>
-          <li><b>No server.</b> This page has no server, so nothing is saved on a server.</li>
-          <li class="caution"><b>Lunch Money tokens can change data.</b> You can delete your token on the <a href="https://my.lunchmoney.app/developers" rel="noreferrer" target="_blank">developers page</a> when you finish.</li>
-        </ul>
+        <p class="connect-help">New to tokens? <a href="token-guide.html" target="_blank" rel="noopener">Follow the step-by-step guide ↗</a></p>
+        <p class="token-notice" id="tokenNotice">Mizan only reads your data. Your token and balances are never saved by Mizan.</p>
+        <div class="sample-action"><p>Take a look before connecting.</p><button type="button" id="sampleBtn">Explore with sample data →</button></div>
       </div>
     </div>
-
-    <h3 class="card-title features-title rise r5">What Mizan does for you</h3>
-    <div class="features rise r5">
-      <div class="feature">
-        <span class="icon-circle" aria-hidden="true">
-          <svg viewBox="0 0 32 32" focusable="false">
-            <path class="ic-silver" d="M3 25.5 6 18.5H14L17 25.5Z"/>
-            <path class="ic-sun" d="M15.5 25.5 18.5 18.5H26.5L29.5 25.5Z"/>
-            <path class="ic-sun" d="M9.3 18.5 12.3 11.5H20.3L23.3 18.5Z"/>
-            <path class="ic-star" d="M27 2.8 27.77 3.65 28.9 3.65 28.9 4.78 29.7 5.55 28.9 6.32 28.9 7.45 27.77 7.45 27 8.3 26.23 7.45 25.1 7.45 25.1 6.32 24.3 5.55 25.1 4.78 25.1 3.65 26.23 3.65Z"/>
-          </svg>
-        </span>
-        <h4>Today's gold and silver prices</h4>
-        <p>Mizan gets the prices in <span class="u">your currency</span> and calculates the nisab for you.</p>
-      </div>
-      <div class="feature">
-        <span class="icon-circle" aria-hidden="true">
-          <svg viewBox="0 0 32 32" focusable="false">
-            <rect x="16" y="12.7" width="12" height="6.6" class="ic-star"/>
-            <rect class="ic-line" x="4" y="6" width="24" height="20" rx="2.5"/>
-            <path class="ic-line" d="M16 6v20M4 12.7h24M4 19.3h24"/>
-          </svg>
-        </span>
-        <h4>6 methods side by side</h4>
-        <p>See the silver and gold nisab with <span class="u">3 mortgage methods</span>, and choose your method.</p>
-      </div>
-      <div class="feature">
-        <span class="icon-circle" aria-hidden="true">
-          <svg viewBox="0 0 32 32" focusable="false">
-            <rect class="ic-line" x="4.5" y="7" width="23" height="20.5" rx="3"/>
-            <path class="ic-line" d="M4.5 12.5h23M11 4.5v5M21 4.5v5"/>
-            <rect class="ic-teal" x="9" y="20" width="3.2" height="4" rx="1"/>
-            <rect class="ic-teal" x="14.4" y="18" width="3.2" height="6" rx="1"/>
-            <rect class="ic-star" x="19.8" y="15.5" width="3.2" height="8.5" rx="1"/>
-          </svg>
-        </span>
-        <h4>12 months of history</h4>
-        <p>Review your <span class="u">month-end balances</span> against the nisab, with gaps in the history marked.</p>
-      </div>
-    </div>
+    <div class="quiet-intro"><p>Your calculation stays in your browser. No Mizan account, no subscription, and no changes to your Lunch Money data.</p><a href="how-it-works.html">How your data is handled →</a></div>
   </section>
 
   <div id="app" class="app" hidden>
-    <section class="card connected">
-      <span class="ok" aria-hidden="true"></span>
-      <span id="sub"></span>
-      <button type="button" id="restart">Start again</button>
-    </section>
-    <div class="warn" id="priceWarn" hidden></div>
+    <div class="connected"><span id="sub"></span><button type="button" id="restart">Start again</button></div>
+    <nav class="progress" aria-label="Calculation steps"><span>✓ Connected</span><span class="divider" aria-hidden="true">/</span><button type="button" id="reviewStep" aria-controls="reviewView" aria-current="step">02 Review balances</button><span class="divider" aria-hidden="true">/</span><button type="button" id="estimateStep" aria-controls="estimateView">03 Your estimate</button></nav>
     <div class="warn" id="dataWarn" hidden></div>
-    <div class="warn" id="staleWarn" hidden></div>
-
-    <section class="card result">
-      <div class="result-main">
-        <h2 class="due-label" id="resultHead" tabindex="-1">Estimated zakat</h2>
-        <div class="due" id="due" aria-live="polite" aria-atomic="true"></div>
-        <p class="due-hint">For your zakat date, assuming your hawl is complete. Zakat is 2.5% of your total after eligible debts, at or above the nisab.</p>
-      </div>
-      <div class="lines" id="lines"></div>
-    </section>
-
-    <section class="card section">
-      <h2><span class="step">1</span> Method</h2>
-      <div class="choices">
-        <fieldset>
-          <legend>Nisab</legend>
-          <label class="opt"><input type="radio" name="nisab" value="silver" checked> Silver</label>
-          <label class="opt"><input type="radio" name="nisab" value="gold"> Gold</label>
-          <div class="field"><label for="silverGramsNisab">Silver nisab (grams)</label><input type="number" id="silverGramsNisab" value="595" step="0.01" min="0" data-save></div>
-          <div class="field"><label for="goldGramsNisab">Gold nisab (grams)</label><input type="number" id="goldGramsNisab" value="85" step="0.01" min="0" data-save></div>
-        </fieldset>
-        <fieldset>
-          <legend>Mortgage</legend>
-          <label class="opt"><input type="radio" name="mortgage" value="none" checked> Do not deduct</label>
-          <label class="opt"><input type="radio" name="mortgage" value="next"> Deduct the next payment</label>
-          <label class="opt"><input type="radio" name="mortgage" value="year"> Deduct the next 12 months of payments</label>
-        </fieldset>
-        <fieldset>
-          <legend>Prices (<span class="cur"></span> a gram, pure metal)</legend>
-          <div class="field"><label for="goldPrice">Gold</label><input type="number" id="goldPrice" step="0.01" min="0"></div>
-          <div class="field"><label for="silverPrice">Silver</label><input type="number" id="silverPrice" step="0.001" min="0"></div>
-        </fieldset>
+    <section id="reviewView" aria-labelledby="reviewHead">
+      <div class="view-head"><p class="eyebrow">Step 2 of 3</p><h1 id="reviewHead" tabindex="-1">Make sure it adds up.</h1><p class="note">Keep the accounts that belong in your calculation. Edit any balance that needs updating.</p></div>
+      <div class="review-layout">
+        <div class="review-main">
+          <div class="review-warnings"><div class="warn" id="staleWarn" hidden></div></div>
+          <section class="section" id="accounts"><h2>Your accounts <span class="note">· <span class="cur"></span></span></h2>
+            <div class="scroll"><table class="list"><thead><tr><th>Include</th><th>Account</th><th class="num">Balance</th></tr></thead><tbody id="accountRows"></tbody></table></div>
+          </section>
+          <details class="disclosure" id="extraAssets"><summary><span>Add other assets<span class="note">Cash, gold, silver, crypto or money owed to you</span></span></summary>
+            <p class="note">Add only what is missing from the accounts above.</p>
+            <div class="fields">
+              <div class="field"><label for="cashHome">Cash at home</label><input type="number" id="cashHome" step="0.01" min="0"></div>
+              <div class="field"><label for="crypto">Other crypto, market value</label><input type="number" id="crypto" step="0.01" min="0"></div>
+              <div class="field"><label for="owed">Money owed to you that you expect to receive</label><input type="number" id="owed" step="0.01" min="0"></div>
+              <div class="field"><label for="otherAssets">Other zakat assets, such as business stock</label><input type="number" id="otherAssets" step="0.01" min="0"></div>
+              <div class="field"><label for="goldGrams">Gold that you own (grams)</label><input type="number" id="goldGrams" step="0.01" min="0"></div>
+              <div class="field"><label for="goldKarat">Gold purity</label><select id="goldKarat" data-save><option value="24">24 karat</option><option value="22">22 karat</option><option value="21">21 karat</option><option value="18" selected>18 karat</option><option value="14">14 karat</option><option value="10">10 karat</option></select></div>
+              <div class="field"><label for="silverGrams">Silver that you own (grams)</label><input type="number" id="silverGrams" step="0.01" min="0"></div>
+              <div class="field"><label for="silverPurity">Silver purity</label><select id="silverPurity" data-save><option value="0.999">Fine (999)</option><option value="0.925" selected>Sterling (925)</option><option value="0.8">800</option></select></div>
+            </div><p class="inline-note" id="metalValue"></p>
+          </details>
+          <details class="disclosure" id="debtSettings"><summary><span>Review debts<span class="note" id="debtSummary">Credit cards and other eligible deductions</span></span></summary>
+            <p class="note">Credit cards are included by default. Select only the debts your method allows, and edit the deductible amount. Avoid counting the same debt twice.</p>
+            <div class="scroll"><table class="list"><thead><tr><th>Include</th><th>Debt</th><th class="num">Amount</th></tr></thead><tbody id="debtRows"></tbody></table></div>
+            <p class="note" id="noDebts" hidden>No credit card or loan balances were found.</p>
+            <div class="field"><label for="otherDebts">Other debts due now</label><input type="number" id="otherDebts" step="0.01" min="0"></div>
+            <p class="inline-note">Mortgage deductions are on the next screen.</p>
+          </details>
+        </div>
+        <aside class="review-aside" aria-label="Before you continue"><h2>A quick check</h2><ol><li>Remove accounts that belong to someone else.</li><li>Check any balance marked “not current”.</li><li>Add missing assets and review debts.</li></ol><button type="button" id="continueEstimate" class="primary">See my estimate →</button><p class="inline-note">You can come back and change any amount.</p></aside>
       </div>
     </section>
 
-    <section class="card section">
-      <h2><span class="step">2</span> Your accounts in Lunch Money</h2>
-      <p class="note">Clear the box to leave an account out. You can change an amount, for example when a balance is not current.</p>
-      <div class="scroll"><table class="list">
-        <thead><tr><th>Include</th><th>Account</th><th class="num">Amount (<span class="cur"></span>)</th></tr></thead>
-        <tbody id="accountRows"></tbody>
-      </table></div>
-    </section>
-
-    <section class="card section">
-      <h2><span class="step">3</span> Things that are not in Lunch Money</h2>
-      <div class="fields">
-        <div class="field"><label for="cashHome">Cash at home</label><input type="number" id="cashHome" step="0.01" min="0"></div>
-        <div class="field"><label for="crypto">Other crypto, market value</label><input type="number" id="crypto" step="0.01" min="0"></div>
-        <div class="field"><label for="owed">Money that people owe you and will pay back</label><input type="number" id="owed" step="0.01" min="0"></div>
-        <div class="field"><label for="otherAssets">Other zakat assets, for example business stock</label><input type="number" id="otherAssets" step="0.01" min="0"></div>
-        <div class="field"><label for="goldGrams">Gold that you own (grams)</label><input type="number" id="goldGrams" step="0.01" min="0"></div>
-        <div class="field"><label for="goldKarat">Gold purity</label>
-          <select id="goldKarat" data-save>
-            <option value="24">24 karat</option><option value="22">22 karat</option><option value="21">21 karat</option>
-            <option value="18" selected>18 karat</option><option value="14">14 karat</option><option value="10">10 karat</option>
-          </select></div>
-        <div class="field"><label for="silverGrams">Silver that you own (grams)</label><input type="number" id="silverGrams" step="0.01" min="0"></div>
-        <div class="field"><label for="silverPurity">Silver purity</label>
-          <select id="silverPurity" data-save>
-            <option value="0.999">Fine (999)</option><option value="0.925" selected>Sterling (925)</option><option value="0.8">800</option>
-          </select></div>
+    <section id="estimateView" aria-labelledby="estimateHead" hidden>
+      <div class="view-head"><p class="eyebrow">Step 3 of 3</p><h1 id="estimateHead" tabindex="-1">Your zakat, made clearer.</h1><p class="note">Choose the method you follow. Your estimate updates as you make changes.</p></div>
+      <div class="estimate-layout">
+        <div class="estimate-main">
+          <div class="estimate-choice"><fieldset><legend>Your nisab</legend><p class="note">The minimum wealth threshold. Choose the metal your method uses.</p><div class="choice-options"><label class="opt"><input type="radio" name="nisab" value="silver" checked>Silver</label><label class="opt"><input type="radio" name="nisab" value="gold">Gold</label></div></fieldset><p class="inline-note"><a href="zakat-guide.html#which-nisab" target="_blank" rel="noopener">Help choosing a nisab ↗</a></p></div>
+          <details class="disclosure" id="mortgageSettings"><summary><span>Mortgage deduction<span class="note" id="mortgageChoice">Not deducted</span></span></summary>
+            <p class="note">Scholars differ about mortgage deductions. Use the approach you follow.</p><fieldset><legend class="sr">Mortgage method</legend><div class="stacked-options"><label class="opt"><input type="radio" name="mortgage" value="none" checked>Do not deduct</label><label class="opt"><input type="radio" name="mortgage" value="next">Deduct the next payment</label><label class="opt"><input type="radio" name="mortgage" value="year">Deduct the next 12 months</label></div></fieldset>
+            <div class="mortgage-fields fields" id="mortgageFields" hidden><div class="field"><label for="mortgagePayment">Deductible amount per payment</label><input type="number" id="mortgagePayment" step="0.01" min="0"></div><div class="field"><label for="mortgagePerYear">Payments a year</label><input type="number" id="mortgagePerYear" step="1" min="0" value="12"></div><p class="note">Enter only the part your method allows. For example, NZF UK excludes interest. For 12 months, use the average deductible amount per payment.</p></div><p class="inline-note" id="mortgageInfo"></p>
+          </details>
+          <details class="disclosure" id="priceSettings"><summary><span>Prices &amp; nisab weights<span class="note">Review prices or change the standard weights</span></span></summary>
+            <div class="warn" id="priceWarn" hidden></div><p class="note">Prices in <span class="cur"></span> per gram of pure metal.</p>
+            <div class="fields"><div class="field"><label for="goldPrice">Gold price per gram</label><input type="number" id="goldPrice" step="0.001" min="0"></div><div class="field"><label for="silverPrice">Silver price per gram</label><input type="number" id="silverPrice" step="0.0001" min="0"></div><div class="field"><label for="silverGramsNisab">Silver nisab (grams)</label><input type="number" id="silverGramsNisab" value="595" step="0.01" min="0" data-save></div><div class="field"><label for="goldGramsNisab">Gold nisab (grams)</label><input type="number" id="goldGramsNisab" value="85" step="0.01" min="0" data-save></div></div><p class="note price-info" id="priceInfo"></p>
+          </details>
+          <details class="disclosure" id="comparison"><summary>Compare all six methods</summary><div class="scroll" tabindex="0" role="region" aria-label="Method comparison"><table><thead><tr><th>Nisab</th><th>Mortgage</th><th class="num">Threshold</th><th class="num">Net wealth</th><th class="num">Zakat</th></tr></thead><tbody id="methodRows"></tbody></table></div></details>
+          <details class="disclosure" id="history"><summary><span>Review your balance history<span class="note">12 monthly snapshots to help review your hawl</span></span></summary><p class="note">Selected Lunch Money accounts only, using today's nisab. Other assets, other debts and the mortgage are excluded. This table cannot confirm a completed hawl.</p><p id="hawlSummary"></p><div class="scroll" tabindex="0" role="region" aria-label="Monthly balance history"><table><thead><tr><th>Month</th><th class="num">Known total</th><th class="barcell"><span class="sr">Compared with the nisab</span></th></tr></thead><tbody id="hawlRows"></tbody></table></div><p class="legend" aria-hidden="true"><span><i></i>At or above</span><span><i class="below"></i>Below the nisab</span></p><p class="inline-note">Partial rows are not classified. Month-end snapshots cannot show every change during the year. <a href="zakat-guide.html#hawl" target="_blank" rel="noopener">Read about the hawl ↗</a></p></details>
+          <div class="view-actions"><button type="button" id="backToReview" class="link-button">← Edit my balances</button></div>
+        </div>
+        <aside class="result" aria-labelledby="resultHead"><h2 class="due-label" id="resultHead" tabindex="-1">Estimated zakat</h2><div class="due" id="due" aria-live="polite" aria-atomic="true"></div><p class="due-hint">Assumes your hawl is complete. Confirm your method with your scholar.</p><p class="estimate-summary" id="estimateSummary"></p><details class="result-breakdown" id="resultBreakdown"><summary>How this is calculated</summary><div class="lines" id="lines"></div></details></aside>
       </div>
-      <p class="note" id="metalValue"></p>
-    </section>
-
-    <section class="card section">
-      <h2><span class="step">4</span> Debts that are due now</h2>
-      <div class="scroll"><table class="list">
-        <thead><tr><th>Include</th><th>Debt</th><th class="num">Amount (<span class="cur"></span>)</th></tr></thead>
-        <tbody id="debtRows"></tbody>
-      </table></div>
-      <p class="note" id="noDebts" hidden>Lunch Money has no credit card or loan balances.</p>
-      <div class="fields gap-top">
-        <div class="field"><label for="otherDebts">Other debts that are due now</label><input type="number" id="otherDebts" step="0.01" min="0"></div>
-        <div class="field"><label for="mortgagePayment">Deductible amount per mortgage payment</label><input type="number" id="mortgagePayment" step="0.01" min="0"></div>
-        <div class="field"><label for="mortgagePerYear">Mortgage payments a year</label><input type="number" id="mortgagePerYear" step="1" min="0" value="12"></div>
-      </div>
-      <p class="note" id="mortgageInfo"></p>
-      <p class="note">The mortgage is used only when you choose a mortgage method in section 1.</p>
-      <p class="note">Enter only the part your method allows you to deduct. For example, NZF UK excludes interest. For 12 months, enter the average deductible amount per payment and the number of payments.</p>
-    </section>
-
-    <section class="card section">
-      <h2><span class="step">5</span> All methods</h2>
-      <div class="scroll"><table>
-        <thead><tr><th>Nisab</th><th>Mortgage</th><th class="num">Nisab value</th><th class="num">Total after debts</th><th class="num">Zakat</th></tr></thead>
-        <tbody id="methodRows"></tbody>
-      </table></div>
-      <p class="note">Your choice in section 1 is highlighted.</p>
-    </section>
-
-    <section class="card section">
-      <h2><span class="step">6</span> A full year above the nisab (hawl)</h2>
-      <p class="note">Lunch Money accounts only, using today's nisab. This table excludes section 3, other debts and the mortgage, so its total may differ from your zakat estimate. It cannot confirm that your hawl is complete.</p>
-      <p id="hawlSummary"></p>
-      <div class="scroll"><table>
-        <thead><tr><th>Month</th><th class="num">Total</th><th class="barcell"><span class="sr">Total compared with the nisab</span></th></tr></thead>
-        <tbody id="hawlRows"></tbody>
-      </table></div>
-      <p class="legend" aria-hidden="true"><span><i></i>At or above the nisab</span><span><i class="below"></i>Below the nisab</span></p>
-      <p class="note">The table uses the month-end balances from Lunch Money for the accounts that you included in section 2, less the included debts in section 4. Closed accounts count for the months when they were open. The last row is today, with the amounts in sections 2 and 4. Section 3, the other debts and the mortgage are not in this table. The hawl is a lunar year (354 days), so 12 months is close but not exact.</p>
-    </section>
-
-    <section class="card section">
-      <h2>Notes</h2>
-      <ul class="notes">
-        <li>When your total after debts is at or above the nisab, zakat is 2.5% of the whole total, once each lunar year.</li>
-        <li>Your home and your cars are not subject to zakat, so the calculator does not include them.</li>
-        <li>Scholars do not agree about the mortgage. Some deduct only the payment that is due now. Others deduct the payments that are due in the next 12 months.</li>
-        <li>Scholars do not agree about retirement accounts, and about gold jewellery that a woman wears. Ask about them before you include them.</li>
-        <li>If money in an account belongs to another person (for example your spouse), it is part of their zakat. Clear the box for that account.</li>
-        <li>Your choices (nisab, mortgage method, purity) are saved in this browser. Amounts and your token are never saved.</li>
-        <li>This is an estimate. Ask your imam or a zakat scholar to confirm the method that you follow.</li>
-      </ul>
-      <button type="button" class="small" id="reset">Clear my saved choices</button>
+      <div class="reset-row"><button type="button" class="link-button small" id="reset">Reset my method choices</button><p class="note">Only your method preferences are saved. Your balances and token are not.</p></div>
     </section>
   </div>
 </main>
-
-<footer class="foot">
-  <div class="wrap foot-inner">
-    <div class="foot-brand">
-      <svg class="mark" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><use href="#mizanScale"/></svg>
-      <p><span class="foot-name">Mizan</span><span class="foot-maker">Made by Mazin Kanuga</span></p>
-    </div>
-    <div class="foot-text">
-      <p class="disclaim">A community project. Lunch Money did not make it and does not support it.</p>
-      <p>Mizan means balance in Arabic. The name has the same letters as Mazin.</p>
-      <p><a href="how-it-works.html">How it works</a> · <a href="zakat-guide.html">Zakat guide</a> · <a href="https://github.com/TechnoDudeX/lunchmoney-zakat" rel="noreferrer">Source code</a> on GitHub, with the MIT licence.</p>
-      <p>Prices from <a href="https://gold-api.com" rel="noreferrer">gold-api.com</a>.</p>
-    </div>
-  </div>
-</footer>
-
+<footer class="foot"><div class="wrap foot-inner">
+  <div><p>Made by Mazin Kanuga.</p><p>An independent community project for Lunch Money.</p></div>
+  <nav aria-label="Footer"><a href="how-it-works.html">How it works &amp; privacy</a><a href="https://github.com/TechnoDudeX/lunchmoney-zakat" rel="noreferrer">Source code</a><a href="https://gold-api.com" rel="noreferrer">Metal prices</a></nav>
+</div></footer>
 <script>(function () {
   "use strict";
   var API = "https://api.lunchmoney.dev/v2";
@@ -714,9 +190,9 @@
         lmGet(token, "/plaid_accounts"),
         lmGet(token, "/manual_accounts"),
         lmGet(token, "/crypto/manual").catch(optional("crypto_manual",
-          "The page could not read your manual crypto from Lunch Money. Try again, or type its value in section 3.")),
+          "The page could not read your manual crypto from Lunch Money. Try again, or add its value under Add other assets on Review balances.")),
         lmGet(token, "/crypto/synced").catch(optional("crypto_synced",
-          "The page could not read your synced crypto from Lunch Money. Try again, or type its value in section 3.")),
+          "The page could not read your synced crypto from Lunch Money. Try again, or add its value under Add other assets on Review balances.")),
         // end_month is last month: the current month can be in the future for the server (time zones),
         // and the hawl uses the amounts on the page for today.
         lmGet(token, "/balance_history?start_month=" + months[0] + "&end_month=" + months[months.length - 2]).catch(
@@ -880,6 +356,17 @@
   var METAL = { silver: "Silver", gold: "Gold" };
   var MORTGAGE = { none: "Not deducted", next: "Next payment", year: "Next 12 months" };
 
+  function setView(view) {
+    var reviewing = view === "review";
+    $("reviewView").hidden = !reviewing;
+    $("estimateView").hidden = reviewing;
+    $("reviewStep").toggleAttribute("aria-current", reviewing);
+    $("estimateStep").toggleAttribute("aria-current", !reviewing);
+    (reviewing ? $("reviewStep") : $("estimateStep")).setAttribute("aria-current", "step");
+    (reviewing ? $("reviewHead") : $("estimateHead")).focus({ preventScroll: true });
+    window.scrollTo(0, 0);
+  }
+
   function show(data) {
     D = data;
     var cur = D.currency.toUpperCase();
@@ -887,25 +374,22 @@
     price = new Intl.NumberFormat(undefined, { style: "currency", currency: cur, maximumFractionDigits: 3 });
     document.querySelectorAll(".cur").forEach(function (el) { el.textContent = cur; });
 
-    $("sub").textContent = (D.sample ? "Sample data, not real accounts. " : "Balances from Lunch Money (" + D.budget + ") on " + fdate(D.generated) + ". ") +
-      (D.prices.fallback ? "" : "Gold and silver prices from " + D.prices.source + " (" + fdate(D.prices.date) + ").");
+    $("sub").textContent = D.sample ? "Sample accounts · " + cur + " · Fictional balances" : D.budget + " · " + cur + " · " + fdate(D.generated);
+    $("priceInfo").textContent = D.prices.fallback ? "You can enter prices manually." : "Prices from " + D.prices.source + " · " + fdate(D.prices.date) + ". You can edit these values.";
     $("priceWarn").hidden = !D.prices.fallback;
-    $("priceWarn").textContent = "The page could not get gold and silver prices in " + cur + ". Type today's prices in section 1.";
+    $("priceWarn").textContent = "We couldn't load gold and silver prices in " + cur + ". Enter today's prices here to complete your estimate.";
     $("goldPrice").value = D.prices.gold ? D.prices.gold.toFixed(3) : "";
     $("silverPrice").value = D.prices.silver ? D.prices.silver.toFixed(4) : "";
 
     accountRows = buildRows(D.accounts, "accountRows");
     debtRows = buildRows(D.debts, "debtRows");
     $("noDebts").hidden = D.debts.length > 0;
-    $("mortgageInfo").textContent = D.mortgages.length
-      ? "Mortgage in Lunch Money: " + D.mortgages.map(function (m) { return m.name + " (balance " + money.format(m.balance) + ")"; }).join(", ") +
-        ". Type your payment above to use the mortgage methods."
-      : "";
+    $("mortgageInfo").textContent = D.mortgages.length ? "A mortgage was found in Lunch Money. Enter only the amount you can deduct; the full balance is not deducted automatically." : "";
     var stale = accountRows.concat(debtRows).filter(function (r) { return r.stale && r.data.include && r.data.amount; })
       .map(function (r) { return r.data.name; });
     $("staleWarn").hidden = !stale.length;
-    $("staleWarn").textContent = "Some balances are not current, because the bank connection has a problem or the balance is old: " +
-      stale.join(", ") + ". Check them in your bank app, and type the current amounts in section 2.";
+    $("staleWarn").textContent = stale.length + (stale.length === 1 ? " balance may be" : " balances may be") + " out of date. Check the rows marked ‘not current’ against your bank before continuing.";
+    $("debtSettings").open = debtRows.some(function (r) { return r.stale && r.cb.checked && num(r.input); });
     $("dataWarn").hidden = !(D.warnings && D.warnings.length);
     $("dataWarn").textContent = (D.warnings || []).join(" ");
 
@@ -913,7 +397,7 @@
     $("app").hidden = false;
     load();
     render();
-    $("resultHead").focus();  // screen readers and keyboard users start at the result
+    setView("review");
   }
 
   function buildRows(list, tbodyId) {
@@ -1014,11 +498,17 @@
 
   function render() {
     var metal = radio("nisab"), mode = radio("mortgage"), t = totals(metal, mode);
+    $("mortgageChoice").textContent = MORTGAGE[mode];
+    $("debtSummary").textContent = t.debts ? money.format(t.debts) + " in selected deductions" : "No debt deductions selected";
+    $("mortgageFields").hidden = mode === "none";
+    if (!t.ready) $("priceSettings").open = true;
     accountRows.concat(debtRows).forEach(function (r) { r.tr.classList.toggle("off", !r.cb.checked); });
 
     $("due").textContent = t.ready ? money.format(t.due) : "Incomplete";
     $("due").classList.toggle("zero", t.due === 0);
     $("due").classList.toggle("incomplete", !t.ready);
+    $("estimateSummary").textContent = t.ready ? "Based on " + money.format(t.net) + " after eligible debts." : "Enter the " + t.missing.join(" and ") + " under Prices & nisab weights.";
+    $("resultBreakdown").hidden = !t.ready;
     var gap = t.net - t.nisab;
     var lines = [
       "Zakat assets: " + money.format(t.assets) + ".",
@@ -1029,9 +519,9 @@
       gap >= 0 ? "Your total is " + money.format(gap) + " more than the nisab. Zakat is 2.5% of " + money.format(t.net) + "."
                : "Your total is " + money.format(-gap) + " less than the nisab, so no zakat is due."
     ]);
-    if (!t.ready) lines = ["Calculation incomplete. Enter the " + t.missing.join(" and ") + " in section 1 to calculate your estimate."];
+    if (!t.ready) lines = ["Calculation incomplete. Enter the " + t.missing.join(" and ") + " under Prices &amp; nisab weights to calculate your estimate."];
     $("lines").innerHTML = lines.map(function (l) { return "<p>" + l + "</p>"; }).join("");
-    $("metalValue").textContent = !t.assetsReady ? "Enter the missing metal prices in section 1 to value your gold and silver." : (t.goldValue || t.silverValue)
+    $("metalValue").textContent = !t.assetsReady ? "Add the missing metal prices on Your estimate to value your gold and silver." : (t.goldValue || t.silverValue)
       ? "Value of your gold: " + money.format(t.goldValue) + ". Value of your silver: " + money.format(t.silverValue) + "." : "";
 
     var rows = "";
@@ -1056,7 +546,7 @@
     var max = Math.max.apply(null, known.map(function (m) { return Math.abs(m.total); }).concat([t.nisab, 1]));
     var below = complete.filter(function (m) { return m.above === false; });
     var low = complete.reduce(function (a, b) { return b.total < a.total ? b : a; });
-    $("hawlSummary").textContent = (!t.nisabReady ? "Type the " + metal + " price and the nisab weight in section 1 to compare these accounts with the nisab." :
+    $("hawlSummary").textContent = (!t.nisabReady ? "Enter the " + metal + " price and nisab weight under Prices & nisab weights to compare these accounts with the nisab." :
       "Lowest total with all selected balances available: " + money.format(low.total) + " (" + fdate(low.month) + "). " +
       (below.length ? "These accounts were below the " + metal + " nisab in " + below.length + " of " + completeLabel + ": " +
         below.map(function (m) { return fdate(m.month); }).join(", ") + ". Ask a scholar how this affects your zakat year."
@@ -1103,6 +593,10 @@
     sampleData().then(function (data) { busy(false, ""); show(data); });
   });
   $("restart").addEventListener("click", function () { location.reload(); });
+  $("continueEstimate").addEventListener("click", function () { setView("estimate"); });
+  $("estimateStep").addEventListener("click", function () { setView("estimate"); });
+  $("reviewStep").addEventListener("click", function () { setView("review"); });
+  $("backToReview").addEventListener("click", function () { setView("review"); });
   // Go back to the default choices. The page does not reload, so your amounts and the connection stay.
   $("reset").addEventListener("click", function () {
     try { localStorage.removeItem(SAVE_KEY); } catch (e) { /* nothing saved */ }

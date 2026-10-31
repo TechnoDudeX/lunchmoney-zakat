@@ -27,24 +27,29 @@ A community project. Lunch Money did not make it and does not support it.
 - Labels partial balance-history rows and compares only rows with all selected balances against the nisab.
 - Has a sample mode, so you can try it without a token.
 
-The [How it works](how-it-works.html) page explains the requests, calculations and limits. The [Zakat guide](zakat-guide.html) links the main rules and differences of opinion to their sources.
+The calculator has three steps: connect, review balances, and see your estimate. Extra assets and debts open on demand; method comparisons, prices and balance history stay in expandable sections.
+
+The [Token guide](token-guide.html) walks through connecting Lunch Money. [How it works](how-it-works.html) explains privacy and calculations. The [Zakat guide](zakat-guide.html) groups rules and sources into expandable topics.
 
 ## Your data and your token
 
 - **Read only.** The page sends only GET requests. It has no code that changes or deletes anything in Lunch Money.
-- **No application server.** The site has a calculator, 2 static guide pages and 2 font files. Your browser talks directly to the Lunch Money API. No token or account balances go to the author.
+- **No application server.** The site has a calculator, 3 static guide pages, a shared stylesheet and 2 font files. Your browser talks directly to the Lunch Money API. No token or account balances go to the author.
 - **The token is not kept.** The page sends your token only to `api.lunchmoney.dev`, then forgets it. The page does not save the token in the browser, in a cookie or anywhere else. If your browser or a password manager asks to save it, click Never.
 - **Only 2 hosts.** A Content Security Policy lets the page connect only to `api.lunchmoney.dev` and `api.gold-api.com`. The fonts come from the same site as the page. Requests to gold-api.com include only your currency code (for example CAD). They do not include your token or your balances. Redirects are refused, so the token cannot follow a redirect to another host.
 - **Saved in your browser:** only your choices (nisab, mortgage method, nisab weights, gold and silver purity). Amounts are never saved.
 - **Lunch Money tokens can change data.** Lunch Money has no read-only tokens. Make a separate token for this page, and delete it on the [developers page](https://my.lunchmoney.app/developers) when you finish.
 
-You can read the calculator code in [index.html](index.html). The 2 guide pages are also plain HTML. The fonts in [fonts/](fonts/) are Nunito Sans and Red Hat Mono. On Apple devices the page uses Avenir. The site has no libraries and no build step.
+You can read the calculator code in [index.html](index.html). The guide pages are plain HTML and share [styles.css](styles.css). The fonts in [fonts/](fonts/) are Nunito Sans and Red Hat Mono. On Apple devices the body text uses Avenir; large headings use the system's Georgia font. The site has no libraries and no build step.
 
 ## How to use it
 
-1. Go to [my.lunchmoney.app/developers](https://my.lunchmoney.app/developers), and make an access token. Give it a name, for example "Zakat calculator".
-2. Open https://lunchmoney-zakat.netlify.app, paste the token, and click **Connect**.
-3. Choose your method in section 1, and check the accounts in section 2.
+1. Follow the [Token guide](token-guide.html) to create a separate access token in Lunch Money.
+2. Open https://lunchmoney-zakat.netlify.app, paste the token, and click **Connect my accounts**.
+3. Review your accounts. Open **Add other assets** or **Review debts** as needed.
+4. Click **See my estimate**. Choose your nisab and any mortgage deduction. Open the comparison or history when you need more detail.
+
+You can move between Review balances and Your estimate without reconnecting or losing your entered amounts. The token input is masked in every browser. Mizan still does not save it.
 
 To run it on your own computer:
 
@@ -59,7 +64,7 @@ Then open http://localhost:8000.
 - Zakat is 2.5% of your total after debts, when the total is at or above the nisab.
 - Nisab: 595 g of silver or 85 g of gold (you can change the weights). Prices are for pure metal.
 - Gold that you own is valued by its purity (24, 22, 21, 18, 14 or 10 karat). Silver by 999, 925 or 800.
-- The hawl table uses Lunch Money's month-end balances for the included accounts, less the included debts. The last row is today, with the amounts in sections 2 and 4. Section 3, other debts and the mortgage are excluded from every row, so the table's total can differ from the zakat estimate. It supports review and cannot confirm a completed hawl.
+- The hawl table uses Lunch Money's month-end balances for the included accounts, less the included debts. Today's row uses the current account and debt lists. Additional assets, other debts and the mortgage are excluded from every row, so the table's total can differ from the zakat estimate. It supports review and cannot confirm a completed hawl.
 - Closed and deleted accounts count for the months when they were open. A deleted home, car or loan is not used.
 - A month with no balances in Lunch Money (for example before you started to use it) shows "No data". It does not count as below the nisab.
 - A month missing some selected balances shows a partial total and is not classified against the nisab. Gaps for closed accounts also stay unknown. Zero balances count as data.
@@ -82,7 +87,7 @@ Run the calculation and account-mapping regression tests without installing depe
 node --test tests/calculator.test.cjs
 ```
 
-The tests use synthetic balances and run the actual inline script in a test context. They cover missing prices, nisab boundaries, metal purity, mortgage choices, partial history, debt credits and closed accounts. They do not call the live Lunch Money API.
+The tests use synthetic balances and run the actual inline script in a test context. They cover missing prices, nisab boundaries, metal purity, mortgage choices, partial history, debt credits, closed accounts, navigation and conditional settings. They do not call the live Lunch Money API.
 
 ## Licence
 

@@ -3,318 +3,28 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- This page has no script and loads nothing except the 2 fonts from this site. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; font-src 'self'; img-src data:; base-uri 'none'; form-action 'none'">
+<!-- Shared local styles and fonts; inline script expands linked guide topics. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src data:; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="author" content="Mazin Kanuga">
 <meta name="description" content="How Mizan works: a static page, read-only requests to the Lunch Money API, the token lifecycle, the zakat formulas and the hawl check.">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#F7FAF9" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121A19" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#faf9f6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#151e1b" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23FBB700' d='M24 2.6 25.05 3.65 26.55 3.65 26.55 5.15 27.6 6.2 26.55 7.25 26.55 8.75 25.05 8.75 24 9.8 22.95 8.75 21.45 8.75 21.45 7.25 20.4 6.2 21.45 5.15 21.45 3.65 22.95 3.65Z'/%3E%3Cg stroke='%232C6A64' stroke-linecap='round' fill='none'%3E%3Cpath stroke-width='3' d='M24 10v29M7.5 15.5h33'/%3E%3Cpath stroke-width='1.5' d='M7.5 15.5 2.8 29M7.5 15.5l4.7 13.5M40.5 15.5l-4.7 13.5M40.5 15.5l4.7 13.5'/%3E%3C/g%3E%3Ccircle cx='7.5' cy='25.2' r='3.7' fill='%23FBB700'/%3E%3Ccircle cx='40.5' cy='25.2' r='3.7' fill='%23C9D3D1' stroke='%237F8E8B'/%3E%3Cg fill='%232C6A64'%3E%3Cpath d='M1.8 29h11.4a5.7 4.6 0 0 1-11.4 0Z'/%3E%3Cpath d='M34.8 29h11.4a5.7 4.6 0 0 1-11.4 0Z'/%3E%3Crect x='15' y='39.2' width='18' height='4.4' rx='2.2'/%3E%3Ccircle cx='24' cy='15.5' r='2.8'/%3E%3C/g%3E%3C/svg%3E">
 <title>How Mizan works</title>
-<style>
-  @font-face {
-    font-family: "Mizan Sans"; font-style: normal; font-weight: 400 800; font-display: swap;
-    src: url("fonts/nunito-sans.woff2") format("woff2");
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-  }
-  @font-face {
-    font-family: "Mizan Mono"; font-style: normal; font-weight: 400 600; font-display: swap;
-    src: url("fonts/red-hat-mono.woff2") format("woff2");
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-  }
-  :root {
-    --font: "Avenir Next", Avenir, "Mizan Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    --mono: "Mizan Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-    --bg: #F7FAF9; --card: #FFFFFF; --panel: #EEF4F3; --line: #E2E8E6; --rule: #EAEEED;
-    --ink: #343434; --text: #444444; --muted: #5F6664;
-    --teal: #44958C; --link: #2B6E66; --deep: #2C6A64; --on-deep: #FFFFFF;
-    --sun: #FBB700; --sun-soft: #FFF3CF; --sun-edge: #F2D27A; --sun-ink: #6B4C00; --sun-line: #9A6A00;
-    --bad: #B3261E; --bad-soft: #FDECEA;
-    --mark: #2C6A64; --silver: #C9D3D1; --silver-edge: #7F8E8B; --gold-edge: #B07D00;
-    --focus: #2C6A64; --halo: rgba(251, 183, 0, .38);
-    --shadow: 0 1px 2px rgba(31, 61, 57, .05), 0 6px 18px rgba(31, 61, 57, .07);
-    --pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='%23DCE7E4'%3E%3Cpath d='M14 8 15.76 9.76 18.24 9.76 18.24 12.24 20 14 18.24 15.76 18.24 18.24 15.76 18.24 14 20 12.24 18.24 9.76 18.24 9.76 15.76 8 14 9.76 12.24 9.76 9.76 12.24 9.76Z'/%3E%3Cpath d='M42 38 43.17 39.17 44.83 39.17 44.83 40.83 46 42 44.83 43.17 44.83 44.83 43.17 44.83 42 46 40.83 44.83 39.17 44.83 39.17 43.17 38 42 39.17 40.83 39.17 39.17 40.83 39.17Z'/%3E%3C/g%3E%3Cg fill='%23D3E0DC'%3E%3Ccircle cx='42' cy='14' r='1.7'/%3E%3Ccircle cx='14' cy='42' r='1.7'/%3E%3C/g%3E%3C/svg%3E");
-    --i-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath fill-rule='evenodd' d='M10 0a10 10 0 1 1 0 20a10 10 0 0 1 0-20Zm4.65 6.25a1.05 1.05 0 0 0-1.48.12l-4.4 5.25-2.1-2.02a1.05 1.05 0 1 0-1.46 1.52l2.92 2.8a1.05 1.05 0 0 0 1.53-.08l5.12-6.11a1.05 1.05 0 0 0-.13-1.48Z'/%3E%3C/svg%3E");
-    --i-info: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath fill-rule='evenodd' d='M10 0a10 10 0 1 1 0 20a10 10 0 0 1 0-20Zm0 4.4a1.3 1.3 0 0 0-1.3 1.3v4.8a1.3 1.3 0 0 0 2.6 0V5.7A1.3 1.3 0 0 0 10 4.4Zm0 8.9a1.45 1.45 0 1 0 0 2.9a1.45 1.45 0 0 0 0-2.9Z'/%3E%3C/svg%3E");
-    --i-star: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M8 .5 10.2 2.7 13.3 2.7 13.3 5.8 15.5 8 13.3 10.2 13.3 13.3 10.2 13.3 8 15.5 5.8 13.3 2.7 13.3 2.7 10.2 .5 8 2.7 5.8 2.7 2.7 5.8 2.7Z'/%3E%3C/svg%3E");
-    --i-swash: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 16' preserveAspectRatio='none'%3E%3Cpath d='M4 11C48 5.5 118 3.6 196 7.2' fill='none' stroke='black' stroke-width='8' stroke-linecap='round'/%3E%3C/svg%3E");
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #121A19; --card: #1A2423; --panel: #20302E; --line: #2C3B39; --rule: #263331;
-      --ink: #F2F4F3; --text: #DDE3E1; --muted: #A3AFAC;
-      --teal: #68CBBA; --link: #7DD3C4; --deep: #68CBBA; --on-deep: #0E2B27;
-      --sun-soft: #3A2F12; --sun-edge: #5C4A16; --sun-ink: #F7CF6A; --sun-line: #F0C04A;
-      --bad: #FF8A80; --bad-soft: #3B1F1C;
-      --mark: #68CBBA; --silver: #C9D3D1; --silver-edge: #93A29F; --gold-edge: #FFD45C;
-      --focus: #7DD3C4; --halo: rgba(251, 183, 0, .30);
-      --shadow: 0 1px 2px rgba(0, 0, 0, .25), 0 8px 22px rgba(0, 0, 0, .25);
-      --pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='%23243331'%3E%3Cpath d='M14 8 15.76 9.76 18.24 9.76 18.24 12.24 20 14 18.24 15.76 18.24 18.24 15.76 18.24 14 20 12.24 18.24 9.76 18.24 9.76 15.76 8 14 9.76 12.24 9.76 9.76 12.24 9.76Z'/%3E%3Cpath d='M42 38 43.17 39.17 44.83 39.17 44.83 40.83 46 42 44.83 43.17 44.83 44.83 43.17 44.83 42 46 40.83 44.83 39.17 44.83 39.17 43.17 38 42 39.17 40.83 39.17 39.17 40.83 39.17Z'/%3E%3C/g%3E%3Cg fill='%232A3A38'%3E%3Ccircle cx='42' cy='14' r='1.7'/%3E%3Ccircle cx='14' cy='42' r='1.7'/%3E%3C/g%3E%3C/svg%3E");
-    }
-  }
-
-  /* ---------- Base (the same as the calculator) ---------- */
-  * { box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; scroll-padding-top: 16px; }
-  body { margin: 0; position: relative; background: var(--bg); color: var(--text); font: 16px/1.6 var(--font); overflow-x: hidden; }
-  body::before { content: ""; position: absolute; z-index: -1; inset: 0 0 auto 0; height: 620px; pointer-events: none;
-                 background: var(--pattern) center top / 56px 56px;
-                 -webkit-mask-image: linear-gradient(#000 0, rgba(0,0,0,.85) 40%, transparent 100%);
-                 mask-image: linear-gradient(#000 0, rgba(0,0,0,.85) 40%, transparent 100%); }
-  h1, h2, h3 { color: var(--ink); font-weight: 600; line-height: 1.2; }
-  a { color: var(--link); text-decoration-thickness: 1px; text-underline-offset: 3px; }
-  a:hover { text-decoration-thickness: 2px; }
-  strong, b { color: var(--ink); font-weight: 700; }
-  code { font-family: var(--mono); font-size: .88em; background: var(--panel); border: 1px solid var(--line); border-radius: 4px; padding: .05em .35em; overflow-wrap: anywhere; }
-  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
-  :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; box-shadow: 0 0 0 6px var(--halo); }
-
-  /* ---------- Header and navigation ---------- */
-  .top { padding: 18px 0 6px; }
-  .top-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 20px; }
-  .brand { display: flex; align-items: center; gap: 12px; min-width: 0; color: inherit; text-decoration: none; }
-  .brand-name { display: block; font-size: 26px; font-weight: 700; color: var(--ink); line-height: 1.05; letter-spacing: -.01em; }
-  .brand .tagline { display: block; font-size: 14px; font-weight: 600; color: var(--muted); margin-top: 3px; }
-  .mark { width: 46px; height: 46px; flex: none; overflow: visible; }
-  .mk-line { fill: none; stroke: var(--mark); stroke-width: 2.6; stroke-linecap: round; }
-  .mk-thin { fill: none; stroke: var(--mark); stroke-width: 1.3; stroke-linecap: round; }
-  .mk-fill { fill: var(--mark); }
-  .mk-star { fill: var(--sun); }
-  .mk-gold { fill: var(--sun); stroke: var(--gold-edge); stroke-width: .9; }
-  .mk-silver { fill: var(--silver); stroke: var(--silver-edge); stroke-width: .9; }
-  .mk-ring-g { fill: none; stroke: var(--gold-edge); stroke-width: .8; }
-  .mk-ring-s { fill: none; stroke: var(--silver-edge); stroke-width: .8; }
-  .nav { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; font-size: 15px; }
-  .nav a { font-weight: 600; text-decoration: none; padding: 4px 0; border-bottom: 2px solid transparent; }
-  .nav a:hover { border-bottom-color: var(--sun); }
-  .nav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--sun); }
-  .maker { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px 6px 10px; border-radius: 999px;
-           background: var(--card); border: 1px solid var(--line); color: var(--ink); font-weight: 600; }
-  .maker::before { content: ""; width: 14px; height: 14px; background: var(--sun); -webkit-mask: var(--i-star) center / contain no-repeat; mask: var(--i-star) center / contain no-repeat; }
-
-  /* ---------- Page heading ---------- */
-  .page-head { padding: 40px 0 8px; max-width: 760px; }
-  .pill { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 16px; padding: 5px 14px 5px 10px; border-radius: 999px;
-          background: var(--panel); border: 1px solid var(--line); color: var(--link); font-size: 14px; font-weight: 700; }
-  .pill::before { content: ""; width: 14px; height: 14px; background: var(--sun); -webkit-mask: var(--i-star) center / contain no-repeat; mask: var(--i-star) center / contain no-repeat; }
-  .page-head h1 { font-size: clamp(32px, 5vw, 48px); line-height: 1.12; letter-spacing: -.015em; margin: 0 0 16px; }
-  .hl { position: relative; z-index: 0; white-space: nowrap; }
-  .hl::after { content: ""; position: absolute; z-index: -1; left: -.08em; right: -.1em; bottom: -.04em; height: .34em;
-               background: var(--sun); -webkit-mask: var(--i-swash) center / 100% 100% no-repeat; mask: var(--i-swash) center / 100% 100% no-repeat; }
-  .lead { font-size: 19px; line-height: 1.55; margin: 0; color: var(--text); }
-
-  /* ---------- Layout: contents and article ---------- */
-  .layout { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 32px; align-items: start; margin-top: 24px; }
-  .toc { position: sticky; top: 16px; font-size: 14.5px; }
-  .toc .card-title { text-align: left; margin-bottom: 10px; }
-  .toc ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; counter-reset: toc; }
-  .toc li { counter-increment: toc; }
-  .toc a { display: flex; gap: 8px; padding: 5px 8px; border-radius: 6px; text-decoration: none; color: var(--text); font-weight: 600; }
-  .toc a::before { content: counter(toc); min-width: 1.4em; color: var(--muted); font-variant-numeric: tabular-nums; }
-  .toc a:hover { background: var(--panel); color: var(--ink); }
-  .card { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 26px 28px; margin: 0 0 18px; box-shadow: var(--shadow); min-width: 0; }
-  .card-title { text-align: center; text-transform: uppercase; letter-spacing: .09em; font-size: 13px; font-weight: 700; color: var(--muted); margin: 0 0 16px; }
-  .doc h2 { font-size: 23px; margin: 0 0 6px; display: flex; align-items: center; gap: 12px; scroll-margin-top: 16px; }
-  .num-badge { flex: none; width: 32px; height: 32px; border-radius: 50%; background: var(--sun); color: #343434; font-size: 15px; font-weight: 800;
-               display: inline-flex; align-items: center; justify-content: center; }
-  .doc h3 { font-size: 17px; margin: 22px 0 6px; }
-  .doc p, .doc li { max-width: 46em; }
-  .doc p { margin: 10px 0; }
-  .doc ul, .doc ol { padding-left: 22px; margin: 10px 0; }
-  .doc li { margin: 5px 0; }
-  .sub { color: var(--muted); margin: 0 0 12px; }
-  .checks { list-style: none; padding: 0 !important; display: grid; gap: 10px; }
-  .checks li { position: relative; padding-left: 32px; margin: 0; }
-  .checks li::before { content: ""; position: absolute; left: 0; top: 2px; width: 21px; height: 21px; background: var(--teal);
-                       -webkit-mask: var(--i-check) center / contain no-repeat; mask: var(--i-check) center / contain no-repeat; }
-  .callout { display: flex; gap: 12px; align-items: flex-start; margin: 14px 0; padding: 12px 16px; border-radius: 8px; background: var(--sun-soft);
-             border: 1px solid var(--sun-edge); color: var(--sun-ink); }
-  .callout::before { content: ""; flex: none; width: 19px; height: 19px; margin-top: 3px; background: var(--sun-line);
-                     -webkit-mask: var(--i-info) center / contain no-repeat; mask: var(--i-info) center / contain no-repeat; }
-  .callout p { margin: 0; color: inherit; }
-  .callout strong { color: inherit; }
-
-  /* ---------- Tables ---------- */
-  .scroll { overflow-x: auto; margin: 12px 0; border: 1px solid var(--line); border-radius: 8px; }
-  table { width: 100%; border-collapse: collapse; font-size: 15px; font-variant-numeric: tabular-nums; }
-  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
-  thead th { background: var(--panel); color: var(--muted); font-size: 12.5px; text-transform: uppercase; letter-spacing: .06em; font-weight: 700; white-space: nowrap; }
-  tbody tr:last-child td { border-bottom: 0; }
-  td.n { text-align: right; white-space: nowrap; font-family: var(--mono); }
-  .tag { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 12.5px; font-weight: 700; white-space: nowrap; background: var(--panel); color: var(--link); border: 1px solid var(--line); }
-  .tag.opt { background: var(--sun-soft); color: var(--sun-ink); border-color: var(--sun-edge); }
-
-  /* ---------- Formula block ---------- */
-  .formula { margin: 14px 0; padding: 16px 18px; border-radius: 8px; background: var(--panel); border: 1px solid var(--line);
-             font-family: var(--mono); font-size: 14.5px; line-height: 1.75; overflow-x: auto; white-space: pre; color: var(--ink); }
-  .formula .c { color: var(--muted); }
-
-  /* ---------- Data flow diagram (HTML, so that it can wrap on small screens) ---------- */
-  .flow { display: grid; grid-template-columns: minmax(0, 1fr) 56px minmax(0, 1.15fr) 56px minmax(0, 1fr); align-items: center; margin: 18px 0 6px; }
-  .node { border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; background: var(--card); box-shadow: var(--shadow); font-size: 14.5px; line-height: 1.5; }
-  .node h3 { margin: 0 0 4px; font-size: 15.5px; }
-  .node p { margin: 0; }
-  .node.center { border: 2px solid var(--deep); background: var(--panel); }
-  .node.no { border-style: dashed; box-shadow: none; background: transparent; color: var(--muted); }
-  .node .host { font-family: var(--mono); font-size: 13px; color: var(--link); font-weight: 600; overflow-wrap: anywhere; }
-  .stack { display: grid; gap: 14px; }
-  .arrow { position: relative; height: 2px; background: var(--teal); margin: 0 6px; }
-  .arrow::after { content: ""; position: absolute; right: -2px; top: -5px; border: 6px solid transparent; border-left: 8px solid var(--teal); border-right: 0; }
-  .arrow.both::before { content: ""; position: absolute; left: -2px; top: -5px; border: 6px solid transparent; border-right: 8px solid var(--teal); border-left: 0; }
-  .arrow.left::after { right: auto; left: -2px; border-left: 0; border-right: 8px solid var(--teal); }
-  .flow-caption { font-size: 14px; color: var(--muted); margin: 8px 0 0; }
-
-  /* ---------- Footer ---------- */
-  .foot { position: relative; margin-top: 40px; padding: 34px 0 40px; background: var(--panel); border-top: 1px solid var(--line); overflow: hidden; isolation: isolate; }
-  .foot::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--pattern) center / 56px 56px; opacity: .8;
-                  -webkit-mask-image: linear-gradient(to top, #000, transparent); mask-image: linear-gradient(to top, #000, transparent); }
-  .foot-inner { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 18px 36px; align-items: start; }
-  .foot-brand { display: flex; align-items: center; gap: 12px; }
-  .foot-brand .mark { width: 40px; height: 40px; }
-  .foot-brand p { margin: 0; line-height: 1.35; font-size: 15px; }
-  .foot-name { display: block; font-size: 20px; font-weight: 700; color: var(--ink); }
-  .foot-maker { font-weight: 600; color: var(--ink); }
-  .foot-text p { margin: 0 0 6px; font-size: 15px; }
-  .foot-text .disclaim { font-weight: 700; color: var(--ink); }
-
-  /* ---------- Small screens ---------- */
-  @media (max-width: 900px) {
-    .layout { grid-template-columns: minmax(0, 1fr); gap: 8px; }
-    .toc { position: static; }
-    .toc ol { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
-    .flow { grid-template-columns: minmax(0, 1fr); gap: 0; }
-    .arrow { width: 2px; height: 30px; margin: 6px auto; }
-    .arrow::after { right: auto; left: -5px; top: auto; bottom: -2px; border: 6px solid transparent; border-top: 8px solid var(--teal); border-bottom: 0; }
-    .arrow.both::before { left: -5px; top: -2px; border: 6px solid transparent; border-bottom: 8px solid var(--teal); border-top: 0; }
-    .arrow.left::after { left: -5px; top: -2px; bottom: auto; border: 6px solid transparent; border-bottom: 8px solid var(--teal); border-top: 0; }
-  }
-  @media (max-width: 620px) {
-    body { font-size: 15.5px; }
-    .card { padding: 20px 16px; }
-    .brand-name { font-size: 24px; }
-    .mark { width: 40px; height: 40px; }
-    .lead { font-size: 17.5px; }
-    .doc h2 { font-size: 20px; }
-    .foot-inner { grid-template-columns: minmax(0, 1fr); }
-  }
-</style>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-<header class="top">
-  <div class="wrap top-inner">
-    <a class="brand" href="./" aria-label="Mizan, the calculator">
-      <svg class="mark" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
-        <path class="mk-star" d="M24 2.6 25.05 3.65 26.55 3.65 26.55 5.15 27.6 6.2 26.55 7.25 26.55 8.75 25.05 8.75 24 9.8 22.95 8.75 21.45 8.75 21.45 7.25 20.4 6.2 21.45 5.15 21.45 3.65 22.95 3.65Z"/>
-        <path class="mk-line" d="M24 10v29.5"/>
-        <rect class="mk-fill" x="15" y="39.2" width="18" height="4.4" rx="2.2"/>
-        <path class="mk-line" d="M7.5 15.5h33"/>
-        <path class="mk-thin" d="M7.5 15.5 2.8 29M7.5 15.5l4.7 13.5M40.5 15.5l-4.7 13.5M40.5 15.5l4.7 13.5"/>
-        <circle class="mk-gold" cx="7.5" cy="25.2" r="3.7"/><circle class="mk-ring-g" cx="7.5" cy="25.2" r="2.1"/>
-        <circle class="mk-silver" cx="40.5" cy="25.2" r="3.7"/><circle class="mk-ring-s" cx="40.5" cy="25.2" r="2.1"/>
-        <path class="mk-fill" d="M1.8 29h11.4a5.7 4.6 0 0 1-11.4 0Z"/><path class="mk-fill" d="M34.8 29h11.4a5.7 4.6 0 0 1-11.4 0Z"/>
-        <circle class="mk-fill" cx="24" cy="15.5" r="2.7"/>
-      </svg>
-      <span><span class="brand-name">Mizan</span><span class="tagline">Zakat calculator for Lunch Money</span></span>
-    </a>
-    <nav class="nav" aria-label="Main">
-      <a href="./">Calculator</a>
-      <a href="how-it-works.html" aria-current="page">How it works</a>
-      <a href="zakat-guide.html">Zakat guide</a>
-      <span class="maker">Made by Mazin Kanuga</span>
-    </nav>
-  </div>
-</header>
-
-<main class="wrap">
-  <div class="page-head">
-    <p class="pill">Technical details</p>
-    <h1>How <span class="hl">Mizan</span> works</h1>
-    <p class="lead">Mizan is 1 static web page. Your browser does all the work. This page tells you what the page sends, where your token goes, and how the page calculates your zakat. All the code is open: you can read it on <a href="https://github.com/TechnoDudeX/lunchmoney-zakat" rel="noreferrer">GitHub</a>.</p>
-  </div>
-
-  <div class="layout">
-    <nav class="toc card" aria-label="On this page">
-      <p class="card-title">On this page</p>
-      <ol>
-        <li><a href="#overview">Overview</a></li>
-        <li><a href="#token">Your token</a></li>
-        <li><a href="#requests">Requests</a></li>
-        <li><a href="#accounts">Accounts</a></li>
-        <li><a href="#prices">Gold and silver prices</a></li>
-        <li><a href="#formulas">The formulas</a></li>
-        <li><a href="#hawl">The hawl check</a></li>
-        <li><a href="#saved">What the page saves</a></li>
-        <li><a href="#errors">Errors and warnings</a></li>
-        <li><a href="#limits">Limits</a></li>
-      </ol>
-    </nav>
-
-    <div class="doc">
-      <section class="card" id="overview">
-        <h2><span class="num-badge">1</span>Overview</h2>
-        <ul class="checks">
-          <li><strong>No server.</strong> Netlify sends the page and 2 font files. After that, your browser talks directly to Lunch Money and to the price service. Nothing goes to the author.</li>
-          <li><strong>Read only.</strong> The page sends only <code>GET</code> requests. It has no code that changes or deletes data in Lunch Money.</li>
-          <li><strong>The token stays in memory.</strong> The page never saves your token, and it forgets the token after it reads your balances.</li>
-          <li><strong>Only 2 hosts.</strong> A Content Security Policy lets the page connect only to <code>api.lunchmoney.dev</code> and <code>api.gold-api.com</code>.</li>
-          <li><strong>No libraries.</strong> The page is 1 HTML file with 1 script. It has no build step and no tracking.</li>
-        </ul>
-
-        <h3>Where your data goes</h3>
-        <div class="flow" role="group" aria-label="Data flow diagram">
-          <div class="stack">
-            <div class="node">
-              <h3>Netlify</h3>
-              <p class="host">lunchmoney-zakat.netlify.app</p>
-              <p>Sends the page and 2 fonts. It gets no token and no account data.</p>
-            </div>
-            <div class="node no">
-              <h3>Mizan's author</h3>
-              <p>Gets nothing. Mizan has no server, no database and no analytics.</p>
-            </div>
-          </div>
-          <div class="arrow" aria-hidden="true"></div>
-          <div class="node center">
-            <h3>Your browser</h3>
-            <p>Runs the Mizan page. It holds the token in memory, reads your balances, gets the prices and calculates. Everything stays here.</p>
-          </div>
-          <div class="arrow both" aria-hidden="true"></div>
-          <div class="stack">
-            <div class="node">
-              <h3>Lunch Money API</h3>
-              <p class="host">api.lunchmoney.dev</p>
-              <p>6 <code>GET</code> requests with your token. They return your accounts, crypto and balance history.</p>
-            </div>
-            <div class="node">
-              <h3>Price service</h3>
-              <p class="host">api.gold-api.com</p>
-              <p>2 <code>GET</code> requests with only your currency code. No token and no balances.</p>
-            </div>
-          </div>
-        </div>
-        <p class="flow-caption">The arrows show the requests. Netlify sends files to your browser. Your browser asks Lunch Money and the price service for data.</p>
-
-        <h3>Security headers</h3>
-        <p>The page sets this Content Security Policy in a meta tag, and Netlify sends it again as a header:</p>
-        <div class="scroll"><table>
-          <thead><tr><th>Rule</th><th>Effect</th></tr></thead>
-          <tbody>
-            <tr><td><code>default-src 'none'</code></td><td>The page can load nothing that the policy does not name.</td></tr>
-            <tr><td><code>connect-src</code></td><td>The script can connect only to <code>https://api.lunchmoney.dev</code> and <code>https://api.gold-api.com</code>.</td></tr>
-            <tr><td><code>script-src 'unsafe-inline'</code></td><td>Inline JavaScript is allowed, including inline event handlers. External script files are blocked, including files from this site. This policy does not distinguish Mizan's script from any other injected inline script.</td></tr>
-            <tr><td><code>font-src 'self'</code></td><td>Fonts come only from the site of the page.</td></tr>
-            <tr><td><code>img-src data:</code></td><td>All images are inside the page. The page loads no image files.</td></tr>
-            <tr><td><code>frame-ancestors 'none'</code></td><td>Other websites cannot show the page in a frame. This rule comes only from the Netlify header.</td></tr>
-          </tbody>
-        </table></div>
-        <p>Netlify also sends <code>Referrer-Policy: no-referrer</code>, <code>X-Content-Type-Options: nosniff</code>, <code>X-Frame-Options: DENY</code> and a <code>Permissions-Policy</code> that turns off the camera, the microphone, location and payment.</p>
-      </section>
-
-      <section class="card" id="token">
-        <h2><span class="num-badge">2</span>Your token</h2>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="top"><div class="wrap top-inner">
+  <a class="brand" href="./" aria-label="Mizan home">
+    <svg viewBox="0 0 40 44" aria-hidden="true" focusable="false" fill="none"><path d="M20 5v32M6 12h28M6 12 1 26h10L6 12Zm28 0-5 14h10l-5-14ZM12 39h16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="20" cy="5" r="3" fill="currentColor"/><path d="M1 26c0 7 10 7 10 0M29 26c0 7 10 7 10 0" fill="currentColor"/></svg>
+    <span class="brand-name">Mizan<span class="brand-sub">Zakat for Lunch Money</span></span>
+  </a>
+  <nav class="nav" aria-label="Main"><a href="index.html">Calculator</a><a href="token-guide.html">Token guide</a><a href="zakat-guide.html">Zakat guide</a></nav>
+</div></header>
+<main id="main" class="wrap"><div class="page-head"><p class="eyebrow">How it works &amp; privacy</p><h1>A clear view of<br>what happens to your data.</h1><p class="lead">The short answer: Mizan reads your balances, calculates locally, and leaves your Lunch Money data alone.</p></div><div class="layout"><nav class="toc" aria-label="On this page"><p>On this page</p><ul><li><a href="#overview">The short version</a></li><li><a href="#privacy">Privacy & connections</a></li><li><a href="#calculation">The calculation</a></li><li><a href="#troubleshooting">Limits & troubleshooting</a></li><li><a href="#security">Security headers</a></li></ul></nav><div class="doc"><section class="quick-start" id="overview"><h2>Your browser does the work.</h2><p>Mizan reads balances directly from Lunch Money and prices from the metal-price service. It calculates in your browser, without sending your token or account balances to Mizan's author.</p><p>It uses read-only requests. Your token and balances are not saved by Mizan. Only your method preferences stay in this browser.</p><p class="note">Need help connecting? <a href="token-guide.html">Start with the token guide →</a></p></section><section class="article-group" id="privacy"><h2>Privacy & connections</h2><details class="article-topic" id="token"><summary><h3>Your token</h3></summary><div class="topic-content">
         <p class="sub">Lunch Money has no "log in with Lunch Money" button for other apps yet, so Mizan uses an access token that you make in Lunch Money.</p>
         <ol>
           <li>You paste the token in the field and click <strong>Connect</strong>.</li>
@@ -322,12 +32,10 @@
           <li>The page sends the token only in the <code>Authorization: Bearer</code> header of the requests to <code>api.lunchmoney.dev</code>. The token is never in a web address.</li>
           <li>When the requests finish, the page sets the variable to <code>null</code>. No code uses the token again.</li>
         </ol>
-        <p>The token field uses a text input with autocomplete disabled and hints asking password managers (1Password, LastPass and Bitwarden) to ignore it. These hints are not a guarantee: a browser or password manager may still offer to save it. A style rule hides the characters in browsers that support it; other browsers may show the token as plain text.</p>
+        <p>The token field uses a password input with autocomplete disabled and hints asking password managers (1Password, LastPass and Bitwarden) to ignore it. These hints are not a guarantee: a browser or password manager may still offer to save it. The password input masks the characters in browsers, including Firefox.</p>
         <div class="callout"><p><strong>Lunch Money tokens can change data.</strong> Lunch Money has no read-only tokens yet. Mizan never changes data, but the token itself can. Make a separate token for Mizan, and delete it on the Lunch Money developers page when you finish.</p></div>
-      </section>
-
-      <section class="card" id="requests">
-        <h2><span class="num-badge">3</span>Requests</h2>
+      </div></details>
+<details class="article-topic" id="requests"><summary><h3>Requests</h3></summary><div class="topic-content">
         <p class="sub">Every request uses <code>fetch()</code> with <code>method: "GET"</code>, <code>credentials: "omit"</code>, <code>cache: "no-store"</code>, <code>redirect: "error"</code> and <code>referrerPolicy: "no-referrer"</code>. Because redirects are an error, the token cannot follow a redirect to another host.</p>
         <div class="scroll"><table>
           <thead><tr><th>#</th><th>Request</th><th>Type</th><th>What the page reads</th></tr></thead>
@@ -343,10 +51,18 @@
           </tbody>
         </table></div>
         <p>After request 1 succeeds, requests 2 to 8 start at the same time. Requests 1 to 6 go to <code>https://api.lunchmoney.dev</code>. The page asks for <code>balance_history</code> only up to last month, because the current month can be in the future for the server in some time zones. For today, the page uses the amounts on the screen.</p>
-      </section>
-
-      <section class="card" id="accounts">
-        <h2><span class="num-badge">4</span>From accounts to rows</h2>
+      </div></details>
+<details class="article-topic" id="saved"><summary><h3>What the page saves</h3></summary><div class="topic-content">
+        <p>The page saves only your choices, in your browser's <code>localStorage</code>, under the key <code>lunchmoney-zakat-choices-v1</code>:</p>
+        <ul>
+          <li>the nisab metal (silver or gold) and the mortgage method</li>
+          <li>the 2 nisab weights</li>
+          <li>the gold purity and the silver purity</li>
+        </ul>
+        <p>It never saves amounts or your token. A reload or <strong>Start again</strong> removes all amounts. <strong>Clear my saved choices</strong> removes the saved choices and sets the defaults again.</p>
+      </div></details>
+</section>
+<section class="article-group" id="calculation"><h2>How the calculation works</h2><details class="article-topic" id="accounts"><summary><h3>From accounts to rows</h3></summary><div class="topic-content">
         <p class="sub">The function <code>kindOf()</code> puts each Lunch Money account in 1 group, from its type. The amount is <code>to_base</code>: the balance in your budget's currency, at the Lunch Money exchange rate.</p>
         <div class="scroll"><table>
           <thead><tr><th>Lunch Money type</th><th>Mizan group</th><th>Where it goes</th><th>Selected at the start</th></tr></thead>
@@ -355,7 +71,7 @@
             <tr><td>investment, brokerage, cryptocurrency</td><td>Investment</td><td>Section 2, accounts</td><td>Yes</td></tr>
             <tr><td>credit</td><td>Card</td><td>Section 4, debts</td><td>Yes, except a deactivated card</td></tr>
             <tr><td>loan, other liability</td><td>Loan</td><td>Section 4, debts</td><td>No. You type the part that is due now.</td></tr>
-            <tr><td>loan with "mortgage" in its subtype or name</td><td>Mortgage</td><td>A note under section 4</td><td>No row. You type the payment.</td></tr>
+            <tr><td>loan with "mortgage" in its subtype or name</td><td>Mortgage</td><td>A note under the debt list</td><td>No row. You type the payment.</td></tr>
             <tr><td>other asset, employee compensation</td><td>Other</td><td>Section 2, accounts</td><td>No</td></tr>
             <tr><td>real estate, vehicle, any other type</td><td>Skip</td><td>Not used</td><td>Not used</td></tr>
           </tbody>
@@ -370,23 +86,19 @@
           <li><strong>Other currencies:</strong> an account in a different currency gets a note that the amount is at the Lunch Money exchange rate.</li>
           <li><strong>Balances that are not current:</strong> a row gets the badge "not current" when its balance is more than 3 days old, or when its connection needs a relink or has an error.</li>
         </ul>
-      </section>
-
-      <section class="card" id="prices">
-        <h2><span class="num-badge">5</span>Gold and silver prices</h2>
+      </div></details>
+<details class="article-topic" id="prices"><summary><h3>Gold and silver prices</h3></summary><div class="topic-content">
         <p>The page asks <code>api.gold-api.com</code> for the price of 1 troy ounce of gold (<code>XAU</code>) and silver (<code>XAG</code>) in your budget's currency. It divides each price by <code>31.1034768</code>, the number of grams in 1 troy ounce, to get the price of 1 gram of pure metal.</p>
         <p>The page checks that both prices are more than 0 and in your currency. If a request fails, or the service does not have your currency, both price fields stay empty, and a warning asks you to type today's prices. You can always change the prices.</p>
-      </section>
-
-      <section class="card" id="formulas">
-        <h2><span class="num-badge">6</span>The formulas</h2>
+      </div></details>
+<details class="article-topic" id="formulas"><summary><h3>The formulas</h3></summary><div class="topic-content">
         <p class="sub">The function <code>totals()</code> reads the current input values each time you change something. Imported account amounts are rounded to 2 decimal places in their fields; gold prices to 3 and silver prices to 4. The calculation uses those values and formats the result as currency.</p>
-<div class="formula"><span class="c">assets</span>   = selected accounts in section 2
+<div class="formula"><span class="c">assets</span>   = selected account balances
          + cash at home + other crypto + money owed to you + other assets
          + gold grams  x (karat / 24) x gold price for 1 g
          + silver grams x purity      x silver price for 1 g
 
-<span class="c">debts</span>    = selected debts in section 4 + other debts due now
+<span class="c">debts</span>    = selected debts + other debts due now
 
 <span class="c">mortgage</span> = 0                          <span class="c">(do not deduct)</span>
          = payment                    <span class="c">(the next payment)</span>
@@ -398,8 +110,8 @@
 <span class="c">zakat</span>    = total x 2.5%   if total &gt; 0 and total &gt;= nisab
          = 0              if the complete total is below the nisab
          = incomplete     if a required price or nisab weight is missing</div>
-        <p>Fields for amounts that cannot be below 0 count as 0 when they are below 0. An account in section 2 can be below 0, for example an overdraft. The page calculates the same totals for all 6 methods (silver or gold nisab, with each of the 3 mortgage choices) and shows them side by side.</p>
-        <p>A method needs its nisab metal's price and weight. If you add gold or silver that you own in section 3, its price is also required, even when you choose the other metal for the nisab. Missing prices show <strong>Incomplete</strong>, rather than a zero zakat amount. The estimate assumes that your hawl is complete; the history table does not decide whether zakat is due.</p>
+        <p>Fields for amounts that cannot be below 0 count as 0 when they are below 0. An account in the account list can be below 0, for example an overdraft. The page calculates the same totals for all 6 methods (silver or gold nisab, with each of the 3 mortgage choices) and shows them side by side.</p>
+        <p>A method needs its nisab metal's price and weight. If you add gold or silver that you own under Add other assets, its price is also required, even when you choose the other metal for the nisab. Missing prices show <strong>Incomplete</strong>, rather than a zero zakat amount. The estimate assumes that your hawl is complete; the history table does not decide whether zakat is due.</p>
         <p>For a mortgage deduction, enter the deductible amount per payment under your chosen method. For the next 12 months, use the average deductible amount per payment and the number of payments. Mizan does not separate principal and interest for you.</p>
         <h3>Example: the sample data</h3>
         <div class="scroll"><table>
@@ -412,36 +124,22 @@
             <tr><td><strong>Zakat: 2.5% of 32,450.00</strong></td><td class="n"><strong>811.25</strong></td></tr>
           </tbody>
         </table></div>
-      </section>
-
-      <section class="card" id="hawl">
-        <h2><span class="num-badge">7</span>The hawl check</h2>
+      </div></details>
+<details class="article-topic" id="hawl"><summary><h3>The hawl check</h3></summary><div class="topic-content">
         <p class="sub">The hawl is a lunar year used in deciding when zakat is due. Scholars differ on how changes below the nisab affect it. This table provides month-end history for your review; it cannot confirm a complete hawl.</p>
         <ol>
           <li>The page makes 13 rows: the last 12 months and today.</li>
-          <li>For each past month, it adds the month-end balances of the selected accounts in section 2, and it subtracts the selected debts in section 4.</li>
-          <li>For today, it uses the amounts that you see in sections 2 and 4.</li>
+          <li>For each past month, it adds the month-end balances of the selected accounts in the account list, and it subtracts the selected debts in the debt list.</li>
+          <li>For today, it uses the amounts that you see in the account and debt lists.</li>
           <li>A past month with no balance for any selected account shows "No data", for example the months before you started to use Lunch Money. It does not count as below the nisab.</li>
           <li>A month with some selected balances missing shows a <strong>Partial</strong> label and a total of the balances available. It is not classified as above or below the nisab. Missing balances are unknown, including gaps for closed accounts.</li>
           <li>The page compares complete rows with today's nisab. It shows the lowest complete total, and lists complete rows that were below the nisab. A zero balance counts as data.</li>
         </ol>
-        <p>The table excludes section 3, other debts and the mortgage, including in today's row. Its totals can differ from your zakat estimate.</p>
+        <p>The table excludes the additional assets, other debts and the mortgage, including in today's row. Its totals can differ from your zakat estimate.</p>
         <div class="callout"><p>The page cannot see a drop below the nisab inside a month, because Lunch Money keeps 1 balance for each month. 12 calendar months are close to a lunar year (354 days) but not the same. The <a href="zakat-guide.html#hawl">Zakat guide</a> explains the hawl rules.</p></div>
-      </section>
-
-      <section class="card" id="saved">
-        <h2><span class="num-badge">8</span>What the page saves</h2>
-        <p>The page saves only your choices, in your browser's <code>localStorage</code>, under the key <code>lunchmoney-zakat-choices-v1</code>:</p>
-        <ul>
-          <li>the nisab metal (silver or gold) and the mortgage method</li>
-          <li>the 2 nisab weights</li>
-          <li>the gold purity and the silver purity</li>
-        </ul>
-        <p>It never saves amounts or your token. A reload or <strong>Start again</strong> removes all amounts. <strong>Clear my saved choices</strong> removes the saved choices and sets the defaults again.</p>
-      </section>
-
-      <section class="card" id="errors">
-        <h2><span class="num-badge">9</span>Errors and warnings</h2>
+      </div></details>
+</section>
+<section class="article-group" id="troubleshooting"><h2>Things to know</h2><details class="article-topic" id="errors"><summary><h3>Errors and warnings</h3></summary><div class="topic-content">
         <div class="scroll"><table>
           <thead><tr><th>Case</th><th>What you see</th></tr></thead>
           <tbody>
@@ -453,43 +151,50 @@
             <tr><td>No price in your currency</td><td>A warning. Type today's gold and silver prices.</td></tr>
           </tbody>
         </table></div>
-      </section>
-
-      <section class="card" id="limits">
-        <h2><span class="num-badge">10</span>Limits</h2>
+      </div></details>
+<details class="article-topic" id="limits"><summary><h3>Limits</h3></summary><div class="topic-content">
         <ul>
           <li>The rate is always 2.5% of the whole total. The page has no option for a solar year.</li>
           <li>Shares, funds and retirement accounts count at their full value. The page has no option to count only part of an investment, or to delay zakat on retirement money. You can change an amount or clear the box.</li>
-          <li>Jewellery has no separate option. If you add gold or silver in section 3, it counts at its weight, purity and price.</li>
-          <li>The hawl uses month-end balances and today's nisab. It does not use past prices, and it does not include section 3, the other debts or the mortgage.</li>
+          <li>Jewellery has no separate option. If you add gold or silver under Add other assets, it counts at its weight, purity and price.</li>
+          <li>The hawl uses month-end balances and today's nisab. It does not use past prices, and it does not include the additional assets, the other debts or the mortgage.</li>
           <li>The page reads only the budget of your token.</li>
           <li>The page does not pay zakat or keep a record of it.</li>
           <li>Mizan gives an estimate. Ask your imam or a zakat scholar to confirm the method that you follow.</li>
         </ul>
-      </section>
-    </div>
-  </div>
-</main>
-
-<footer class="foot">
-  <div class="wrap foot-inner">
-    <div class="foot-brand">
-      <svg class="mark" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
-        <path class="mk-star" d="M24 2.6 25.05 3.65 26.55 3.65 26.55 5.15 27.6 6.2 26.55 7.25 26.55 8.75 25.05 8.75 24 9.8 22.95 8.75 21.45 8.75 21.45 7.25 20.4 6.2 21.45 5.15 21.45 3.65 22.95 3.65Z"/>
-        <path class="mk-line" d="M24 10v29.5"/><rect class="mk-fill" x="15" y="39.2" width="18" height="4.4" rx="2.2"/>
-        <path class="mk-line" d="M7.5 15.5h33"/><path class="mk-thin" d="M7.5 15.5 2.8 29M7.5 15.5l4.7 13.5M40.5 15.5l-4.7 13.5M40.5 15.5l4.7 13.5"/>
-        <circle class="mk-gold" cx="7.5" cy="25.2" r="3.7"/><circle class="mk-silver" cx="40.5" cy="25.2" r="3.7"/>
-        <path class="mk-fill" d="M1.8 29h11.4a5.7 4.6 0 0 1-11.4 0Z"/><path class="mk-fill" d="M34.8 29h11.4a5.7 4.6 0 0 1-11.4 0Z"/>
-        <circle class="mk-fill" cx="24" cy="15.5" r="2.7"/>
-      </svg>
-      <p><span class="foot-name">Mizan</span><span class="foot-maker">Made by Mazin Kanuga</span></p>
-    </div>
-    <div class="foot-text">
-      <p class="disclaim">A community project. Lunch Money did not make it and does not support it.</p>
-      <p><a href="./">Calculator</a> · <a href="how-it-works.html">How it works</a> · <a href="zakat-guide.html">Zakat guide</a> · <a href="https://github.com/TechnoDudeX/lunchmoney-zakat" rel="noreferrer">Source code</a></p>
-      <p>Mizan means balance in Arabic. The name has the same letters as Mazin.</p>
-    </div>
-  </div>
-</footer>
-</body>
-</html>
+      </div></details>
+</section>
+<section class="article-group" id="security"><h2>For a closer look</h2><details class="article-topic" id="headers"><summary><h3>Security headers</h3></summary><div class="topic-content">
+        <p>The page sets this Content Security Policy in a meta tag, and Netlify sends it again as a header:</p>
+        <div class="scroll"><table>
+          <thead><tr><th>Rule</th><th>Effect</th></tr></thead>
+          <tbody>
+            <tr><td><code>default-src 'none'</code></td><td>The page can load nothing that the policy does not name.</td></tr>
+            <tr><td><code>connect-src</code></td><td>The script can connect only to <code>https://api.lunchmoney.dev</code> and <code>https://api.gold-api.com</code>.</td></tr>
+            <tr><td><code>script-src 'unsafe-inline'</code></td><td>Inline JavaScript is allowed, including inline event handlers. External script files are blocked, including files from this site. This policy does not distinguish Mizan's script from any other injected inline script.</td></tr>
+            <tr><td><code>style-src 'self' 'unsafe-inline'</code></td><td>The shared stylesheet comes from this site. Inline styles are allowed for the balance-history bars.</td></tr>
+            <tr><td><code>font-src 'self'</code></td><td>Fonts come only from the site of the page.</td></tr>
+            <tr><td><code>img-src data:</code></td><td>All images are inside the page. The page loads no image files.</td></tr>
+            <tr><td><code>frame-ancestors 'none'</code></td><td>Other websites cannot show the page in a frame. This rule comes only from the Netlify header.</td></tr>
+          </tbody>
+        </table></div>
+        <p>Netlify also sends <code>Referrer-Policy: no-referrer</code>, <code>X-Content-Type-Options: nosniff</code>, <code>X-Frame-Options: DENY</code> and a <code>Permissions-Policy</code> that turns off the camera, the microphone, location and payment.</p>
+      </div></details></section></div></div></main><footer class="foot"><div class="wrap foot-inner">
+  <div><p>Made by Mazin Kanuga.</p><p>An independent community project for Lunch Money.</p></div>
+  <nav aria-label="Footer"><a href="how-it-works.html">How it works &amp; privacy</a><a href="https://github.com/TechnoDudeX/lunchmoney-zakat" rel="noreferrer">Source code</a><a href="https://gold-api.com" rel="noreferrer">Metal prices</a></nav>
+</div></footer>
+<script>(function () {
+  function revealAnchor() {
+    var id;
+    try { id = decodeURIComponent(location.hash.slice(1)); } catch (e) { return; }
+    var target = document.getElementById(id);
+    if (!target) return;
+    var topic = target.closest('details');
+    if (topic) topic.open = true;
+    target.scrollIntoView();
+  }
+  window.addEventListener('hashchange', revealAnchor);
+  window.addEventListener('pageshow', function () { requestAnimationFrame(revealAnchor); });
+  revealAnchor();
+})();</script>
+</body></html>

@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- This page has no script and loads nothing except the 2 fonts from this site. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; font-src 'self'; img-src data:; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="author" content="Mazin Kanuga">
+<meta name="description" content="How zakat on wealth is calculated: the rate, the nisab, the hawl, what counts, debts, jewellery and retirement accounts, with sources and the views of scholars.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#F7FAF9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121A19" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23FBB700' d='M24 2.6 25.05 3.65 26.55 3.65 26.55 5.15 27.6 6.2 26.55 7.25 26.55 8.75 25.05 8.75 24 9.8 22.95 8.75 21.45 8.75 21.45 7.25 20.4 6.2 21.45 5.15 21.45 3.65 22.95 3.65Z'/%3E%3Cg stroke='%232C6A64' stroke-linecap='round' fill='none'%3E%3Cpath stroke-width='3' d='M24 10v29M7.5 15.5h33'/%3E%3Cpath stroke-width='1.5' d='M7.5 15.5 2.8 29M7.5 15.5l4.7 13.5M40.5 15.5l-4.7 13.5M40.5 15.5l4.7 13.5'/%3E%3C/g%3E%3Ccircle cx='7.5' cy='25.2' r='3.7' fill='%23FBB700'/%3E%3Ccircle cx='40.5' cy='25.2' r='3.7' fill='%23C9D3D1' stroke='%237F8E8B'/%3E%3Cg fill='%232C6A64'%3E%3Cpath d='M1.8 29h11.4a5.7 4.6 0 0 1-11.4 0Z'/%3E%3Cpath d='M34.8 29h11.4a5.7 4.6 0 0 1-11.4 0Z'/%3E%3Crect x='15' y='39.2' width='18' height='4.4' rx='2.2'/%3E%3Ccircle cx='24' cy='15.5' r='2.8'/%3E%3C/g%3E%3C/svg%3E">
+<title>Zakat guide: how zakat is calculated | Mizan</title>
+<style>
+  @font-face {
+    font-family: "Mizan Sans"; font-style: normal; font-weight: 400 800; font-display: swap;
+    src: url("fonts/nunito-sans.woff2") format("woff2");
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: "Mizan Mono"; font-style: normal; font-weight: 400 600; font-display: swap;
+    src: url("fonts/red-hat-mono.woff2") format("woff2");
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  :root {
+    --font: "Avenir Next", Avenir, "Mizan Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --mono: "Mizan Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    --bg: #F7FAF9; --card: #FFFFFF; --panel: #EEF4F3; --line: #E2E8E6; --rule: #EAEEED;
+    --ink: #343434; --text: #444444; --muted: #5F6664;
+    --teal: #44958C; --link: #2B6E66; --deep: #2C6A64; --on-deep: #FFFFFF;
+    --sun: #FBB700; --sun-soft: #FFF3CF; --sun-edge: #F2D27A; --sun-ink: #6B4C00; --sun-line: #9A6A00;
+    --bad: #B3261E; --bad-soft: #FDECEA;
+    --mark: #2C6A64; --silver: #C9D3D1; --silver-edge: #7F8E8B; --gold-edge: #B07D00;
+    --focus: #2C6A64; --halo: rgba(251, 183, 0, .38);
+    --shadow: 0 1px 2px rgba(31, 61, 57, .05), 0 6px 18px rgba(31, 61, 57, .07);
+    --pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='%23DCE7E4'%3E%3Cpath d='M14 8 15.76 9.76 18.24 9.76 18.24 12.24 20 14 18.24 15.76 18.24 18.24 15.76 18.24 14 20 12.24 18.24 9.76 18.24 9.76 15.76 8 14 9.76 12.24 9.76 9.76 12.24 9.76Z'/%3E%3Cpath d='M42 38 43.17 39.17 44.83 39.17 44.83 40.83 46 42 44.83 43.17 44.83 44.83 43.17 44.83 42 46 40.83 44.83 39.17 44.83 39.17 43.17 38 42 39.17 40.83 39.17 39.17 40.83 39.17Z'/%3E%3C/g%3E%3Cg fill='%23D3E0DC'%3E%3Ccircle cx='42' cy='14' r='1.7'/%3E%3Ccircle cx='14' cy='42' r='1.7'/%3E%3C/g%3E%3C/svg%3E");
+    --i-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath fill-rule='evenodd' d='M10 0a10 10 0 1 1 0 20a10 10 0 0 1 0-20Zm4.65 6.25a1.05 1.05 0 0 0-1.48.12l-4.4 5.25-2.1-2.02a1.05 1.05 0 1 0-1.46 1.52l2.92 2.8a1.05 1.05 0 0 0 1.53-.08l5.12-6.11a1.05 1.05 0 0 0-.13-1.48Z'/%3E%3C/svg%3E");
+    --i-info: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath fill-rule='evenodd' d='M10 0a10 10 0 1 1 0 20a10 10 0 0 1 0-20Zm0 4.4a1.3 1.3 0 0 0-1.3 1.3v4.8a1.3 1.3 0 0 0 2.6 0V5.7A1.3 1.3 0 0 0 10 4.4Zm0 8.9a1.45 1.45 0 1 0 0 2.9a1.45 1.45 0 0 0 0-2.9Z'/%3E%3C/svg%3E");
+    --i-star: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M8 .5 10.2 2.7 13.3 2.7 13.3 5.8 15.5 8 13.3 10.2 13.3 13.3 10.2 13.3 8 15.5 5.8 13.3 2.7 13.3 2.7 10.2 .5 8 2.7 5.8 2.7 2.7 5.8 2.7Z'/%3E%3C/svg%3E");
+    --i-swash: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 16' preserveAspectRatio='none'%3E%3Cpath d='M4 11C48 5.5 118 3.6 196 7.2' fill='none' stroke='black' stroke-width='8' stroke-linecap='round'/%3E%3C/svg%3E");
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #121A19; --card: #1A2423; --panel: #20302E; --line: #2C3B39; --rule: #263331;
+      --ink: #F2F4F3; --text: #DDE3E1; --muted: #A3AFAC;
+      --teal: #68CBBA; --link: #7DD3C4; --deep: #68CBBA; --on-deep: #0E2B27;
+      --sun-soft: #3A2F12; --sun-edge: #5C4A16; --sun-ink: #F7CF6A; --sun-line: #F0C04A;
+      --bad: #FF8A80; --bad-soft: #3B1F1C;
+      --mark: #68CBBA; --silver: #C9D3D1; --silver-edge: #93A29F; --gold-edge: #FFD45C;
+      --focus: #7DD3C4; --halo: rgba(251, 183, 0, .30);
+      --shadow: 0 1px 2px rgba(0, 0, 0, .25), 0 8px 22px rgba(0, 0, 0, .25);
+      --pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='%23243331'%3E%3Cpath d='M14 8 15.76 9.76 18.24 9.76 18.24 12.24 20 14 18.24 15.76 18.24 18.24 15.76 18.24 14 20 12.24 18.24 9.76 18.24 9.76 15.76 8 14 9.76 12.24 9.76 9.76 12.24 9.76Z'/%3E%3Cpath d='M42 38 43.17 39.17 44.83 39.17 44.83 40.83 46 42 44.83 43.17 44.83 44.83 43.17 44.83 42 46 40.83 44.83 39.17 44.83 39.17 43.17 38 42 39.17 40.83 39.17 39.17 40.83 39.17Z'/%3E%3C/g%3E%3Cg fill='%232A3A38'%3E%3Ccircle cx='42' cy='14' r='1.7'/%3E%3Ccircle cx='14' cy='42' r='1.7'/%3E%3C/g%3E%3C/svg%3E");
+    }
+  }
+
+  /* ---------- Base (the same as the calculator) ---------- */
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; scroll-padding-top: 16px; }
+  body { margin: 0; position: relative; background: var(--bg); color: var(--text); font: 16px/1.6 var(--font); overflow-x: hidden; }
+  body::before { content: ""; position: absolute; z-index: -1; inset: 0 0 auto 0; height: 620px; pointer-events: none;
+                 background: var(--pattern) center top / 56px 56px;
+                 -webkit-mask-image: linear-gradient(#000 0, rgba(0,0,0,.85) 40%, transparent 100%);
+                 mask-image: linear-gradient(#000 0, rgba(0,0,0,.85) 40%, transparent 100%); }
+  h1, h2, h3 { color: var(--ink); font-weight: 600; line-height: 1.2; }
+  a { color: var(--link); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  a:hover { text-decoration-thickness: 2px; }
+  strong, b { color: var(--ink); font-weight: 700; }
+  code { font-family: var(--mono); font-size: .88em; background: var(--panel); border: 1px solid var(--line); border-radius: 4px; padding: .05em .35em; overflow-wrap: anywhere; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; box-shadow: 0 0 0 6px var(--halo); }
+
+  /* ---------- Header and navigation ---------- */
+  .top { padding: 18px 0 6px; }
+  .top-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 20px; }
+  .brand { display: flex; align-items: center; gap: 12px; min-width: 0; color: inherit; text-decoration: none; }
+  .brand-name { display: block; font-size: 26px; font-weight: 700; color: var(--ink); line-height: 1.05; letter-spacing: -.01em; }
+  .brand .tagline { display: block; font-size: 14px; font-weight: 600; color: var(--muted); margin-top: 3px; }
+  .mark { width: 46px; height: 46px; flex: none; overflow: visible; }
+  .mk-line { fill: none; stroke: var(--mark); stroke-width: 2.6; stroke-linecap: round; }
+  .mk-thin { fill: none; stroke: var(--mark); stroke-width: 1.3; stroke-linecap: round; }
+  .mk-fill { fill: var(--mark); }
+  .mk-star { fill: var(--sun); }
+  .mk-gold { fill: var(--sun); stroke: var(--gold-edge); stroke-width: .9; }
+  .mk-silver { fill: var(--silver); stroke: var(--silver-edge); stroke-width: .9; }
+  .mk-ring-g { fill: none; stroke: var(--gold-edge); stroke-width: .8; }
+  .mk-ring-s { fill: none; stroke: var(--silver-edge); stroke-width: .8; }
+  .nav { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; font-size: 15px; }
+  .nav a { font-weight: 600; text-decoration: none; padding: 4px 0; border-bottom: 2px solid transparent; }
+  .nav a:hover { border-bottom-color: var(--sun); }
+  .nav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--sun); }
+  .maker { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px 6px 10px; border-radius: 999px;
+           background: var(--card); border: 1px solid var(--line); color: var(--ink); font-weight: 600; }
+  .maker::before { content: ""; width: 14px; height: 14px; background: var(--sun); -webkit-mask: var(--i-star) center / contain no-repeat; mask: var(--i-star) center / contain no-repeat; }
+
+  /* ---------- Page heading ---------- */
+  .page-head { padding: 40px 0 8px; max-width: 760px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 16px; padding: 5px 14px 5px 10px; border-radius: 999px;
+          background: var(--panel); border: 1px solid var(--line); color: var(--link); font-size: 14px; font-weight: 700; }
+  .pill::before { content: ""; width: 14px; height: 14px; background: var(--sun); -webkit-mask: var(--i-star) center / contain no-repeat; mask: var(--i-star) center / contain no-repeat; }
+  .page-head h1 { font-size: clamp(32px, 5vw, 48px); line-height: 1.12; letter-spacing: -.015em; margin: 0 0 16px; }
+  .hl { position: relative; z-index: 0; white-space: nowrap; }
+  .hl::after { content: ""; position: absolute; z-index: -1; left: -.08em; right: -.1em; bottom: -.04em; height: .34em;
+               background: var(--sun); -webkit-mask: var(--i-swash) center / 100% 100% no-repeat; mask: var(--i-swash) center / 100% 100% no-repeat; }
+  .lead { font-size: 19px; line-height: 1.55; margin: 0; color: var(--text); }
+  .page-head .callout { margin-top: 18px; }
+
+  /* ---------- Layout: contents and article ---------- */
+  .layout { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 32px; align-items: start; margin-top: 24px; }
+  .toc { position: sticky; top: 16px; font-size: 14.5px; }
+  .toc .card-title { text-align: left; margin-bottom: 10px; }
+  .toc ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; counter-reset: toc; }
+  .toc li { counter-increment: toc; }
+  .toc a { display: flex; gap: 8px; padding: 5px 8px; border-radius: 6px; text-decoration: none; color: var(--text); font-weight: 600; }
+  .toc a::before { content: counter(toc); min-width: 1.4em; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .toc a:hover { background: var(--panel); color: var(--ink); }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 26px 28px; margin: 0 0 18px; box-shadow: var(--shadow); min-width: 0; }
+  .card-title { text-align: center; text-transform: uppercase; letter-spacing: .09em; font-size: 13px; font-weight: 700; color: var(--muted); margin: 0 0 16px; }
+  .doc h2 { font-size: 23px; margin: 0 0 6px; display: flex; align-items: center; gap: 12px; scroll-margin-top: 16px; }
+  .num-badge { flex: none; width: 32px; height: 32px; border-radius: 50%; background: var(--sun); color: #343434; font-size: 15px; font-weight: 800;
+               display: inline-flex; align-items: center; justify-content: center; }
+  .doc h3 { font-size: 17px; margin: 22px 0 6px; }
+  .doc p, .doc li { max-width: 46em; }
+  .doc p { margin: 10px 0; }
+  .doc ul, .doc ol { padding-left: 22px; margin: 10px 0; }
+  .doc li { margin: 5px 0; }
+  .sub { color: var(--muted); margin: 0 0 12px; }
+  .checks { list-style: none; padding: 0 !important; display: grid; gap: 10px; }
+  .checks li { position: relative; padding-left: 32px; margin: 0; }
+  .checks li::before { content: ""; position: absolute; left: 0; top: 2px; width: 21px; height: 21px; background: var(--teal);
+                       -webkit-mask: var(--i-check) center / contain no-repeat; mask: var(--i-check) center / contain no-repeat; }
+  .callout { display: flex; gap: 12px; align-items: flex-start; margin: 14px 0; padding: 12px 16px; border-radius: 8px; background: var(--sun-soft);
+             border: 1px solid var(--sun-edge); color: var(--sun-ink); }
+  .callout::before { content: ""; flex: none; width: 19px; height: 19px; margin-top: 3px; background: var(--sun-line);
+                     -webkit-mask: var(--i-info) center / contain no-repeat; mask: var(--i-info) center / contain no-repeat; }
+  .callout p { margin: 0; color: inherit; }
+  .callout strong { color: inherit; }
+
+  /* ---------- Tables ---------- */
+  .scroll { overflow-x: auto; margin: 12px 0; border: 1px solid var(--line); border-radius: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 15px; font-variant-numeric: tabular-nums; }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  thead th { background: var(--panel); color: var(--muted); font-size: 12.5px; text-transform: uppercase; letter-spacing: .06em; font-weight: 700; white-space: nowrap; }
+  tbody tr:last-child td { border-bottom: 0; }
+  td.n { text-align: right; white-space: nowrap; font-family: var(--mono); }
+  .tag { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 12.5px; font-weight: 700; white-space: nowrap; background: var(--panel); color: var(--link); border: 1px solid var(--line); }
+  .tag.opt { background: var(--sun-soft); color: var(--sun-ink); border-color: var(--sun-edge); }
+
+  /* ---------- Formula block ---------- */
+  .formula { margin: 14px 0; padding: 16px 18px; border-radius: 8px; background: var(--panel); border: 1px solid var(--line);
+             font-family: var(--mono); font-size: 14.5px; line-height: 1.75; overflow-x: auto; white-space: pre; color: var(--ink); }
+  .formula .c { color: var(--muted); }
+
+  /* ---------- Data flow diagram (HTML, so that it can wrap on small screens) ---------- */
+  .flow { display: grid; grid-template-columns: minmax(0, 1fr) 56px minmax(0, 1.15fr) 56px minmax(0, 1fr); align-items: center; margin: 18px 0 6px; }
+  .node { border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; background: var(--card); box-shadow: var(--shadow); font-size: 14.5px; line-height: 1.5; }
+  .node h3 { margin: 0 0 4px; font-size: 15.5px; }
+  .node p { margin: 0; }
+  .node.center { border: 2px solid var(--deep); background: var(--panel); }
+  .node.no { border-style: dashed; box-shadow: none; background: transparent; color: var(--muted); }
+  .node .host { font-family: var(--mono); font-size: 13px; color: var(--link); font-weight: 600; overflow-wrap: anywhere; }
+  .stack { display: grid; gap: 14px; }
+  .arrow { position: relative; height: 2px; background: var(--teal); margin: 0 6px; }
+  .arrow::after { content: ""; position: absolute; right: -2px; top: -5px; border: 6px solid transparent; border-left: 8px solid var(--teal); border-right: 0; }
+  .arrow.both::before { content: ""; position: absolute; left: -2px; top: -5px; border: 6px solid transparent; border-right: 8px solid var(--teal); border-left: 0; }
+  .arrow.left::after { right: auto; left: -2px; border-left: 0; border-right: 8px solid var(--teal); }
+  .flow-caption { font-size: 14px; color: var(--muted); margin: 8px 0 0; }
+
+  /* ---------- Footer ---------- */
+  .foot { position: relative; margin-top: 40px; padding: 34px 0 40px; background: var(--panel); border-top: 1px solid var(--line); overflow: hidden; isolation: isolate; }
+  .foot::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--pattern) center / 56px 56px; opacity: .8;
+                  -webkit-mask-image: linear-gradient(to top, #000, transparent); mask-image: linear-gradient(to top, #000, transparent); }
+  .foot-inner { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 18px 36px; align-items: start; }
+  .foot-brand { display: flex; align-items: center; gap: 12px; }
+  .foot-brand .mark { width: 40px; height: 40px; }
+  .foot-brand p { margin: 0; line-height: 1.35; font-size: 15px; }
+  .foot-name { display: block; font-size: 20px; font-weight: 700; color: var(--ink); }
+  .foot-maker { font-weight: 600; color: var(--ink); }
+  .foot-text p { margin: 0 0 6px; font-size: 15px; }
+  .foot-text .disclaim { font-weight: 700; color: var(--ink); }
+
+  /* ---------- Small screens ---------- */
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+    .toc { position: static; }
+    .toc ol { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+    .flow { grid-template-columns: minmax(0, 1fr); gap: 0; }
+    .arrow { width: 2px; height: 30px; margin: 6px auto; }
+    .arrow::after { right: auto; left: -5px; top: auto; bottom: -2px; border: 6px solid transparent; border-top: 8px solid var(--teal); border-bottom: 0; }
+    .arrow.both::before { left: -5px; top: -2px; border: 6px solid transparent; border-bottom: 8px solid var(--teal); border-top: 0; }
+    .arrow.left::after { left: -5px; top: -2px; bottom: auto; border: 6px solid transparent; border-bottom: 8px solid var(--teal); border-top: 0; }
+  }
+  @media (max-width: 620px) {
+    body { font-size: 15.5px; }
+    .card { padding: 20px 16px; }
+    .brand-name { font-size: 24px; }
+    .mark { width: 40px; height: 40px; }
+    .lead { font-size: 17.5px; }
+    .doc h2 { font-size: 20px; }
+    .foot-inner { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap top-inner">
+    <a class="brand" href="./" aria-label="Mizan, the calculator">
+      <svg class="mark" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+        <path class="mk-star" d="M24 2.6 25.05 3.65 26.55 3.65 26.55 5.15 27.6 6.2 26.55 7.25 26.55 8.75 25.05 8.75 24 9.8 22.95 8.75 21.45 8.75 21.45 7.25 20.4 6.2 21.45 5.15 21.45 3.65 22.95 3.65Z"/>
+        <path class="mk-line" d="M24 10v29.5"/>
+        <rect class="mk-fill" x="15" y="39.2" width="18" height="4.4" rx="2.2"/>
+        <path class="mk-line" d="M7.5 15.5h33"/>
+        <path class="mk-thin" d="M7.5 15.5 2.8 29M7.5 15.5l4.7 13.5M40.5 15.5l-4.7 13.5M40.5 15.5l4.7 13.5"/>
+        <circle class="mk-gold" cx="7.5" cy="25.2" r="3.7"/><circle class="mk-ring-g" cx="7.5" cy="25.2" r="2.1"/>
+        <circle class="mk-silver" cx="40.5" cy="25.2" r="3.7"/><circle class="mk-ring-s" cx="40.5" cy="25.2" r="2.1"/>
+        <path class="mk-fill" d="M1.8 29h11.4a5.7 4.6 0 0 1-11.4 0Z"/><path class="mk-fill" d="M34.8 29h11.4a5.7 4.6 0 0 1-11.4 0Z"/>
+        <circle class="mk-fill" cx="24" cy="15.5" r="2.7"/>
+      </svg>
+      <span><span class="brand-name">Mizan</span><span class="tagline">Zakat calculator for Lunch Money</span></span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="./">Calculator</a>
+      <a href="how-it-works.html">How it works</a>
+      <a href="zakat-guide.html" aria-current="page">Zakat guide</a>
+      <span class="maker">Made by Mazin Kanuga</span>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="page-head">
+    <p class="pill">Zakat guide</p>
+    <h1>How <span class="hl">zakat</span> is calculated</h1>
+    <p class="lead">This guide explains the common rules for zakat on wealth, and the main views where scholars do not agree. Each point has its sources. The guide also tells you how Mizan applies each rule.</p>
+    <div class="callout"><p><strong>This guide is not a fatwa.</strong> It explains common rules and views. For your own case, ask your imam or a zakat scholar, and follow the method that they give you.</p></div>
+  </div>
+
+  <div class="layout">
+    <nav class="toc card" aria-label="On this page">
+      <p class="card-title">On this page</p>
+      <ol>
+        <li><a href="#steps">The 4 steps</a></li>
+        <li><a href="#what">What zakat is</a></li>
+        <li><a href="#rate">The rate</a></li>
+        <li><a href="#nisab">The nisab</a></li>
+        <li><a href="#which-nisab">Gold or silver nisab</a></li>
+        <li><a href="#hawl">The hawl</a></li>
+        <li><a href="#counts">What counts</a></li>
+        <li><a href="#exempt">What does not count</a></li>
+        <li><a href="#jewellery">Jewellery</a></li>
+        <li><a href="#retirement">Retirement accounts</a></li>
+        <li><a href="#debts">Debts and the mortgage</a></li>
+        <li><a href="#family">Family members</a></li>
+        <li><a href="#who">Who receives zakat, and when</a></li>
+        <li><a href="#mizan">How Mizan applies this</a></li>
+        <li><a href="#sources">Sources</a></li>
+      </ol>
+    </nav>
+
+    <div class="doc">
+      <section class="card" id="steps">
+        <h2><span class="num-badge">1</span>The 4 steps</h2>
+        <p class="sub">Do these steps on your zakat date.</p>
+        <ol>
+          <li><strong>Add</strong> the value of all your zakatable wealth: cash, savings, gold, silver, investments, trade goods and money that people owe you.</li>
+          <li><strong>Subtract</strong> the debts that you can deduct.</li>
+          <li><strong>Compare</strong> the result with the nisab.</li>
+          <li><strong>Check your hawl, then pay 2.5%</strong> of the whole result if it is at or above the nisab and the relevant lunar year has passed. If it is below the nisab, no zakat is due on this calculation.</li>
+        </ol>
+        <div class="scroll"><table>
+          <thead><tr><th>Example</th><th>Amount</th></tr></thead>
+          <tbody>
+            <tr><td>Zakatable wealth after debts</td><td class="n">$10,000.00</td></tr>
+            <tr><td>Silver nisab (595 g at about $2.43 a gram)</td><td class="n">about $1,446</td></tr>
+            <tr><td>The wealth is above the nisab, so zakat is 2.5% of $10,000</td><td class="n"><strong>$250.00</strong></td></tr>
+          </tbody>
+        </table></div>
+        <p>You pay 2.5% of the whole amount, not only of the part above the nisab.</p>
+      </section>
+
+      <section class="card" id="what">
+        <h2><span class="num-badge">2</span>What zakat is</h2>
+        <p>Zakat is one of the 5 pillars of Islam (<a href="https://sunnah.com/bukhari:8" rel="noreferrer">Bukhari 8</a>). The Quran orders it together with prayer (<a href="https://quran.com/2/43" rel="noreferrer">2:43</a>), and says that it purifies the giver (<a href="https://quran.com/9/103" rel="noreferrer">9:103</a>).</p>
+        <p>For the kinds of wealth covered here, zakat depends on Muslim ownership, the nisab and a lunar year. Ownership and access also matter, especially for retirement accounts.</p>
+        <h3>Where scholars differ</h3>
+        <ul>
+          <li><strong>Age and mental capacity:</strong> these are conditions in the Hanafi school for zakat on wealth of the kind covered here. Other schools require a guardian to pay from the qualifying wealth of a child or a person who cannot manage it. <a href="https://www.nzfcanada.com/zakat-faq/when-do-i-have-to-pay-zakat" rel="noreferrer">NZF Canada follows the guardian-payment view</a>.</li>
+        </ul>
+      </section>
+
+      <section class="card" id="rate">
+        <h2><span class="num-badge">3</span>The rate: 2.5%</h2>
+        <p>The rate on cash, gold, silver and trade goods is 2.5%, which is 1/40 of the wealth. The hadith give the examples of 5 dirhams on 200 dirhams, and half a dinar on 20 dinars (<a href="https://sunnah.com/abudawud:1573" rel="noreferrer">Abu Dawud 1573</a>, <a href="https://sunnah.com/bukhari:1454" rel="noreferrer">Bukhari 1454</a>).</p>
+        <p>The rate is for 1 lunar year. For a solar year, <a href="https://nzf.org.uk/knowledge/can-a-solar-year-be-used-for-zakat-calculation/" rel="noreferrer">NZF UK reports an AAOIFI rate of 2.577%</a>, while recommending the lunar calendar. Mizan always uses 2.5%; it does not adjust the rate for a solar year.</p>
+      </section>
+
+      <section class="card" id="nisab">
+        <h2><span class="num-badge">4</span>The nisab</h2>
+        <p>The nisab is the minimum wealth that makes zakat necessary. The hadith set it at 20 dinars of gold and 200 dirhams (5 awaq) of silver (<a href="https://sunnah.com/abudawud:1573" rel="noreferrer">Abu Dawud 1573</a>, <a href="https://sunnah.com/bukhari:1447" rel="noreferrer">Bukhari 1447</a>). Scholars change these old units to grams of pure metal:</p>
+        <div class="scroll"><table>
+          <thead><tr><th>Gold</th><th>Silver</th><th>Example source</th></tr></thead>
+          <tbody>
+            <tr><td class="n">85 g</td><td class="n">595 g</td><td><a href="https://www.nzfcanada.com/zakat-faq/when-do-i-have-to-pay-zakat" rel="noreferrer">NZF Canada</a></td></tr>
+            <tr><td class="n">87.48 g</td><td class="n">612.36 g</td><td><a href="https://www.islamicreliefcanada.org/giving/islamic-giving/zakat/nisab" rel="noreferrer">Islamic Relief Canada</a></td></tr>
+          </tbody>
+        </table></div>
+        <p>To get the nisab in your currency, multiply the grams by today's price for 1 gram of pure metal. Mizan uses 85 g and 595 g, and you can change both weights.</p>
+      </section>
+
+      <section class="card" id="which-nisab">
+        <h2><span class="num-badge">5</span>Gold nisab or silver nisab</h2>
+        <p>Authorities differ on which metal's value to use for cash. The prices of gold and silver change independently, so the choice can change whether your wealth reaches the threshold.</p>
+        <div class="scroll"><table>
+          <thead><tr><th>View</th><th>Held by</th></tr></thead>
+          <tbody>
+            <tr><td>Use silver for cash and mixed wealth. Islamic Relief Canada uses gold when the wealth consists only of gold.</td><td><a href="https://www.islamicreliefcanada.org/giving/islamic-giving/zakat/nisab" rel="noreferrer">Islamic Relief Canada</a>; NZF Canada also uses silver.</td></tr>
+            <tr><td>Use the value of 85 g of gold for cash.</td><td><a href="https://www.awqaf.gov.ae/assets/servicesguide/ServicesGuide-EN.pdf" rel="noreferrer">UAE Awqaf service guide</a>, Zakat calculation FAQs.</td></tr>
+          </tbody>
+        </table></div>
+        <p>Mizan starts with the silver nisab. You can choose gold in section 1 of the calculator, and the table "All methods" shows both.</p>
+      </section>
+
+      <section class="card" id="hawl">
+        <h2><span class="num-badge">6</span>The hawl: 1 lunar year</h2>
+        <p>Zakat on cash, gold, silver and trade goods is due after 1 lunar year (hawl) of ownership (<a href="https://sunnah.com/abudawud:1573" rel="noreferrer">Abu Dawud 1573</a>). A lunar year is 354 or 355 days. Your hawl starts on the date that your wealth first gets to the nisab, and that date becomes your zakat date each year. Profit and growth from your wealth join the hawl of that wealth.</p>
+        <h3>Where scholars differ</h3>
+        <div class="scroll"><table>
+          <thead><tr><th>Question</th><th>View</th><th>Held by</th></tr></thead>
+          <tbody>
+            <tr><td rowspan="2">Your wealth goes below the nisab during the year</td><td>Intermediate fluctuations do not reset the year unless net wealth falls to zero or below. The nisab must be met at the anniversary.</td><td>The Hanafi view, as explained by <a href="https://nzf.org.uk/knowledge/is-it-necessary-to-own-zakatable-assets-above-the-nisab-threshold-for-the-entire-year/" rel="noreferrer">NZF UK</a></td></tr>
+            <tr><td>Wealth must remain at or above the nisab throughout the year.</td><td>The Shafi'i and Hanbali views, as explained by NZF UK in the same source.</td></tr>
+          </tbody>
+        </table></div>
+        <p>Ask your scholar how new money, such as salary or gifts, joins your zakat year. Mizan's table provides 12 month-end snapshots and today for selected Lunch Money accounts. It excludes manually added assets, other debts and the mortgage, uses today's nisab, and leaves incomplete rows unclassified. It cannot detect changes within a month or confirm your hawl.</p>
+      </section>
+
+      <section class="card" id="counts">
+        <h2><span class="num-badge">7</span>What counts</h2>
+        <div class="scroll"><table>
+          <thead><tr><th>Wealth</th><th>The common rule</th></tr></thead>
+          <tbody>
+            <tr><td>Cash at home, bank accounts and savings</td><td>Count all of it.</td></tr>
+            <tr><td>Gold and silver bars and coins</td><td>Count their value on your zakat date.</td></tr>
+            <tr><td>Trade goods and business stock</td><td>Count their value on your zakat date.</td></tr>
+            <tr><td>Money that people owe you</td><td><a href="https://nzf.org.uk/knowledge/debts-owed-to-you/" rel="noreferrer">NZF UK includes debts expected to be repaid on time</a>, and defers uncertain repayments until received. Ask how to treat earlier years when a delayed debt is recovered.</td></tr>
+            <tr><td>Shares that you hold to sell</td><td>Count the full market value.</td></tr>
+            <tr><td>Shares and funds that you hold for a long time</td><td><a href="https://nzf.org.uk/knowledge/zakat-on-stocks-and-shares/" rel="noreferrer">NZF UK counts your share of the company's zakatable assets</a>, using 25% of market value as a proxy when you cannot determine that share. This is one method, not a universal rule. Mizan starts with the full balance; edit the amount to follow your method.</td></tr>
+            <tr><td>Crypto held as an investment</td><td>Mizan includes its value in your budget currency. <a href="https://nzf.org.uk/wp-content/uploads/2021/03/NZF_Calculating-missed-Zakat_A5_P_2021_V1.1.pdf" rel="noreferrer">NZF UK's guide</a> includes crypto assets valued in local currency.</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <section class="card" id="exempt">
+        <h2><span class="num-badge">8</span>What does not count</h2>
+        <p>Zakat does not apply to things that you keep for your own use (<a href="https://sunnah.com/bukhari:1463" rel="noreferrer">Bukhari 1463</a>):</p>
+        <ul>
+          <li>the home that you live in</li>
+          <li>your car, clothes, furniture and household items</li>
+          <li>the tools and equipment of your work</li>
+          <li>the value of a rental property (count the rent money that you saved and still have)</li>
+        </ul>
+        <p>A property that you bought to sell is trade goods, so count its value.</p>
+      </section>
+
+      <section class="card" id="jewellery">
+        <h2><span class="num-badge">9</span>Jewellery</h2>
+        <p>Gold and silver held for investment or trade are zakatable. Personal-use jewellery has different rules. Gemstones kept for personal use are generally exempt; gemstones held as trading stock are business assets. See <a href="https://www.zakat.org/is-there-zakat-on-jewelry" rel="noreferrer">Zakat Foundation of America's jewellery guidance</a>.</p>
+        <div class="scroll"><table>
+          <thead><tr><th>View</th><th>Held by</th></tr></thead>
+          <tbody>
+            <tr><td>All gold and silver jewellery is zakatable, also jewellery that a woman wears.</td><td>The Hanafi school</td></tr>
+            <tr><td>Jewellery intended for customary, permitted personal use is generally exempt. Conditions differ, including treatment of excessive amounts and jewellery held as savings. Occasional use can qualify; not wearing an item every day does not alone make it zakatable.</td><td>The Maliki, Shafi'i and Hanbali schools; see <a href="https://www.islamic-relief.org.uk/giving/islamic-giving/zakat/zakat-on-jewellery/" rel="noreferrer">Islamic Relief UK's comparison</a>.</td></tr>
+          </tbody>
+        </table></div>
+        <h3>How to value gold and silver</h3>
+        <p>Count only the weight of the metal, and change it to pure metal. For gold, multiply the weight by the karat and divide by 24. For example, 18 karat gold is 75% gold. For silver, multiply the weight by the fineness. For example, sterling silver is 0.925. Mizan does this in section 3.</p>
+      </section>
+
+      <section class="card" id="retirement">
+        <h2><span class="num-badge">10</span>Retirement accounts</h2>
+        <p>Scholars do not agree about retirement accounts such as an RRSP, a 401(k), an IRA or a pension. The main question is whether you own and control the money before you take it out.</p>
+        <div class="scroll"><table>
+          <thead><tr><th>View</th><th>Held by</th></tr></thead>
+          <tbody>
+            <tr><td>Pay annually on the portion you could access, after withdrawal taxes, penalties and fees.</td><td>One view described by <a href="https://www.zakat.org/is-zakat-owed-on-401k-plans-and-individual-retirement-accounts-ira" rel="noreferrer">Zakat Foundation of America</a>.</td></tr>
+            <tr><td>Restricted funds are not subject to annual zakat while restrictions prevent full control. Ask how zakat applies when funds become accessible.</td><td>Another view in the same source. It distinguishes unrestricted accounts from accounts with withdrawal restrictions.</td></tr>
+            <tr><td>For a defined-contribution pension, count the fund's zakatable assets. Defined-benefit pensions are treated differently.</td><td><a href="https://nzf.org.uk/wp-content/uploads/2020/04/NZF_Understanding-Calculating-Zakat_Guide.pdf" rel="noreferrer">NZF UK's calculation guide</a>, pensions section.</td></tr>
+          </tbody>
+        </table></div>
+        <p>Mizan counts a retirement account at its full balance and adds a note. If you follow the first view, type the amount after tax and penalties in section 2. If you follow the second view, clear the box.</p>
+      </section>
+
+      <section class="card" id="debts">
+        <h2><span class="num-badge">11</span>Debts and the mortgage</h2>
+        <p>Debt deductions are a matter of scholarly disagreement, including whether debts reduce zakatable wealth at all. Follow the rules of your chosen authority. These are examples of different approaches:</p>
+        <div class="scroll"><table>
+          <thead><tr><th>View</th><th>Held by</th><th>In Mizan</th></tr></thead>
+          <tbody>
+            <tr><td>Deduct only the payment that is due now, for example this month's mortgage payment.</td><td>AMJA (fatwa 21598) and others</td><td>"Deduct the next payment"</td></tr>
+            <tr><td>Deduct up to the next lunar year's capital repayments on a long-term loan, excluding interest. NZF UK advises this deduction when paying zakat would affect the ability to repay.</td><td><a href="https://nzf.org.uk/knowledge/which-debts-can-be-deducted-from-my-zakat-calculation/" rel="noreferrer">NZF UK, with conditions</a></td><td>"Deduct the next 12 months of payments", using only the deductible amount per payment</td></tr>
+            <tr><td>Do not deduct the mortgage debt.</td><td><a href="https://www.zakat.org/can-home-mortgages-be-deducted-from-zakat-as-debt" rel="noreferrer">Zakat Foundation of America</a></td><td>"Do not deduct"</td></tr>
+          </tbody>
+        </table></div>
+        <p>Mizan selects credit card balances by default. Review and edit each balance to include only eligible debt under your method. To follow a method that allows no debt deductions, clear every debt checkbox, leave other debts empty and choose "Do not deduct" for the mortgage. Avoid deducting the same debt twice.</p>
+      </section>
+
+      <section class="card" id="family">
+        <h2><span class="num-badge">12</span>Family members</h2>
+        <p>Each person pays zakat on the wealth that they own. Calculate the nisab and the zakat for each person separately. A husband does not have to pay zakat on his wife's wealth or jewellery. Another person, for example a husband, can pay your zakat for you with your permission.</p>
+        <p>In Mizan, clear the box for any account that belongs to another person.</p>
+      </section>
+
+      <section class="card" id="who">
+        <h2><span class="num-badge">13</span>Who receives zakat, and when</h2>
+        <p>Zakat goes only to the 8 groups in <a href="https://quran.com/9/60" rel="noreferrer">Quran 9:60</a>: the poor, the needy, the people who collect and manage zakat, people whose hearts are to be brought near, to free slaves and captives, people in debt, the cause of Allah, and the stranded traveller.</p>
+        <ul>
+          <li>Pay on your zakat date, without unnecessary delay. Zakat that you did not pay stays a debt.</li>
+          <li>Many people pay in Ramadan, because the Prophet was most generous in Ramadan (<a href="https://sunnah.com/bukhari:6" rel="noreferrer">Bukhari 6</a>). Ramadan is not a necessary time.</li>
+          <li>You can pay before your zakat date (<a href="https://sunnah.com/abudawud:1624" rel="noreferrer">Abu Dawud 1624</a>). The schools give different limits for how early. On your zakat date, calculate the correct amount and pay the difference.</li>
+        </ul>
+      </section>
+
+      <section class="card" id="mizan">
+        <h2><span class="num-badge">14</span>How Mizan applies this</h2>
+        <div class="scroll"><table>
+          <thead><tr><th>Rule</th><th>What Mizan does</th></tr></thead>
+          <tbody>
+            <tr><td>Rate</td><td>2.5% of the whole total, when the total is at or above the nisab.</td></tr>
+            <tr><td>Nisab</td><td>595 g of silver or 85 g of gold, at today's price. You choose the metal and can change the weights.</td></tr>
+            <tr><td>Hawl</td><td>12 month-end rows and today, for selected Lunch Money accounts only. Partial rows are labelled and are not classified against the nisab. This is supporting history, not confirmation of a full hawl.</td></tr>
+            <tr><td>Cash and savings</td><td>Counted from your Lunch Money accounts.</td></tr>
+            <tr><td>Investments and crypto</td><td>Counted at the value in Lunch Money. You can change any amount.</td></tr>
+            <tr><td>Gold, silver and cash at home</td><td>You type them in section 3. Gold and silver count by weight and purity.</td></tr>
+            <tr><td>Retirement accounts</td><td>Counted at the full balance, with a note.</td></tr>
+            <tr><td>Home and cars</td><td>Not counted.</td></tr>
+            <tr><td>Credit cards and other debts</td><td>Credit card balances are deducted. You type other debts that are due now.</td></tr>
+            <tr><td>Mortgage</td><td>3 choices: do not deduct, the next payment, or the next 12 months of payments.</td></tr>
+          </tbody>
+        </table></div>
+        <p>The technical details are on the page <a href="how-it-works.html">How it works</a>.</p>
+      </section>
+
+      <section class="card" id="sources">
+        <h2><span class="num-badge">15</span>Sources</h2>
+        <h3>Quran and hadith</h3>
+        <ul>
+          <li><a href="https://quran.com/2/43" rel="noreferrer">Quran 2:43</a>, <a href="https://quran.com/9/60" rel="noreferrer">9:60</a> and <a href="https://quran.com/9/103" rel="noreferrer">9:103</a></li>
+          <li><a href="https://sunnah.com/bukhari:8" rel="noreferrer">Sahih al-Bukhari 8</a>, <a href="https://sunnah.com/bukhari:1447" rel="noreferrer">1447</a>, <a href="https://sunnah.com/bukhari:1454" rel="noreferrer">1454</a>, <a href="https://sunnah.com/bukhari:1463" rel="noreferrer">1463</a> and <a href="https://sunnah.com/bukhari:6" rel="noreferrer">6</a></li>
+          <li><a href="https://sunnah.com/abudawud:1573" rel="noreferrer">Sunan Abi Dawud 1573</a> and <a href="https://sunnah.com/abudawud:1624" rel="noreferrer">1624</a></li>
+        </ul>
+        <h3>Authorities and fatwa councils</h3>
+        <ul>
+          <li>AMJA: <a href="https://www.amjaonline.org/fatwa/en/21598/how-to-pay-zakat-while-still-paying-off-a-mortgage" rel="noreferrer">zakat with a mortgage (21598)</a></li>
+          <li>UAE Awqaf: <a href="https://www.awqaf.gov.ae/assets/servicesguide/ServicesGuide-EN.pdf" rel="noreferrer">Services Guide</a>, Zakat calculation FAQs (page 47 in the April 2026 edition)</li>
+        </ul>
+        <h3>Zakat organisations</h3>
+        <ul>
+          <li>National Zakat Foundation Canada: <a href="https://www.nzfcanada.com/calculate-zakat/zakat-faq" rel="noreferrer">Zakat rules and FAQs</a>, <a href="https://www.nzfcanada.com/zakat-faq/when-do-i-have-to-pay-zakat" rel="noreferrer">conditions and nisab</a></li>
+          <li>National Zakat Foundation UK: <a href="https://nzf.org.uk/knowledge/which-debts-can-be-deducted-from-my-zakat-calculation/" rel="noreferrer">debts</a>, <a href="https://nzf.org.uk/knowledge/when-to-pay-zakat/" rel="noreferrer">when to pay</a>, <a href="https://nzf.org.uk/knowledge/can-a-solar-year-be-used-for-zakat-calculation/" rel="noreferrer">the solar year</a>, <a href="https://nzf.org.uk/knowledge/is-it-necessary-to-own-zakatable-assets-above-the-nisab-threshold-for-the-entire-year/" rel="noreferrer">fluctuations below nisab</a>, <a href="https://nzf.org.uk/knowledge/zakat-on-stocks-and-shares/" rel="noreferrer">shares</a>, <a href="https://nzf.org.uk/knowledge/debts-owed-to-you/" rel="noreferrer">money owed to you</a>, <a href="https://nzf.org.uk/wp-content/uploads/2020/04/NZF_Understanding-Calculating-Zakat_Guide.pdf" rel="noreferrer">calculation guide</a></li>
+          <li>Islamic Relief: <a href="https://www.islamicreliefcanada.org/giving/islamic-giving/zakat/nisab" rel="noreferrer">nisab and family ownership (Canada)</a>, <a href="https://www.islamic-relief.org.uk/giving/islamic-giving/zakat/zakat-on-jewellery/" rel="noreferrer">jewellery (UK)</a></li>
+          <li>Zakat Foundation of America: <a href="https://www.zakat.org/can-home-mortgages-be-deducted-from-zakat-as-debt" rel="noreferrer">mortgages</a>, <a href="https://www.zakat.org/is-zakat-owed-on-401k-plans-and-individual-retirement-accounts-ira" rel="noreferrer">401(k) and IRA</a>, <a href="https://www.zakat.org/is-there-zakat-on-jewelry" rel="noreferrer">jewellery</a></li>
+        </ul>
+      </section>
+    </div>
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-inner">
+    <div class="foot-brand">
+      <svg class="mark" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+        <path class="mk-star" d="M24 2.6 25.05 3.65 26.55 3.65 26.55 5.15 27.6 6.2 26.55 7.25 26.55 8.75 25.05 8.75 24 9.8 22.95 8.75 21.45 8.75 21.45 7.25 20.4 6.2 21.45 5.15 21.45 3.65 22.95 3.65Z"/>
+        <path class="mk-line" d="M24 10v29.5"/><rect class="mk-fill" x="15" y="39.2" width="18" height="4.4" rx="2.2"/>
+        <path class="mk-line" d="M7.5 15.5h33"/><path class="mk-thin" d="M7.5 15.5 2.8 29M7.5 15.5l4.7 13.5M40.5 15.5l-4.7 13.5M40.5 15.5l4.7 13.5"/>
+        <circle class="mk-gold" cx="7.5" cy="25.2" r="3.7"/><circle class="mk-silver" cx="40.5" cy="25.2" r="3.7"/>
+        <path class="mk-fill" d="M1.8 29h11.4a5.7 4.6 0 0 1-11.4 0Z"/><path class="mk-fill" d="M34.8 29h11.4a5.7 4.6 0 0 1-11.4 0Z"/>
+        <circle class="mk-fill" cx="24" cy="15.5" r="2.7"/>
+      </svg>
+      <p><span class="foot-name">Mizan</span><span class="foot-maker">Made by Mazin Kanuga</span></p>
+    </div>
+    <div class="foot-text">
+      <p class="disclaim">A community project. Lunch Money did not make it and does not support it.</p>
+      <p><a href="./">Calculator</a> · <a href="how-it-works.html">How it works</a> · <a href="zakat-guide.html">Zakat guide</a> · <a href="https://github.com/TechnoDudeX/lunchmoney-zakat" rel="noreferrer">Source code</a></p>
+      <p>Mizan means balance in Arabic. The name has the same letters as Mazin.</p>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

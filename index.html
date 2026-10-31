@@ -219,6 +219,7 @@
                 -webkit-mask: var(--i-swash) center / 100% 100% no-repeat; mask: var(--i-swash) center / 100% 100% no-repeat; }
   .due.zero { color: var(--muted); }
   .due.zero::after { background: var(--zero-swash); }
+  .due.incomplete { font-size: clamp(26px, 5vw, 40px); color: var(--muted); }
   .due-hint { margin: 10px auto 0; max-width: 22em; font-size: 14px; color: var(--muted); }
   .lines { font-size: 15.5px; }
   .lines p { margin: 0; padding: 9px 2px; border-bottom: 1px dashed var(--line); font-variant-numeric: tabular-nums; }
@@ -407,8 +408,9 @@
       <h1>Mizan<span class="sr">: </span><span class="tagline">Zakat calculator for Lunch Money</span></h1>
     </div>
     <div class="top-links">
+      <a href="how-it-works.html">How it works</a>
+      <a href="zakat-guide.html">Zakat guide</a>
       <span class="maker">Made by Mazin Kanuga</span>
-      <a href="https://github.com/TechnoDudeX/lunchmoney-zakat" rel="noreferrer">Source code</a>
     </div>
   </div>
 </header>
@@ -419,7 +421,7 @@
       <div class="hero-head">
         <p class="pill rise">Free. Read only. Open source.</p>
         <h2 id="heroHead" class="rise r2">Calculate your <span class="hl">zakat</span> from your Lunch Money balances</h2>
-        <p class="lead rise r3">Mizan reads your account balances from <a href="https://lunchmoney.app" rel="noreferrer">Lunch Money</a>, gets today's gold and silver prices, and calculates your zakat. It also checks your hawl.</p>
+        <p class="lead rise r3">Mizan reads your account balances from <a href="https://lunchmoney.app" rel="noreferrer">Lunch Money</a>, gets today's gold and silver prices, and estimates your zakat. Its balance history helps you review your hawl.</p>
       </div>
 
       <div class="card connect-card rise r3">
@@ -485,8 +487,8 @@
             <rect class="ic-star" x="19.8" y="15.5" width="3.2" height="8.5" rx="1"/>
           </svg>
         </span>
-        <h4>12 months of hawl</h4>
-        <p>Your <span class="u">month-end totals</span> show if you stayed above the nisab for the year.</p>
+        <h4>12 months of history</h4>
+        <p>Review your <span class="u">month-end balances</span> against the nisab, with gaps in the history marked.</p>
       </div>
     </div>
   </section>
@@ -503,9 +505,9 @@
 
     <section class="card result">
       <div class="result-main">
-        <h2 class="due-label" id="resultHead" tabindex="-1">Zakat due</h2>
+        <h2 class="due-label" id="resultHead" tabindex="-1">Estimated zakat</h2>
         <div class="due" id="due" aria-live="polite" aria-atomic="true"></div>
-        <p class="due-hint">Zakat is 2.5% of your total after debts, when the total is at or above the nisab.</p>
+        <p class="due-hint">For your zakat date, assuming your hawl is complete. Zakat is 2.5% of your total after eligible debts, at or above the nisab.</p>
       </div>
       <div class="lines" id="lines"></div>
     </section>
@@ -574,11 +576,12 @@
       <p class="note" id="noDebts" hidden>Lunch Money has no credit card or loan balances.</p>
       <div class="fields gap-top">
         <div class="field"><label for="otherDebts">Other debts that are due now</label><input type="number" id="otherDebts" step="0.01" min="0"></div>
-        <div class="field"><label for="mortgagePayment">Mortgage payment</label><input type="number" id="mortgagePayment" step="0.01" min="0"></div>
+        <div class="field"><label for="mortgagePayment">Deductible amount per mortgage payment</label><input type="number" id="mortgagePayment" step="0.01" min="0"></div>
         <div class="field"><label for="mortgagePerYear">Mortgage payments a year</label><input type="number" id="mortgagePerYear" step="1" min="0" value="12"></div>
       </div>
       <p class="note" id="mortgageInfo"></p>
       <p class="note">The mortgage is used only when you choose a mortgage method in section 1.</p>
+      <p class="note">Enter only the part your method allows you to deduct. For example, NZF UK excludes interest. For 12 months, enter the average deductible amount per payment and the number of payments.</p>
     </section>
 
     <section class="card section">
@@ -592,6 +595,7 @@
 
     <section class="card section">
       <h2><span class="step">6</span> A full year above the nisab (hawl)</h2>
+      <p class="note">Lunch Money accounts only, using today's nisab. This table excludes section 3, other debts and the mortgage, so its total may differ from your zakat estimate. It cannot confirm that your hawl is complete.</p>
       <p id="hawlSummary"></p>
       <div class="scroll"><table>
         <thead><tr><th>Month</th><th class="num">Total</th><th class="barcell"><span class="sr">Total compared with the nisab</span></th></tr></thead>
@@ -626,7 +630,8 @@
     <div class="foot-text">
       <p class="disclaim">A community project. Lunch Money did not make it and does not support it.</p>
       <p>Mizan means balance in Arabic. The name has the same letters as Mazin.</p>
-      <p>Prices from <a href="https://gold-api.com" rel="noreferrer">gold-api.com</a>. <a href="https://github.com/TechnoDudeX/lunchmoney-zakat" rel="noreferrer">Source code</a> on GitHub, with the MIT licence.</p>
+      <p><a href="how-it-works.html">How it works</a> · <a href="zakat-guide.html">Zakat guide</a> · <a href="https://github.com/TechnoDudeX/lunchmoney-zakat" rel="noreferrer">Source code</a> on GitHub, with the MIT licence.</p>
+      <p>Prices from <a href="https://gold-api.com" rel="noreferrer">gold-api.com</a>.</p>
     </div>
   </div>
 </footer>
@@ -743,7 +748,10 @@
       // A synced crypto account has 1 source for each coin. A manual crypto entry is 1 coin, and its symbol can be null.
       var key = src.type + ":" + id + (src.type === "crypto_synced" ? ":" + String(src.symbol || "").toLowerCase() : "");
       var byMonth = {};
-      (s.balances || []).forEach(function (b) { byMonth[b.month] = Number(b.to_base) || 0; });
+      (s.balances || []).forEach(function (b) {
+        var value = b.to_base == null || b.to_base === "" ? NaN : Number(b.to_base);
+        byMonth[b.month] = isFinite(value) ? value : null;
+      });
       hist[key] = { source: src, months: byMonth };
     });
     var series = function (key) {
@@ -967,30 +975,63 @@
     var grams = pos($(metal + "GramsNisab"));
     var unit = metal === "gold" ? gold : silver;
     var nisab = grams * unit;
-    var ready = unit > 0 && grams > 0;
-    var due = ready && net > 0 && net >= nisab ? net * 0.025 : 0;
+    var missing = [];
+    if (!(unit > 0)) missing.push(metal + " price");
+    if (!(grams > 0)) missing.push(metal + " nisab weight");
+    if (pos($("goldGrams")) > 0 && !(gold > 0) && metal !== "gold") missing.push("gold price");
+    if (pos($("silverGrams")) > 0 && !(silver > 0) && metal !== "silver") missing.push("silver price");
+    var ready = missing.length === 0;
+    var due = ready ? (net > 0 && net >= nisab ? net * 0.025 : 0) : null;
     return { assets: assets, debts: debts, mortgage: mortgage, net: net, nisab: nisab, due: due, ready: ready,
+             nisabReady: unit > 0 && grams > 0, missing: missing,
+             assetsReady: !(pos($("goldGrams")) > 0 && !(gold > 0)) && !(pos($("silverGrams")) > 0 && !(silver > 0)),
              grams: grams, unit: unit, goldValue: goldValue, silverValue: silverValue };
+  }
+
+  // Missing history is unknown, never an assumed zero. Closed-account gaps also
+  // stay unknown: month-end data alone cannot establish an opening/closing date.
+  function hawlMonths(monthKeys, accounts, debts, nisab, ready) {
+    var last = monthKeys.length - 1;
+    return monthKeys.map(function (m, i) {
+      var total = 0, has = i === last, missing = 0;
+      function add(rows, sign) {
+        rows.forEach(function (r) {
+          if (!r.cb.checked) return;
+          if (i === last) total += sign * (sign === 1 ? num(r.input) : pos(r.input));
+          else if (r.data.history[i] != null) {
+            has = true;
+            total += sign * (sign === 1 ? r.data.history[i] : Math.max(0, r.data.history[i]));
+          } else missing++;
+        });
+      }
+      add(accounts, 1);
+      add(debts, -1);
+      var complete = has && missing === 0;
+      return { month: m, total: total, has: has, missing: missing, complete: complete,
+               above: complete && ready ? total >= nisab : null };
+    });
   }
 
   function render() {
     var metal = radio("nisab"), mode = radio("mortgage"), t = totals(metal, mode);
     accountRows.concat(debtRows).forEach(function (r) { r.tr.classList.toggle("off", !r.cb.checked); });
 
-    $("due").textContent = money.format(t.due);
+    $("due").textContent = t.ready ? money.format(t.due) : "Incomplete";
     $("due").classList.toggle("zero", t.due === 0);
+    $("due").classList.toggle("incomplete", !t.ready);
     var gap = t.net - t.nisab;
     var lines = [
       "Zakat assets: " + money.format(t.assets) + ".",
       "Less debts due now: " + money.format(t.debts) + (t.mortgage ? ", and the mortgage: " + money.format(t.mortgage) : "") + ".",
       "<strong>Total after debts: " + money.format(t.net) + ".</strong>"
-    ].concat(!t.ready ? ["Type the " + metal + " price and the nisab weight in section 1."] : [
+    ].concat(!t.ready ? [] : [
       METAL[metal] + " nisab: " + money.format(t.nisab) + " (" + t.grams + " g at " + price.format(t.unit) + " a gram).",
       gap >= 0 ? "Your total is " + money.format(gap) + " more than the nisab. Zakat is 2.5% of " + money.format(t.net) + "."
                : "Your total is " + money.format(-gap) + " less than the nisab, so no zakat is due."
     ]);
+    if (!t.ready) lines = ["Calculation incomplete. Enter the " + t.missing.join(" and ") + " in section 1 to calculate your estimate."];
     $("lines").innerHTML = lines.map(function (l) { return "<p>" + l + "</p>"; }).join("");
-    $("metalValue").textContent = (t.goldValue || t.silverValue)
+    $("metalValue").textContent = !t.assetsReady ? "Enter the missing metal prices in section 1 to value your gold and silver." : (t.goldValue || t.silverValue)
       ? "Value of your gold: " + money.format(t.goldValue) + ". Value of your silver: " + money.format(t.silverValue) + "." : "";
 
     var rows = "";
@@ -999,45 +1040,34 @@
         var x = totals(m, mm), sel = m === metal && mm === mode;
         rows += "<tr" + (sel ? ' class="selected"' : "") + "><td>" + METAL[m] + (sel ? '<span class="sr"> (your choice)</span>' : "") +
           "</td><td>" + MORTGAGE[mm] + "</td>" +
-          '<td class="num">' + (x.ready ? money.format(x.nisab) : "no price") + '</td><td class="num">' + money.format(x.net) +
-          '</td><td class="num">' + money.format(x.due) + "</td></tr>";
+          '<td class="num">' + (x.nisabReady ? money.format(x.nisab) : "Incomplete") + '</td><td class="num">' + (x.assetsReady ? money.format(x.net) : "Incomplete") +
+          '</td><td class="num">' + (x.ready ? money.format(x.due) : "Incomplete") + "</td></tr>";
       });
     });
     $("methodRows").innerHTML = rows;
 
     var last = D.months.length - 1;
-    var months = D.months.map(function (m, i) {
-      // Past months use Lunch Money's month-end balances. Today uses the amounts in sections 2 and 4.
-      // A past month with no balance for any included account has no data (for example before you used Lunch Money).
-      var total = 0, has = i === last;
-      accountRows.forEach(function (r) {
-        if (!r.cb.checked) return;
-        if (i === last) total += num(r.input);
-        else if (r.data.history[i] != null) { has = true; total += r.data.history[i]; }
-      });
-      debtRows.forEach(function (r) {
-        if (!r.cb.checked) return;
-        if (i === last) total -= pos(r.input);
-        else if (r.data.history[i] != null) { has = true; total -= r.data.history[i]; }
-      });
-      return { month: m, total: total, has: has, above: t.ready && total >= t.nisab };
-    });
+    var months = hawlMonths(D.months, accountRows, debtRows, t.nisab, t.nisabReady);
     var known = months.filter(function (m) { return m.has; });
     var missing = months.length - known.length;
+    var complete = months.filter(function (m) { return m.complete; });
+    var completeLabel = complete.length + (complete.length === 1 ? " complete row" : " complete rows");
+    var partial = known.length - complete.length;
     var max = Math.max.apply(null, known.map(function (m) { return Math.abs(m.total); }).concat([t.nisab, 1]));
-    var below = known.filter(function (m) { return !m.above; });
-    var low = known.reduce(function (a, b) { return b.total < a.total ? b : a; });
-    $("hawlSummary").textContent = !t.ready ? "Type the " + metal + " price and the nisab weight in section 1 to check the hawl." :
-      "Lowest total: " + money.format(low.total) + " (" + fdate(low.month) + "). " +
-      (below.length ? "It was below the " + metal + " nisab in " + below.length + " of " + known.length + " months: " +
+    var below = complete.filter(function (m) { return m.above === false; });
+    var low = complete.reduce(function (a, b) { return b.total < a.total ? b : a; });
+    $("hawlSummary").textContent = (!t.nisabReady ? "Type the " + metal + " price and the nisab weight in section 1 to compare these accounts with the nisab." :
+      "Lowest total with all selected balances available: " + money.format(low.total) + " (" + fdate(low.month) + "). " +
+      (below.length ? "These accounts were below the " + metal + " nisab in " + below.length + " of " + completeLabel + ": " +
         below.map(function (m) { return fdate(m.month); }).join(", ") + ". Ask a scholar how this affects your zakat year."
-        : "It was above the " + metal + " nisab in all " + known.length + " months" + (missing ? " that have data." : ".")) +
-      (missing ? " Lunch Money has no balances for " + missing + " of " + months.length + " months, so the table cannot check them." : "");
+        : "These accounts were at or above the " + metal + " nisab in all " + completeLabel + ".")) +
+      (partial ? " Partial history: " + partial + (partial === 1 ? " row is missing" : " rows are missing") + " selected account balances; partial totals are not classified against the nisab." : "") +
+      (missing ? " Lunch Money has no selected balances for " + missing + (missing === 1 ? " row" : " rows") + ", so the table cannot check them." : "");
     $("hawlRows").innerHTML = months.map(function (m, i) {
       var w = Math.max(0, m.total) / max * 100;
       return "<tr><td>" + fdate(m.month) + (i === last ? " (today)" : "") + '</td><td class="num">' +
-        (m.has ? money.format(m.total) : '<span class="note">No data</span>') + '</td><td class="barcell">' +
-        (m.has ? '<div class="bar' + (m.above ? "" : " below") + '" style="width:' + w.toFixed(1) + '%"></div>' : "") + "</td></tr>";
+        (m.has ? money.format(m.total) + (m.complete ? "" : '<br><span class="note">Partial: ' + m.missing + ' missing</span>') : '<span class="note">No data</span>') + '</td><td class="barcell">' +
+        (m.above !== null ? '<div class="bar' + (m.above ? "" : " below") + '" style="width:' + w.toFixed(1) + '%"></div>' : "") + "</td></tr>";
     }).join("");
   }
 

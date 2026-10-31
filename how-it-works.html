@@ -33,7 +33,7 @@
           <li>When the requests finish, the page sets the variable to <code>null</code>. No code uses the token again.</li>
         </ol>
         <p>The token field uses a password input with autocomplete disabled and hints asking password managers (1Password, LastPass and Bitwarden) to ignore it. These hints are not a guarantee: a browser or password manager may still offer to save it. The password input masks the characters in browsers, including Firefox.</p>
-        <div class="callout"><p><strong>Lunch Money tokens can change data.</strong> Lunch Money has no read-only tokens yet. Mizan never changes data, but the token itself can. Make a separate token for Mizan, and delete it on the Lunch Money developers page when you finish.</p></div>
+        <div class="callout"><p><strong>Lunch Money tokens can change data.</strong> Lunch Money has no read-only tokens yet. Mizan never changes data, but the token itself can. Make a separate token for Mizan, and revoke it on the Lunch Money developers page when you finish.</p></div>
       </div></details>
 <details class="article-topic" id="requests"><summary><h3>Requests</h3></summary><div class="topic-content">
         <p class="sub">Every request uses <code>fetch()</code> with <code>method: "GET"</code>, <code>credentials: "omit"</code>, <code>cache: "no-store"</code>, <code>redirect: "error"</code> and <code>referrerPolicy: "no-referrer"</code>. Because redirects are an error, the token cannot follow a redirect to another host.</p>
@@ -50,7 +50,7 @@
             <tr><td class="n">8</td><td><code>GET api.gold-api.com/price/XAG/&lt;CUR&gt;</code></td><td><span class="tag opt">Optional</span></td><td>The silver price in your currency. No token.</td></tr>
           </tbody>
         </table></div>
-        <p>After request 1 succeeds, requests 2 to 8 start at the same time. Requests 1 to 6 go to <code>https://api.lunchmoney.dev</code>. The page asks for <code>balance_history</code> only up to last month, because the current month can be in the future for the server in some time zones. For today, the page uses the amounts on the screen.</p>
+        <p>After request 1 succeeds, requests 2 to 8 start at the same time. Requests 1 to 6 use the <a href="https://lunchmoney.dev/introduction" rel="noreferrer">current v2 API</a> at <code>https://api.lunchmoney.dev/v2</code>. The page asks for <code>balance_history</code> only up to last month, because the current month can be in the future for the server in some time zones. For today, the page uses the amounts on the screen.</p>
       </div></details>
 <details class="article-topic" id="saved"><summary><h3>What the page saves</h3></summary><div class="topic-content">
         <p>The page saves only your choices, in your browser's <code>localStorage</code>, under the key <code>lunchmoney-zakat-choices-v1</code>:</p>
@@ -63,7 +63,7 @@
       </div></details>
 </section>
 <section class="article-group" id="calculation"><h2>How the calculation works</h2><details class="article-topic" id="accounts"><summary><h3>From accounts to rows</h3></summary><div class="topic-content">
-        <p class="sub">The function <code>kindOf()</code> puts each Lunch Money account in 1 group, from its type. The amount is <code>to_base</code>: the balance in your budget's currency, at the Lunch Money exchange rate.</p>
+        <p class="sub">The function <code>kindOf()</code> puts each Lunch Money account in 1 group, from its type. The amount is <code>to_base</code>: the balance in your budget's currency, at the Lunch Money exchange rate. This follows the official <a href="https://lunchmoney.dev/amounts-and-balances" rel="noreferrer">amounts and balances guide</a>.</p>
         <div class="scroll"><table>
           <thead><tr><th>Lunch Money type</th><th>Mizan group</th><th>Where it goes</th><th>Selected at the start</th></tr></thead>
           <tbody>
@@ -181,7 +181,7 @@
         </table></div>
         <p>Netlify also sends <code>Referrer-Policy: no-referrer</code>, <code>X-Content-Type-Options: nosniff</code>, <code>X-Frame-Options: DENY</code> and a <code>Permissions-Policy</code> that turns off the camera, the microphone, location and payment.</p>
       </div></details></section></div></div></main><footer class="foot"><div class="wrap foot-inner">
-  <div><p>Made by Mazin Kanuga.</p><p>An independent personal project for Lunch Money.</p></div>
+  <div><p>Made by Mazin Kanuga.</p><p>An independent personal project for <a href="https://lunchmoney.app" rel="noreferrer">Lunch Money</a>.</p></div>
   <nav aria-label="Footer"><a href="zakat-guide.html">Zakat guide</a><a href="how-it-works.html">How it works &amp; privacy</a><a href="https://github.com/TechnoDudeX/lunchmoney-zakat" rel="noreferrer">Source code</a><a href="https://gold-api.com" rel="noreferrer">Metal prices</a></nav>
 </div></footer>
 <script>(function () {

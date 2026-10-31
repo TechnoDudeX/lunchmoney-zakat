@@ -40,9 +40,11 @@ The calculator has three steps: connect, review balances, and see your estimate.
 - **The token is not kept.** The page sends your token only to `api.lunchmoney.dev`, then forgets it. The page does not save the token in the browser, in a cookie or anywhere else. If your browser or a password manager asks to save it, click Never.
 - **Only 2 hosts.** A Content Security Policy lets the page connect only to `api.lunchmoney.dev` and `api.gold-api.com`. The fonts come from the same site as the page. Requests to gold-api.com include only your currency code (for example CAD). They do not include your token or your balances. Redirects are refused, so the token cannot follow a redirect to another host.
 - **Saved in your browser:** only your choices (nisab, mortgage method, nisab weights, gold and silver purity). Amounts are never saved.
-- **Lunch Money tokens can change data.** Lunch Money has no read-only tokens. Make a separate token for this page, and delete it on the [developers page](https://my.lunchmoney.app/developers) when you finish.
+- **Lunch Money tokens can change data.** Lunch Money has no read-only tokens. Make a separate token for this page, and revoke it on the [developers page](https://my.lunchmoney.app/developers) when you finish.
 
 You can read the calculator code in [index.html](index.html). The guide pages are plain HTML and share [styles.css](styles.css). The fonts in [fonts/](fonts/) are Nunito Sans and Red Hat Mono. Nunito Sans is used for the main interface; Red Hat Mono is used for amounts and labels. Short entrance and chart animations respect reduced-motion preferences. The site has no libraries and no build step.
+
+Official references: [developer tools and community projects](https://lunchmoney.app/developers), [API introduction](https://lunchmoney.dev/introduction), [token setup](https://lunchmoney.dev/getting-started), and [amounts and balances](https://lunchmoney.dev/amounts-and-balances). The integration already uses the current v2 base URL and the recommended `to_base` amounts for a consistent budget currency.
 
 ## How to use it
 

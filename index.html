@@ -20,7 +20,7 @@
 <header class="top"><div class="wrap top-inner">
   <a class="brand" href="./" aria-label="Mizan home">
     <svg class="brand-mark" viewBox="0 0 44 44" aria-hidden="true" focusable="false" fill="none"><rect x="1" y="1" width="42" height="42" rx="12" fill="currentColor"/><path d="M11 29V15L22 25L33 15V29" stroke="var(--on-deep)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 34H29" stroke="var(--on-deep)" stroke-width="2" stroke-linecap="round"/><circle cx="22" cy="11" r="2" fill="var(--accent)"/></svg>
-    <span class="brand-name">Mizan<span class="brand-sub">A personal project by Mazin</span></span>
+    <span class="brand-name">Mizan<span class="brand-sub">Made by Mazin</span></span>
   </a>
   <nav class="nav" aria-label="Main"><a href="index.html" aria-current="page">Calculator</a><a href="about.html">The project</a><a href="token-guide.html">Token guide</a></nav>
 </div></header>
@@ -30,23 +30,23 @@
       <div class="hero-head">
         <p class="eyebrow">Built from my own zakat calculation</p>
         <h1 id="heroHead">Your zakat.<br><span class="hero-accent">From your actual<br>balances.</span></h1>
-        <p class="lead">I built Mizan because I wanted to stop guessing my account totals. It starts with the balances I already track in Lunch Money, down to the cent.</p>
-        <p class="note"><strong>Mizan</strong> means “balance” in Arabic.</p>
-        <p class="personal-link"><a href="about.html">Why I built this <span aria-hidden="true">↗</span></a></p><ol class="journey" aria-label="How it works"><li><span>01</span> Your budget</li><li><span>02</span> Your balances</li><li><span>03</span> Your zakat</li></ol>
+        <p class="lead">I built Mizan because my balances were already in Lunch Money. It uses those amounts to estimate your zakat, down to the cent, without another round of &quot;that sounds about right&quot;.</p>
+        <p class="note"><strong>Mizan</strong> means &quot;balance&quot; in Arabic.</p>
+        <p class="personal-link"><a href="about.html">Why I built this</a></p><ol class="journey" aria-label="How it works"><li><span>01</span> Your budget</li><li><span>02</span> Your balances</li><li><span>03</span> Your zakat</li></ol>
       </div>
       <div class="connect-card">
         <h2>Connect Lunch Money</h2>
-        <p class="note">Use an access token to read your account balances.</p>
+        <p class="note">An access token lets Mizan read your balances from Lunch Money.</p>
         <label for="token">Lunch Money access token</label>
         <input type="password" id="token" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" data-1p-ignore data-lpignore="true" data-bwignore placeholder="Paste your access token" aria-describedby="tokenNotice">
         <button type="button" class="primary" id="connectBtn">Connect my accounts</button>
         <p id="status" role="status"></p>
-        <p class="connect-help">New to tokens? <a href="token-guide.html" target="_blank" rel="noopener">Follow the step-by-step guide ↗</a></p>
+        <p class="connect-help"><a href="token-guide.html" target="_blank" rel="noopener">Get a token with the step-by-step guide</a></p>
         <p class="token-notice" id="tokenNotice">Mizan only reads your data. Your token and balances are never saved by Mizan.</p>
-        <div class="sample-action"><p>Take a look before connecting.</p><button type="button" id="sampleBtn">Explore with sample data →</button></div>
+        <div class="sample-action"><p>Have a look around with fictional balances.</p><button type="button" id="sampleBtn">Try it with sample data</button></div>
       </div>
     </div>
-    <div class="quiet-intro"><p>Your account amounts come straight from Lunch Money. Review the balances, add what is missing, and see exactly how the total was calculated.</p><a href="how-it-works.html">How your data is handled →</a></div>
+    <div class="quiet-intro"><p>Your account amounts come straight from Lunch Money. You can edit them here and add anything that is missing. The breakdown shows how each amount affects the total.</p><a href="how-it-works.html">How your data is handled</a></div>
   </section>
 
   <div id="app" class="app" hidden>
@@ -54,7 +54,7 @@
     <nav class="progress" aria-label="Calculation steps"><span>✓ Connected</span><span class="divider" aria-hidden="true">/</span><button type="button" id="reviewStep" aria-controls="reviewView" aria-current="step">02 Review balances</button><span class="divider" aria-hidden="true">/</span><button type="button" id="estimateStep" aria-controls="estimateView">03 Your estimate</button></nav>
     <div class="warn" id="dataWarn" hidden></div>
     <section id="reviewView" class="flow-view" aria-labelledby="reviewHead">
-      <div class="view-head"><p class="eyebrow">Step 2 of 3</p><h1 id="reviewHead" tabindex="-1">Start with your actual balances.</h1><p class="note">These are your Lunch Money account balances. Keep the ones that belong in your zakat, and check any that need updating.</p></div>
+      <div class="view-head"><p class="eyebrow">Step 2 of 3</p><h1 id="reviewHead" tabindex="-1">Check your balances.</h1><p class="note">These came from Lunch Money. Uncheck anything that doesn't belong in your zakat, and update any balance that's out of date.</p></div>
       <div class="review-layout">
         <div class="review-main">
           <div class="review-warnings"><div class="warn" id="staleWarn" hidden></div></div>
@@ -62,7 +62,7 @@
             <div class="scroll"><table class="list"><thead><tr><th>Include</th><th>Account</th><th class="num">Balance</th></tr></thead><tbody id="accountRows"></tbody></table></div>
           </section>
           <details class="disclosure" id="extraAssets"><summary><span>Add other assets<span class="note">Cash, gold, silver, crypto or money owed to you</span></span></summary>
-            <p class="note">Add only what is missing from the accounts above.</p>
+            <p class="note">Add anything that isn't already in the accounts above.</p>
             <div class="fields">
               <div class="field"><label for="cashHome">Cash at home</label><input type="number" id="cashHome" step="0.01" min="0"></div>
               <div class="field"><label for="crypto">Other crypto, market value</label><input type="number" id="crypto" step="0.01" min="0"></div>
@@ -82,24 +82,24 @@
             <p class="inline-note">Mortgage deductions are on the next screen.</p>
           </details>
         </div>
-        <aside class="review-aside" aria-label="Before you continue"><h2>A quick check</h2><ol><li>Remove accounts that belong to someone else.</li><li>Check any balance marked “not current”.</li><li>Add missing assets and review debts.</li></ol><button type="button" id="continueEstimate" class="primary">See my estimate →</button><p class="inline-note">You can come back and change any amount.</p></aside>
+        <aside class="review-aside" aria-label="Before you continue"><h2>A quick check</h2><ol><li>Remove accounts that belong to someone else.</li><li>Check any balance marked &quot;not current&quot;.</li><li>Add missing assets and review debts.</li></ol><button type="button" id="continueEstimate" class="primary">See my estimate</button><p class="inline-note">You can come back and change any amount.</p></aside>
       </div>
     </section>
 
     <section id="estimateView" class="flow-view" aria-labelledby="estimateHead" hidden>
-      <div class="view-head"><p class="eyebrow">Step 3 of 3</p><h1 id="estimateHead" tabindex="-1">A number you can trace.</h1><p class="note">From each account balance to the final estimate. Open the calculation, review your method, and follow every dollar.</p></div>
+      <div class="view-head"><p class="eyebrow">Step 3 of 3</p><h1 id="estimateHead" tabindex="-1">Your zakat estimate.</h1><p class="note">Check the breakdown to see where each amount came from. You can change your method below or go back to edit a balance.</p></div>
       <div class="estimate-layout">
         <aside class="result" aria-labelledby="resultHead"><h2 class="due-label" id="resultHead" tabindex="-1">Estimated zakat</h2><div class="due" id="due" aria-live="polite" aria-atomic="true"></div><p id="resultMethod" class="result-method"></p><p class="due-hint">Assumes your hawl is complete. Confirm your method with your scholar.</p><p class="estimate-summary" id="estimateSummary"></p><details class="result-breakdown" id="resultBreakdown"><summary>How this is calculated</summary><div class="lines" id="lines"></div></details></aside>
         <div class="estimate-main">
           <section class="calculation-card" id="calculation" aria-labelledby="calculationTitle">
-            <div class="chart-heading"><div><p class="eyebrow">From balances to your total</p><h2 id="calculationTitle">Every amount has a source.</h2></div><span class="chart-unit cur"></span></div>
+            <div class="chart-heading"><div><p class="eyebrow">The breakdown</p><h2 id="calculationTitle">How the total adds up.</h2></div><span class="chart-unit cur"></span></div>
             <p class="note">Your selected accounts, plus anything you add, less eligible debts.</p>
             <div id="calculationChart" class="waterfall-chart"></div>
             <dl id="calculationSteps" class="calculation-steps"></dl>
             <details class="ledger-detail"><summary>See every amount in this total</summary><div class="scroll" tabindex="0" role="region" aria-label="Calculation line items"><table><thead><tr><th>Item</th><th>Source</th><th class="num">Amount</th></tr></thead><tbody id="calculationItems"></tbody><tfoot><tr><th colspan="2" scope="row">Total after debts</th><td class="num" id="ledgerTotal"></td></tr></tfoot></table></div></details>
           </section>
           <details class="disclosure" id="methodSettings"><summary><span>Your method &amp; prices<span class="note" id="methodSummary"></span></span></summary><div class="method-content">
-          <div class="estimate-choice"><fieldset><legend>Your nisab</legend><p class="note">The minimum wealth threshold. Choose the metal your method uses.</p><div class="choice-options"><label class="opt"><input type="radio" name="nisab" value="silver" checked>Silver</label><label class="opt"><input type="radio" name="nisab" value="gold">Gold</label></div></fieldset><p class="inline-note"><a href="zakat-guide.html#which-nisab" target="_blank" rel="noopener">Help choosing a nisab ↗</a></p></div>
+          <div class="estimate-choice"><fieldset><legend>Your nisab</legend><p class="note">The minimum wealth threshold. Choose the metal your method uses.</p><div class="choice-options"><label class="opt"><input type="radio" name="nisab" value="silver" checked>Silver</label><label class="opt"><input type="radio" name="nisab" value="gold">Gold</label></div></fieldset><p class="inline-note"><a href="zakat-guide.html#which-nisab" target="_blank" rel="noopener">Help choosing a nisab</a></p></div>
           <details class="disclosure" id="mortgageSettings"><summary><span>Mortgage deduction<span class="note" id="mortgageChoice">Not deducted</span></span></summary>
             <p class="note">Scholars differ about mortgage deductions. Use the approach you follow.</p><fieldset><legend class="sr">Mortgage method</legend><div class="stacked-options"><label class="opt"><input type="radio" name="mortgage" value="none" checked>Do not deduct</label><label class="opt"><input type="radio" name="mortgage" value="next">Deduct the next payment</label><label class="opt"><input type="radio" name="mortgage" value="year">Deduct the next 12 months</label></div></fieldset>
             <div class="mortgage-fields fields" id="mortgageFields" hidden><div class="field"><label for="mortgagePayment">Deductible amount per payment</label><input type="number" id="mortgagePayment" step="0.01" min="0"></div><div class="field"><label for="mortgagePerYear">Payments a year</label><input type="number" id="mortgagePerYear" step="1" min="0" value="12"></div><p class="note">Enter only the part your method allows. For example, NZF UK excludes interest. For 12 months, use the average deductible amount per payment.</p></div><p class="inline-note" id="mortgageInfo"></p>
@@ -109,13 +109,13 @@
             <div class="fields"><div class="field"><label for="goldPrice">Gold price per gram</label><input type="number" id="goldPrice" step="0.001" min="0"></div><div class="field"><label for="silverPrice">Silver price per gram</label><input type="number" id="silverPrice" step="0.0001" min="0"></div><div class="field"><label for="silverGramsNisab">Silver nisab (grams)</label><input type="number" id="silverGramsNisab" value="595" step="0.01" min="0" data-save></div><div class="field"><label for="goldGramsNisab">Gold nisab (grams)</label><input type="number" id="goldGramsNisab" value="85" step="0.01" min="0" data-save></div></div><p class="note price-info" id="priceInfo"></p>
           </details>
           </div></details>
-          <details class="disclosure" id="comparison"><summary><span>How other methods compare<span class="note">Explore the difference; choose the method you follow</span></span></summary><div id="methodChart" class="method-chart" aria-label="Select a calculation method"></div><details class="ledger-detail"><summary>View the comparison table</summary><div class="scroll" tabindex="0" role="region" aria-label="Method comparison"><table><thead><tr><th>Nisab</th><th>Mortgage</th><th class="num">Threshold</th><th class="num">Net wealth</th><th class="num">Zakat</th></tr></thead><tbody id="methodRows"></tbody></table></div></details></details>
-          <div class="view-actions"><button type="button" id="backToReview" class="link-button">← Edit my balances</button></div>
+          <details class="disclosure" id="comparison"><summary><span>How other methods compare<span class="note">See the amounts for each method</span></span></summary><div id="methodChart" class="method-chart" aria-label="Select a calculation method"></div><details class="ledger-detail"><summary>View the comparison table</summary><div class="scroll" tabindex="0" role="region" aria-label="Method comparison"><table><thead><tr><th>Nisab</th><th>Mortgage</th><th class="num">Threshold</th><th class="num">Net wealth</th><th class="num">Zakat</th></tr></thead><tbody id="methodRows"></tbody></table></div></details></details>
+          <div class="view-actions"><button type="button" id="backToReview" class="link-button">Edit my balances</button></div>
         </div>
 
       </div>
       <section class="history-panel chart-card" id="history" aria-labelledby="historyTitle">
-        <div class="chart-heading"><div><p class="eyebrow">Your balances over time</p><h2 id="historyTitle">The year behind your number.</h2></div><span class="chart-unit">Lunch Money history</span></div>
+        <div class="chart-heading"><div><p class="eyebrow">Your balances over time</p><h2 id="historyTitle">Your balances over the past year.</h2></div><span class="chart-unit">Lunch Money history</span></div>
         <p class="note">Selected Lunch Money accounts and debts only. Added assets, other debts and mortgage deductions are excluded. This history supports your hawl review; it cannot confirm a completed hawl.</p>
         <div class="history-readout"><div><span id="historyDate" class="history-date"></span><strong id="historyAmount"></strong></div><span id="historyState" class="history-state"></span></div>
         <div id="historyChart" class="history-chart"></div>
@@ -123,14 +123,14 @@
         <label class="sr" for="historyCursor">Explore a month in your balance history</label><input type="range" id="historyCursor" min="0" max="12" step="1" value="12" aria-describedby="historyCursorHelp">
         <p id="historyCursorHelp" class="chart-help">Drag to explore a month, or use the arrow keys. Only adjacent complete totals are connected.</p>
         <div class="chart-legend"><span><i class="complete-dot"></i>Complete total</span><span><i class="partial-dot"></i>Partial subtotal</span><span id="thresholdLegend"></span></div>
-        <details class="ledger-detail"><summary>View monthly amounts &amp; coverage</summary><p id="hawlSummary"></p><div class="scroll" tabindex="0" role="region" aria-label="Monthly balance history"><table><thead><tr><th>Month</th><th class="num">Known total</th><th class="barcell"><span class="sr">Compared with the nisab</span></th></tr></thead><tbody id="hawlRows"></tbody></table></div><p class="note">Partial rows are not classified against the nisab. <a href="zakat-guide.html#hawl" target="_blank" rel="noopener">Read about the hawl ↗</a></p></details>
+        <details class="ledger-detail"><summary>View monthly amounts &amp; coverage</summary><p id="hawlSummary"></p><div class="scroll" tabindex="0" role="region" aria-label="Monthly balance history"><table><thead><tr><th>Month</th><th class="num">Known total</th><th class="barcell"><span class="sr">Compared with the nisab</span></th></tr></thead><tbody id="hawlRows"></tbody></table></div><p class="note">Partial rows are not classified against the nisab. <a href="zakat-guide.html#hawl" target="_blank" rel="noopener">Read about the hawl</a></p></details>
       </section>
       <div class="reset-row"><button type="button" class="link-button small" id="reset">Reset my method choices</button><p class="note">Only your method preferences are saved. Your balances and token are not.</p></div>
     </section>
   </div>
 </main>
 <footer class="foot"><div class="wrap foot-inner">
-  <div><p>Made by Mazin Kanuga.</p><p>An independent personal project for <a href="https://lunchmoney.app" rel="noreferrer">Lunch Money</a>.</p></div>
+  <div><p>Made by Mazin Kanuga.</p><p>A community project for <a href="https://lunchmoney.app" rel="noreferrer">Lunch Money</a>.</p></div>
   <nav aria-label="Footer"><a href="zakat-guide.html">Zakat guide</a><a href="how-it-works.html">How it works &amp; privacy</a><a href="https://github.com/TechnoDudeX/lunchmoney-zakat" rel="noreferrer">Source code</a><a href="https://gold-api.com" rel="noreferrer">Metal prices</a></nav>
 </div></footer>
 <script>(function () {

@@ -4,9 +4,9 @@
 
 Made by Mazin Kanuga. Mizan is the Arabic word for "balance".
 
-I built Mizan to stop guessing my account totals at zakat time. It is a personal project that reads my balances from [Lunch Money](https://lunchmoney.app) and estimates your zakat. It gets today's gold and silver prices in your currency, and provides month-end history to help you review the hawl (the relevant lunar year).
+I built Mizan to stop guessing my account totals at zakat time. It is a community project that reads your balances from [Lunch Money](https://lunchmoney.app) and estimates your zakat. It gets today's gold and silver prices in your currency, and provides month-end history to help you review the hawl (the relevant lunar year).
 
-An independent personal project. Lunch Money did not make it and does not support it.
+A community project, made by Mazin Kanuga. Lunch Money did not make it and does not support it.
 
 ## What it does
 

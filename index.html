@@ -9,9 +9,9 @@
 <meta name="author" content="Mazin Kanuga">
 <meta name="description" content="Mizan is a zakat calculator for Lunch Money users. It reads your balances and gets today's gold and silver prices. Read only. Your token goes only to the Lunch Money API.">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#faf9f6" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#151e1b" media="(prefers-color-scheme: dark)">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23FBB700' d='M24 2.6 25.05 3.65 26.55 3.65 26.55 5.15 27.6 6.2 26.55 7.25 26.55 8.75 25.05 8.75 24 9.8 22.95 8.75 21.45 8.75 21.45 7.25 20.4 6.2 21.45 5.15 21.45 3.65 22.95 3.65Z'/%3E%3Cg stroke='%232C6A64' stroke-linecap='round' fill='none'%3E%3Cpath stroke-width='3' d='M24 10v29M7.5 15.5h33'/%3E%3Cpath stroke-width='1.5' d='M7.5 15.5 2.8 29M7.5 15.5l4.7 13.5M40.5 15.5l-4.7 13.5M40.5 15.5l4.7 13.5'/%3E%3C/g%3E%3Ccircle cx='7.5' cy='25.2' r='3.7' fill='%23FBB700'/%3E%3Ccircle cx='40.5' cy='25.2' r='3.7' fill='%23C9D3D1' stroke='%237F8E8B'/%3E%3Cg fill='%232C6A64'%3E%3Cpath d='M1.8 29h11.4a5.7 4.6 0 0 1-11.4 0Z'/%3E%3Cpath d='M34.8 29h11.4a5.7 4.6 0 0 1-11.4 0Z'/%3E%3Crect x='15' y='39.2' width='18' height='4.4' rx='2.2'/%3E%3Ccircle cx='24' cy='15.5' r='2.8'/%3E%3C/g%3E%3C/svg%3E">
+<meta name="theme-color" content="#fbf9f5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#161b24" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2044%2044%22%3E%3Crect%20x%3D%221%22%20y%3D%221%22%20width%3D%2242%22%20height%3D%2242%22%20rx%3D%2212%22%20fill%3D%22%23b44732%22%2F%3E%3Cpath%20d%3D%22M11%2029V15L22%2025L33%2015V29M15%2034H29%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%222.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2222%22%20cy%3D%2211%22%20r%3D%222%22%20fill%3D%22%23e9c879%22%2F%3E%3C%2Fsvg%3E">
 <title>Mizan: zakat calculator for Lunch Money</title>
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -19,19 +19,19 @@
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="top"><div class="wrap top-inner">
   <a class="brand" href="./" aria-label="Mizan home">
-    <svg viewBox="0 0 40 44" aria-hidden="true" focusable="false" fill="none"><path d="M20 5v32M6 12h28M6 12 1 26h10L6 12Zm28 0-5 14h10l-5-14ZM12 39h16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="20" cy="5" r="3" fill="currentColor"/><path d="M1 26c0 7 10 7 10 0M29 26c0 7 10 7 10 0" fill="currentColor"/></svg>
-    <span class="brand-name">Mizan<span class="brand-sub">Zakat for Lunch Money</span></span>
+    <svg class="brand-mark" viewBox="0 0 44 44" aria-hidden="true" focusable="false" fill="none"><rect x="1" y="1" width="42" height="42" rx="12" fill="currentColor"/><path d="M11 29V15L22 25L33 15V29" stroke="var(--on-deep)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 34H29" stroke="var(--on-deep)" stroke-width="2" stroke-linecap="round"/><circle cx="22" cy="11" r="2" fill="var(--accent)"/></svg>
+    <span class="brand-name">Mizan<span class="brand-sub">A personal project by Mazin</span></span>
   </a>
-  <nav class="nav" aria-label="Main"><a href="index.html" aria-current="page">Calculator</a><a href="token-guide.html">Token guide</a><a href="zakat-guide.html">Zakat guide</a></nav>
+  <nav class="nav" aria-label="Main"><a href="index.html" aria-current="page">Calculator</a><a href="about.html">The project</a><a href="token-guide.html">Token guide</a></nav>
 </div></header>
 <main id="main" class="wrap">
   <section id="connect" aria-labelledby="heroHead">
     <div class="hero">
       <div class="hero-head">
-        <p class="eyebrow">A little clarity for your zakat</p>
-        <h1 id="heroHead">Your balances.<br>Your zakat.<br>A clearer picture.</h1>
-        <p class="lead">Start with the accounts you already track in Lunch Money. Review what counts, choose your method, and see your estimate.</p>
-        <ol class="journey" aria-label="How it works"><li><span>01</span> Connect</li><li><span>02</span> Review</li><li><span>03</span> Estimate</li></ol>
+        <p class="eyebrow">Built from my own zakat calculation</p>
+        <h1 id="heroHead">Your zakat.<br><span class="hero-accent">From your actual<br>balances.</span></h1>
+        <p class="lead">I built Mizan because I wanted to stop guessing my account totals. It starts with the balances I already track in Lunch Money, down to the cent.</p>
+        <p class="personal-link"><a href="about.html">Why I built this <span aria-hidden="true">↗</span></a></p><ol class="journey" aria-label="How it works"><li><span>01</span> Your budget</li><li><span>02</span> Your balances</li><li><span>03</span> Your zakat</li></ol>
       </div>
       <div class="connect-card">
         <h2>Connect Lunch Money</h2>
@@ -45,19 +45,19 @@
         <div class="sample-action"><p>Take a look before connecting.</p><button type="button" id="sampleBtn">Explore with sample data →</button></div>
       </div>
     </div>
-    <div class="quiet-intro"><p>Your calculation stays in your browser. No Mizan account, no subscription, and no changes to your Lunch Money data.</p><a href="how-it-works.html">How your data is handled →</a></div>
+    <div class="quiet-intro"><p>Your account amounts come straight from Lunch Money. Review the balances, add what is missing, and see exactly how the total was calculated.</p><a href="how-it-works.html">How your data is handled →</a></div>
   </section>
 
   <div id="app" class="app" hidden>
     <div class="connected"><span id="sub"></span><button type="button" id="restart">Start again</button></div>
     <nav class="progress" aria-label="Calculation steps"><span>✓ Connected</span><span class="divider" aria-hidden="true">/</span><button type="button" id="reviewStep" aria-controls="reviewView" aria-current="step">02 Review balances</button><span class="divider" aria-hidden="true">/</span><button type="button" id="estimateStep" aria-controls="estimateView">03 Your estimate</button></nav>
     <div class="warn" id="dataWarn" hidden></div>
-    <section id="reviewView" aria-labelledby="reviewHead">
-      <div class="view-head"><p class="eyebrow">Step 2 of 3</p><h1 id="reviewHead" tabindex="-1">Make sure it adds up.</h1><p class="note">Keep the accounts that belong in your calculation. Edit any balance that needs updating.</p></div>
+    <section id="reviewView" class="flow-view" aria-labelledby="reviewHead">
+      <div class="view-head"><p class="eyebrow">Step 2 of 3</p><h1 id="reviewHead" tabindex="-1">Start with your actual balances.</h1><p class="note">These are your Lunch Money account balances. Keep the ones that belong in your zakat, and check any that need updating.</p></div>
       <div class="review-layout">
         <div class="review-main">
           <div class="review-warnings"><div class="warn" id="staleWarn" hidden></div></div>
-          <section class="section" id="accounts"><h2>Your accounts <span class="note">· <span class="cur"></span></span></h2>
+          <section class="section" id="accounts"><p class="source-summary" id="accountSourceSummary"></p><h2>Your accounts <span class="note">· <span class="cur"></span></span></h2>
             <div class="scroll"><table class="list"><thead><tr><th>Include</th><th>Account</th><th class="num">Balance</th></tr></thead><tbody id="accountRows"></tbody></table></div>
           </section>
           <details class="disclosure" id="extraAssets"><summary><span>Add other assets<span class="note">Cash, gold, silver, crypto or money owed to you</span></span></summary>
@@ -85,10 +85,19 @@
       </div>
     </section>
 
-    <section id="estimateView" aria-labelledby="estimateHead" hidden>
-      <div class="view-head"><p class="eyebrow">Step 3 of 3</p><h1 id="estimateHead" tabindex="-1">Your zakat, made clearer.</h1><p class="note">Choose the method you follow. Your estimate updates as you make changes.</p></div>
+    <section id="estimateView" class="flow-view" aria-labelledby="estimateHead" hidden>
+      <div class="view-head"><p class="eyebrow">Step 3 of 3</p><h1 id="estimateHead" tabindex="-1">A number you can trace.</h1><p class="note">From each account balance to the final estimate. Open the calculation, review your method, and follow every dollar.</p></div>
       <div class="estimate-layout">
+        <aside class="result" aria-labelledby="resultHead"><h2 class="due-label" id="resultHead" tabindex="-1">Estimated zakat</h2><div class="due" id="due" aria-live="polite" aria-atomic="true"></div><p id="resultMethod" class="result-method"></p><p class="due-hint">Assumes your hawl is complete. Confirm your method with your scholar.</p><p class="estimate-summary" id="estimateSummary"></p><details class="result-breakdown" id="resultBreakdown"><summary>How this is calculated</summary><div class="lines" id="lines"></div></details></aside>
         <div class="estimate-main">
+          <section class="calculation-card" id="calculation" aria-labelledby="calculationTitle">
+            <div class="chart-heading"><div><p class="eyebrow">From balances to your total</p><h2 id="calculationTitle">Every amount has a source.</h2></div><span class="chart-unit cur"></span></div>
+            <p class="note">Your selected accounts, plus anything you add, less eligible debts.</p>
+            <div id="calculationChart" class="waterfall-chart"></div>
+            <dl id="calculationSteps" class="calculation-steps"></dl>
+            <details class="ledger-detail"><summary>See every amount in this total</summary><div class="scroll" tabindex="0" role="region" aria-label="Calculation line items"><table><thead><tr><th>Item</th><th>Source</th><th class="num">Amount</th></tr></thead><tbody id="calculationItems"></tbody><tfoot><tr><th colspan="2" scope="row">Total after debts</th><td class="num" id="ledgerTotal"></td></tr></tfoot></table></div></details>
+          </section>
+          <details class="disclosure" id="methodSettings"><summary><span>Your method &amp; prices<span class="note" id="methodSummary"></span></span></summary><div class="method-content">
           <div class="estimate-choice"><fieldset><legend>Your nisab</legend><p class="note">The minimum wealth threshold. Choose the metal your method uses.</p><div class="choice-options"><label class="opt"><input type="radio" name="nisab" value="silver" checked>Silver</label><label class="opt"><input type="radio" name="nisab" value="gold">Gold</label></div></fieldset><p class="inline-note"><a href="zakat-guide.html#which-nisab" target="_blank" rel="noopener">Help choosing a nisab ↗</a></p></div>
           <details class="disclosure" id="mortgageSettings"><summary><span>Mortgage deduction<span class="note" id="mortgageChoice">Not deducted</span></span></summary>
             <p class="note">Scholars differ about mortgage deductions. Use the approach you follow.</p><fieldset><legend class="sr">Mortgage method</legend><div class="stacked-options"><label class="opt"><input type="radio" name="mortgage" value="none" checked>Do not deduct</label><label class="opt"><input type="radio" name="mortgage" value="next">Deduct the next payment</label><label class="opt"><input type="radio" name="mortgage" value="year">Deduct the next 12 months</label></div></fieldset>
@@ -98,19 +107,30 @@
             <div class="warn" id="priceWarn" hidden></div><p class="note">Prices in <span class="cur"></span> per gram of pure metal.</p>
             <div class="fields"><div class="field"><label for="goldPrice">Gold price per gram</label><input type="number" id="goldPrice" step="0.001" min="0"></div><div class="field"><label for="silverPrice">Silver price per gram</label><input type="number" id="silverPrice" step="0.0001" min="0"></div><div class="field"><label for="silverGramsNisab">Silver nisab (grams)</label><input type="number" id="silverGramsNisab" value="595" step="0.01" min="0" data-save></div><div class="field"><label for="goldGramsNisab">Gold nisab (grams)</label><input type="number" id="goldGramsNisab" value="85" step="0.01" min="0" data-save></div></div><p class="note price-info" id="priceInfo"></p>
           </details>
-          <details class="disclosure" id="comparison"><summary>Compare all six methods</summary><div class="scroll" tabindex="0" role="region" aria-label="Method comparison"><table><thead><tr><th>Nisab</th><th>Mortgage</th><th class="num">Threshold</th><th class="num">Net wealth</th><th class="num">Zakat</th></tr></thead><tbody id="methodRows"></tbody></table></div></details>
-          <details class="disclosure" id="history"><summary><span>Review your balance history<span class="note">12 monthly snapshots to help review your hawl</span></span></summary><p class="note">Selected Lunch Money accounts only, using today's nisab. Other assets, other debts and the mortgage are excluded. This table cannot confirm a completed hawl.</p><p id="hawlSummary"></p><div class="scroll" tabindex="0" role="region" aria-label="Monthly balance history"><table><thead><tr><th>Month</th><th class="num">Known total</th><th class="barcell"><span class="sr">Compared with the nisab</span></th></tr></thead><tbody id="hawlRows"></tbody></table></div><p class="legend" aria-hidden="true"><span><i></i>At or above</span><span><i class="below"></i>Below the nisab</span></p><p class="inline-note">Partial rows are not classified. Month-end snapshots cannot show every change during the year. <a href="zakat-guide.html#hawl" target="_blank" rel="noopener">Read about the hawl ↗</a></p></details>
+          </div></details>
+          <details class="disclosure" id="comparison"><summary><span>How other methods compare<span class="note">Explore the difference; choose the method you follow</span></span></summary><div id="methodChart" class="method-chart" aria-label="Select a calculation method"></div><details class="ledger-detail"><summary>View the comparison table</summary><div class="scroll" tabindex="0" role="region" aria-label="Method comparison"><table><thead><tr><th>Nisab</th><th>Mortgage</th><th class="num">Threshold</th><th class="num">Net wealth</th><th class="num">Zakat</th></tr></thead><tbody id="methodRows"></tbody></table></div></details></details>
           <div class="view-actions"><button type="button" id="backToReview" class="link-button">← Edit my balances</button></div>
         </div>
-        <aside class="result" aria-labelledby="resultHead"><h2 class="due-label" id="resultHead" tabindex="-1">Estimated zakat</h2><div class="due" id="due" aria-live="polite" aria-atomic="true"></div><p class="due-hint">Assumes your hawl is complete. Confirm your method with your scholar.</p><p class="estimate-summary" id="estimateSummary"></p><details class="result-breakdown" id="resultBreakdown"><summary>How this is calculated</summary><div class="lines" id="lines"></div></details></aside>
+
       </div>
+      <section class="history-panel chart-card" id="history" aria-labelledby="historyTitle">
+        <div class="chart-heading"><div><p class="eyebrow">Your balances over time</p><h2 id="historyTitle">The year behind your number.</h2></div><span class="chart-unit">Lunch Money history</span></div>
+        <p class="note">Selected Lunch Money accounts and debts only. Added assets, other debts and mortgage deductions are excluded. This history supports your hawl review; it cannot confirm a completed hawl.</p>
+        <div class="history-readout"><div><span id="historyDate" class="history-date"></span><strong id="historyAmount"></strong></div><span id="historyState" class="history-state"></span></div>
+        <div id="historyChart" class="history-chart"></div>
+        <div id="historyTicks" class="history-ticks" aria-hidden="true"></div>
+        <label class="sr" for="historyCursor">Explore a month in your balance history</label><input type="range" id="historyCursor" min="0" max="12" step="1" value="12" aria-describedby="historyCursorHelp">
+        <p id="historyCursorHelp" class="chart-help">Drag to explore a month, or use the arrow keys. Only adjacent complete totals are connected.</p>
+        <div class="chart-legend"><span><i class="complete-dot"></i>Complete total</span><span><i class="partial-dot"></i>Partial subtotal</span><span id="thresholdLegend"></span></div>
+        <details class="ledger-detail"><summary>View monthly amounts &amp; coverage</summary><p id="hawlSummary"></p><div class="scroll" tabindex="0" role="region" aria-label="Monthly balance history"><table><thead><tr><th>Month</th><th class="num">Known total</th><th class="barcell"><span class="sr">Compared with the nisab</span></th></tr></thead><tbody id="hawlRows"></tbody></table></div><p class="note">Partial rows are not classified against the nisab. <a href="zakat-guide.html#hawl" target="_blank" rel="noopener">Read about the hawl ↗</a></p></details>
+      </section>
       <div class="reset-row"><button type="button" class="link-button small" id="reset">Reset my method choices</button><p class="note">Only your method preferences are saved. Your balances and token are not.</p></div>
     </section>
   </div>
 </main>
 <footer class="foot"><div class="wrap foot-inner">
-  <div><p>Made by Mazin Kanuga.</p><p>An independent community project for Lunch Money.</p></div>
-  <nav aria-label="Footer"><a href="how-it-works.html">How it works &amp; privacy</a><a href="https://github.com/TechnoDudeX/lunchmoney-zakat" rel="noreferrer">Source code</a><a href="https://gold-api.com" rel="noreferrer">Metal prices</a></nav>
+  <div><p>Made by Mazin Kanuga.</p><p>An independent personal project for Lunch Money.</p></div>
+  <nav aria-label="Footer"><a href="zakat-guide.html">Zakat guide</a><a href="how-it-works.html">How it works &amp; privacy</a><a href="https://github.com/TechnoDudeX/lunchmoney-zakat" rel="noreferrer">Source code</a><a href="https://gold-api.com" rel="noreferrer">Metal prices</a></nav>
 </div></footer>
 <script>(function () {
   "use strict";
@@ -410,6 +430,7 @@
       tr.innerHTML =
         '<td><input type="checkbox" aria-label="Include ' + esc(a.name) + '"' + (a.include ? " checked" : "") + "></td>" +
         '<td><span class="name">' + esc(a.name) + "</span>" +
+        '<div class="note"><span class="source-state">' + (D.sample ? "Sample balance" : "Lunch Money") + '</span></div>' +
         (a.status === "closed" ? "" : '<div class="note">Balance from ' + esc(fdate(a.updated)) +
           (stale ? ' <span class="badge">not current</span>' : "") + "</div>") +
         (a.note ? '<div class="note">' + esc(a.note) + "</div>" : "") + "</td>" +
@@ -417,7 +438,7 @@
       var cb = tr.querySelector("input[type=checkbox]"), input = tr.querySelector("input[type=number]");
       input.value = Number(a.amount).toFixed(2);
       tbody.appendChild(tr);
-      rows.push({ data: a, cb: cb, input: input, tr: tr, stale: stale });
+      rows.push({ data: a, cb: cb, input: input, tr: tr, stale: stale, source: tr.querySelector(".source-state") });
     });
     return rows;
   }
@@ -496,12 +517,167 @@
     });
   }
 
+  // The graphs use the same numbers as the calculator. Unknown history stays unknown.
+  var historySelection = null, historyModel = null;
+
+  function waterfallModel(accountTotal, assetTotal, deductions) {
+    var added = assetTotal - accountTotal;
+    if (Math.abs(added) < 0.00000001) added = 0;
+    var net = assetTotal - deductions;
+    return [
+      { key: "accounts", label: "Accounts", start: 0, end: accountTotal, amount: accountTotal },
+      { key: "additions", label: "Added here", start: accountTotal, end: assetTotal, amount: added },
+      { key: "deductions", label: "Deductions", start: assetTotal, end: net, amount: deductions ? -deductions : 0 },
+      { key: "net", label: "After debts", start: 0, end: net, amount: net }
+    ];
+  }
+
+  function graphExtent(values) {
+    var min = Math.min.apply(null, values.concat([0]));
+    var max = Math.max.apply(null, values.concat([0]));
+    var span = max - min || 1;
+    return { min: min < 0 ? min - span * 0.08 : 0, max: max + span * 0.12 };
+  }
+
+  function historyPlot(months, nisab, ready) {
+    var values = months.filter(function (m) { return m.has; }).map(function (m) { return m.total; });
+    if (ready) values.push(nisab);
+    var extent = graphExtent(values);
+    var y = function (value) { return 18 + (extent.max - value) / (extent.max - extent.min) * 198; };
+    var points = months.map(function (m, i) {
+      return { month: m.month, total: m.total, has: m.has, complete: m.complete, missing: m.missing,
+        x: months.length > 1 ? 20 + i / (months.length - 1) * 680 : 360, y: m.has ? y(m.total) : null };
+    });
+    var segments = [], run = [];
+    function finish() { if (run.length > 1) segments.push(run); run = []; }
+    points.forEach(function (p) { if (p.has && p.complete) run.push(p); else finish(); });
+    finish();
+    return { points: points, segments: segments, zeroY: y(0), thresholdY: ready ? y(nisab) : null, extent: extent };
+  }
+
+  function isAdjusted(row) {
+    return num(row.input) !== Number(Number(row.data.amount).toFixed(2));
+  }
+
+  function sourceOf(row) {
+    return isAdjusted(row) ? "Adjusted here" : D.sample ? "Sample balance" : "Lunch Money";
+  }
+
+  function calculationItems(t) {
+    var items = [];
+    accountRows.forEach(function (r) {
+      if (r.cb.checked) items.push({ name: r.data.name || "Account", source: sourceOf(r), amount: num(r.input) });
+    });
+    [["cashHome", "Cash at home"], ["crypto", "Other crypto"], ["owed", "Money owed to you"], ["otherAssets", "Other assets"]].forEach(function (pair) {
+      var value = pos($(pair[0]));
+      if (value) items.push({ name: pair[1], source: "Added here", amount: value });
+    });
+    if (pos($("goldGrams"))) items.push({ name: "Gold (" + pos($("goldGrams")) + " g, " + num($("goldKarat")) + " karat)", source: "Added here", amount: pos($("goldPrice")) ? t.goldValue : null });
+    if (pos($("silverGrams"))) items.push({ name: "Silver (" + pos($("silverGrams")) + " g)", source: "Added here", amount: pos($("silverPrice")) ? t.silverValue : null });
+    debtRows.forEach(function (r) {
+      if (r.cb.checked) items.push({ name: r.data.name || "Debt", source: sourceOf(r), amount: pos(r.input) ? -pos(r.input) : 0 });
+    });
+    if (pos($("otherDebts"))) items.push({ name: "Other debts due now", source: "Added here", amount: -pos($("otherDebts")) });
+    if (t.mortgage) items.push({ name: "Mortgage: " + MORTGAGE[radio("mortgage")].toLowerCase(), source: "Your method", amount: -t.mortgage });
+    return items;
+  }
+
+  function renderCalculation(t) {
+    var selected = accountRows.filter(function (r) { return r.cb.checked; });
+    var accountTotal = selected.reduce(function (sum, r) { return sum + num(r.input); }, 0);
+    var adjusted = selected.filter(isAdjusted).length;
+    $("accountSourceSummary").textContent = selected.length + " accounts included · " + adjusted + " adjusted here";
+    accountRows.concat(debtRows).forEach(function (r) {
+      if (!r.source) return;
+      r.source.textContent = sourceOf(r);
+      r.source.classList.toggle("adjusted", isAdjusted(r));
+    });
+    $("ledgerTotal").textContent = t.assetsReady ? money.format(t.net) : "Incomplete";
+    $("calculationItems").innerHTML = calculationItems(t).map(function (item) {
+      var local = item.source === "Added here" || item.source === "Adjusted here" || item.source === "Your method";
+      return '<tr><td>' + esc(item.name) + '</td><td><span class="source-tag ' + (local ? "local" : "imported") + '">' + esc(item.source) + '</span></td><td class="num">' + (item.amount == null ? "Price needed" : esc(money.format(item.amount))) + '</td></tr>';
+    }).join("");
+    if (!t.assetsReady) {
+      $("calculationChart").innerHTML = '<p class="chart-empty">Add the missing metal prices under Your method &amp; prices to complete this breakdown.</p>';
+      $("calculationSteps").innerHTML = "";
+      return;
+    }
+    var steps = waterfallModel(accountTotal, t.assets, t.debts + t.mortgage);
+    var extent = graphExtent(steps.reduce(function (all, step) { return all.concat([step.start, step.end]); }, []));
+    var y = function (value) { return 16 + (extent.max - value) / (extent.max - extent.min) * 190; };
+    var svg = '<svg viewBox="0 0 720 230" role="img" aria-labelledby="calculationSvgTitle calculationSvgDesc"><title id="calculationSvgTitle">From your accounts to your net wealth</title><desc id="calculationSvgDesc">' + esc(steps.map(function (s) { return s.label + ": " + money.format(s.amount); }).join(". ")) + '</desc>';
+    [0, 0.5, 1].forEach(function (fraction) {
+      var at = 16 + fraction * 190;
+      svg += '<line class="chart-grid" x1="16" x2="704" y1="' + at + '" y2="' + at + '"/>';
+    });
+    svg += '<line class="chart-zero" x1="16" x2="704" y1="' + y(0).toFixed(2) + '" y2="' + y(0).toFixed(2) + '"/>';
+    steps.forEach(function (step, i) {
+      var x = 48 + i * 170, top = Math.min(y(step.start), y(step.end));
+      var height = Math.max(2, Math.abs(y(step.start) - y(step.end)));
+      svg += '<rect class="waterfall-bar ' + step.key + '" x="' + x + '" y="' + top.toFixed(2) + '" width="104" height="' + height.toFixed(2) + '" rx="3"/>';
+      if (i < steps.length - 1) svg += '<path class="chart-connector" d="M' + (x + 104) + ' ' + y(step.end).toFixed(2) + 'H' + (x + 170) + '"/>';
+    });
+    $("calculationChart").innerHTML = svg + '</svg>';
+    $("calculationSteps").innerHTML = steps.map(function (step) { return '<div class="' + step.key + '"><dt>' + step.label + '</dt><dd>' + esc(money.format(step.amount)) + '</dd></div>'; }).join("");
+  }
+
+  function methodChartMarkup(methods) {
+    var max = Math.max.apply(null, methods.map(function (m) { return m.ready ? m.due : 0; }).concat([1]));
+    return methods.map(function (method) {
+      var label = METAL[method.metal] + " · " + MORTGAGE[method.mode];
+      var amount = method.ready ? money.format(method.due) : "Incomplete";
+      var width = method.ready ? method.due / max * 100 : 0;
+      return '<button type="button" class="method-bar" data-metal="' + method.metal + '" data-mortgage="' + method.mode + '" aria-pressed="' + method.selected + '" aria-label="' + esc("Use " + label + ": " + amount) + '"><span class="method-bar-heading"><span class="method-bar-label">' + label + '</span><span class="method-bar-value">' + esc(amount) + '</span></span><span class="method-bar-track" aria-hidden="true"><span class="method-bar-fill" style="--bar-size:' + width.toFixed(3) + '%"></span></span>' + (method.ready && method.due === 0 ? '<span class="method-bar-zero">Below this method\'s nisab, or no positive net wealth</span>' : "") + '</button>';
+    }).join("");
+  }
+
+  function updateHistorySelection() {
+    if (!historyModel || !historyModel.points.length) return;
+    var i = Math.max(0, Math.min(historyModel.points.length - 1, historySelection));
+    var point = historyModel.points[i];
+    $("historyDate").textContent = fdate(point.month) + (i === historyModel.points.length - 1 ? " · Today" : "");
+    $("historyAmount").textContent = point.has ? money.format(point.total) : "No data";
+    $("historyState").textContent = !point.has ? "No selected balances available" : point.complete ? "All selected balances available" : "Partial subtotal · " + point.missing + (point.missing === 1 ? " balance missing" : " balances missing");
+    $("historyState").classList.toggle("partial", point.has && !point.complete);
+    $("historyCursor").setAttribute("aria-valuetext", $("historyDate").textContent + ": " + $("historyAmount").textContent + ". " + $("historyState").textContent);
+    $("historySelection").setAttribute("x1", point.x.toFixed(2));
+    $("historySelection").setAttribute("x2", point.x.toFixed(2));
+    document.querySelectorAll("#historyChart [data-month]").forEach(function (circle) { circle.classList.toggle("selected", Number(circle.getAttribute("data-month")) === i); });
+  }
+
+  function renderHistory(months, nisab, ready) {
+    historyModel = historyPlot(months, nisab, ready);
+    if (historySelection == null) historySelection = months.length - 1;
+    historySelection = Math.min(historySelection, months.length - 1);
+    var svg = '<svg viewBox="0 0 720 240" role="img" aria-labelledby="historySvgTitle historySvgDesc"><title id="historySvgTitle">Your selected Lunch Money balances over time</title><desc id="historySvgDesc">Complete totals are connected only across adjacent complete months. Hollow markers show partial subtotals. Missing months have no marker. Use the slider or data table for exact amounts.</desc>';
+    [18, 84, 150, 216].forEach(function (at) { svg += '<line class="chart-grid" x1="20" x2="700" y1="' + at + '" y2="' + at + '"/>'; });
+    svg += '<line class="chart-zero" x1="20" x2="700" y1="' + historyModel.zeroY.toFixed(2) + '" y2="' + historyModel.zeroY.toFixed(2) + '"/>';
+    if (ready) svg += '<line class="chart-threshold" x1="20" x2="700" y1="' + historyModel.thresholdY.toFixed(2) + '" y2="' + historyModel.thresholdY.toFixed(2) + '"/>';
+    historyModel.segments.forEach(function (segment) {
+      var path = segment.map(function (p, i) { return (i ? "L" : "M") + p.x.toFixed(2) + " " + p.y.toFixed(2); }).join(" ");
+      var area = path + "L" + segment[segment.length - 1].x.toFixed(2) + " " + historyModel.zeroY.toFixed(2) + "L" + segment[0].x.toFixed(2) + " " + historyModel.zeroY.toFixed(2) + "Z";
+      svg += '<path class="chart-area" d="' + area + '"/><path class="chart-trend" pathLength="1" d="' + path + '"/>';
+    });
+    svg += '<line id="historySelection" class="chart-selection" x1="0" x2="0" y1="12" y2="222"/>';
+    historyModel.points.forEach(function (p, i) {
+      if (p.has) svg += '<circle class="chart-point' + (p.complete ? "" : " partial") + '" data-month="' + i + '" cx="' + p.x.toFixed(2) + '" cy="' + p.y.toFixed(2) + '" r="4.5"/>';
+    });
+    $("historyChart").innerHTML = svg + '</svg>';
+    $("historyCursor").max = String(months.length - 1);
+    $("historyCursor").value = String(historySelection);
+    $("historyTicks").innerHTML = [0, Math.floor((months.length - 1) / 2), months.length - 1].map(function (i) { return '<span>' + esc(fdate(months[i].month)) + '</span>'; }).join("");
+    $("thresholdLegend").textContent = ready ? "Today's nisab: " + money.format(nisab) : "Nisab unavailable until a price and weight are entered";
+    updateHistorySelection();
+  }
+
   function render() {
     var metal = radio("nisab"), mode = radio("mortgage"), t = totals(metal, mode);
     $("mortgageChoice").textContent = MORTGAGE[mode];
+    $("methodSummary").textContent = METAL[metal] + " nisab · " + (mode === "none" ? "no mortgage deduction" : "mortgage: " + MORTGAGE[mode].toLowerCase());
+    $("resultMethod").textContent = METAL[metal] + " nisab · " + (mode === "none" ? "no mortgage deduction" : "mortgage: " + MORTGAGE[mode].toLowerCase());
     $("debtSummary").textContent = t.debts ? money.format(t.debts) + " in selected deductions" : "No debt deductions selected";
     $("mortgageFields").hidden = mode === "none";
-    if (!t.ready) $("priceSettings").open = true;
+    if (!t.ready) { $("methodSettings").open = true; $("priceSettings").open = true; }
     accountRows.concat(debtRows).forEach(function (r) { r.tr.classList.toggle("off", !r.cb.checked); });
 
     $("due").textContent = t.ready ? money.format(t.due) : "Incomplete";
@@ -524,10 +700,12 @@
     $("metalValue").textContent = !t.assetsReady ? "Add the missing metal prices on Your estimate to value your gold and silver." : (t.goldValue || t.silverValue)
       ? "Value of your gold: " + money.format(t.goldValue) + ". Value of your silver: " + money.format(t.silverValue) + "." : "";
 
-    var rows = "";
+    renderCalculation(t);
+    var rows = "", methods = [];
     ["silver", "gold"].forEach(function (m) {
       ["none", "next", "year"].forEach(function (mm) {
         var x = totals(m, mm), sel = m === metal && mm === mode;
+        methods.push({ metal: m, mode: mm, ready: x.ready, due: x.due, selected: sel });
         rows += "<tr" + (sel ? ' class="selected"' : "") + "><td>" + METAL[m] + (sel ? '<span class="sr"> (your choice)</span>' : "") +
           "</td><td>" + MORTGAGE[mm] + "</td>" +
           '<td class="num">' + (x.nisabReady ? money.format(x.nisab) : "Incomplete") + '</td><td class="num">' + (x.assetsReady ? money.format(x.net) : "Incomplete") +
@@ -535,6 +713,7 @@
       });
     });
     $("methodRows").innerHTML = rows;
+    $("methodChart").innerHTML = methodChartMarkup(methods);
 
     var last = D.months.length - 1;
     var months = hawlMonths(D.months, accountRows, debtRows, t.nisab, t.nisabReady);
@@ -553,6 +732,7 @@
         : "These accounts were at or above the " + metal + " nisab in all " + completeLabel + ".")) +
       (partial ? " Partial history: " + partial + (partial === 1 ? " row is missing" : " rows are missing") + " selected account balances; partial totals are not classified against the nisab." : "") +
       (missing ? " Lunch Money has no selected balances for " + missing + (missing === 1 ? " row" : " rows") + ", so the table cannot check them." : "");
+    renderHistory(months, t.nisab, t.nisabReady);
     $("hawlRows").innerHTML = months.map(function (m, i) {
       var w = Math.max(0, m.total) / max * 100;
       return "<tr><td>" + fdate(m.month) + (i === last ? " (today)" : "") + '</td><td class="num">' +
@@ -607,9 +787,26 @@
     document.querySelector("input[name=mortgage][value=none]").checked = true;
     render();
   });
+  $("historyCursor").addEventListener("input", function () {
+    historySelection = num($("historyCursor"));
+    updateHistorySelection();
+  });
+  $("methodChart").addEventListener("click", function (e) {
+    var button = e.target.closest("button[data-metal]");
+    if (!button) return;
+    var metal = button.getAttribute("data-metal"), mode = button.getAttribute("data-mortgage");
+    if (["silver", "gold"].indexOf(metal) < 0 || ["none", "next", "year"].indexOf(mode) < 0) return;
+    document.querySelector('input[name=nisab][value="' + metal + '"]').checked = true;
+    document.querySelector('input[name=mortgage][value="' + mode + '"]').checked = true;
+    render();
+    save();
+    // Rendering replaces the bars; restore keyboard focus to the chosen method.
+    var chosen = $("methodChart").querySelector('[data-metal="' + metal + '"][data-mortgage="' + mode + '"]');
+    if (chosen) chosen.focus({ preventScroll: true });
+  });
   // Save only after the user changes something, so the first view does not store the defaults.
-  document.addEventListener("input", function (e) { if (D && e.target.id !== "token") { render(); save(); } });
-  document.addEventListener("change", function (e) { if (D && e.target.id !== "token") { render(); save(); } });
+  document.addEventListener("input", function (e) { if (D && e.target.id !== "token" && e.target.id !== "historyCursor") { render(); save(); } });
+  document.addEventListener("change", function (e) { if (D && e.target.id !== "token" && e.target.id !== "historyCursor") { render(); save(); } });
 })();
 </script>
 </body>

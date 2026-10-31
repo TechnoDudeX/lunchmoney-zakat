@@ -27,7 +27,7 @@ function calculator() {
   } });
   // Expose private functions in this test VM only; production has no test hooks.
   vm.runInContext(script.replace(/\}\)\(\);\s*$/, `
-    globalThis.subject = { totals, hawlMonths, buildData, kindOf, render, setView,
+    globalThis.subject = { totals, hawlMonths, buildData, kindOf, render, setView, waterfallModel, historyPlot, calculationItems, isAdjusted, sourceOf, methodChartMarkup,
       configure: function (accounts, debts, months) {
         accountRows = accounts; debtRows = debts; D = { months: months };
         money = new Intl.NumberFormat('en-CA', { style: 'currency', currency: 'CAD' });
@@ -41,7 +41,7 @@ function calculator() {
 
 const row = (amount, history = [], checked = true) => ({
   cb: { checked }, input: { value: String(amount) },
-  data: { history }, tr: { classList: { toggle() {} } }
+  data: { history, amount }, tr: { classList: { toggle() {} } }
 });
 
 test('sample estimate remains 811.25, with all six method combinations', () => {
@@ -206,4 +206,96 @@ test('missing prices reveal their settings and mortgage inputs follow the select
   app.render();
   assert.equal(field('mortgageFields').hidden, false);
   assert.equal(field('mortgageChoice').textContent, 'Next 12 months');
+});
+
+
+test('calculation ledger reconciles accounts, adjustments, additions and all deductions', () => {
+  const { app, field, radio } = calculator();
+  const imported = row(10000.13), adjusted = row(2000.25), excluded = row(999, [], false);
+  adjusted.data.amount = 1900;
+  imported.data.name = '<Account & name>';
+  app.configure([imported, adjusted, excluded], [row(300.12), row(-20)], ['2026-10']);
+  field('cashHome').value = '25.10';
+  field('goldGrams').value = '2.5';
+  field('silverGrams').value = '10';
+  field('otherDebts').value = '70.05';
+  field('mortgagePayment').value = '500';
+  radio.mortgage = 'year';
+  const total = app.totals('silver', 'year');
+  const items = app.calculationItems(total);
+  assert.ok(Math.abs(items.reduce((sum, item) => sum + item.amount, 0) - total.net) < 1e-8);
+  assert.equal(items[0].source, 'Lunch Money');
+  assert.equal(items[1].source, 'Adjusted here');
+  assert.equal(items.find(item => item.name.startsWith('Mortgage:')).amount, -6000);
+  assert.equal(items.filter(item => item.source === 'Added here').length, 4);
+  app.render();
+  assert.match(field('calculationItems').innerHTML, /&lt;Account &amp; name&gt;/);
+  assert.doesNotMatch(field('calculationItems').innerHTML, /<Account/);
+  field('goldPrice').value = '';
+  const incomplete = app.totals('silver', 'year');
+  assert.equal(app.calculationItems(incomplete).find(item => item.name.startsWith('Gold')).amount, null);
+  app.render();
+  assert.match(field('calculationItems').innerHTML, /Price needed/);
+  assert.doesNotMatch(field('calculationChart').innerHTML, /<rect/);
+});
+
+test('adjustment provenance compares against the cents shown in the imported field', () => {
+  const { app } = calculator();
+  const imported = row(123.46);
+  imported.data.amount = 123.45678;
+  assert.equal(app.isAdjusted(imported), false);
+  imported.input.value = '123.45';
+  assert.equal(app.isAdjusted(imported), true);
+  imported.input.value = '123.460';
+  assert.equal(app.isAdjusted(imported), false);
+});
+
+test('waterfall shows the exact contribution of additions and deductions, including negative net wealth', () => {
+  const { app } = calculator();
+  const steps = app.waterfallModel(100.25, 120.75, 200.50);
+  assert.deepEqual(Array.from(steps, step => [step.start, step.end, step.amount]), [
+    [0, 100.25, 100.25], [100.25, 120.75, 20.5], [120.75, -79.75, -200.5], [0, -79.75, -79.75]
+  ]);
+  for (const value of [0, -100, 100]) {
+    const { field, app: renderer } = calculator();
+    renderer.configure([row(value)], [row(200)], ['2026-10']);
+    renderer.render();
+    assert.doesNotMatch(field('calculationChart').innerHTML, /NaN|Infinity|height="-/);
+  }
+});
+
+test('history graph breaks at unknown and partial months, retains zero and negative balances', () => {
+  const { app } = calculator();
+  const months = [
+    { month: '2026-04', total: 0, has: true, complete: true, missing: 0 },
+    { month: '2026-05', total: -10, has: true, complete: true, missing: 0 },
+    { month: '2026-06', total: 0, has: false, complete: false, missing: 2 },
+    { month: '2026-07', total: 100, has: true, complete: true, missing: 0 },
+    { month: '2026-08', total: 150, has: true, complete: false, missing: 1 },
+    { month: '2026-09', total: 200, has: true, complete: true, missing: 0 },
+    { month: '2026-10', total: 250, has: true, complete: true, missing: 0 }
+  ];
+  const plot = app.historyPlot(months, 190, true);
+  assert.deepEqual(Array.from(plot.segments, run => Array.from(run, point => point.month)), [
+    ['2026-04', '2026-05'], ['2026-09', '2026-10']
+  ]);
+  assert.equal(plot.points[2].y, null);
+  assert.ok(Number.isFinite(plot.points[0].y));
+  assert.ok(plot.extent.min < -10 && plot.extent.max > 250);
+  assert.ok(Number.isFinite(plot.thresholdY));
+  assert.equal(app.historyPlot(months, 0, false).thresholdY, null);
+  const zeroOnly = app.historyPlot([{ ...months[0], total: 0 }], 0, false);
+  assert.ok(Number.isFinite(zeroOnly.points[0].y));
+});
+
+test('method graphs distinguish a genuine zero from incomplete input', () => {
+  const { app } = calculator();
+  const markup = app.methodChartMarkup([
+    { metal: 'silver', mode: 'none', ready: true, due: 0, selected: true },
+    { metal: 'gold', mode: 'next', ready: false, due: null, selected: false }
+  ]);
+  assert.match(markup, /\$0\.00/);
+  assert.match(markup, /Incomplete/);
+  assert.match(markup, /aria-pressed="true"/);
+  assert.doesNotMatch(markup, /NaN|Infinity|--bar-size:-/);
 });

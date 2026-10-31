@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- This guide loads only local styles and fonts. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src data:; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="author" content="Mazin Kanuga">
+<meta name="description" content="A personal project by Mazin Kanuga: calculating zakat from real Lunch Money balances, with a clear trail from each account to the final amount.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#fbf9f5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#161b24" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2044%2044%22%3E%3Crect%20x%3D%221%22%20y%3D%221%22%20width%3D%2242%22%20height%3D%2242%22%20rx%3D%2212%22%20fill%3D%22%23b44732%22%2F%3E%3Cpath%20d%3D%22M11%2029V15L22%2025L33%2015V29M15%2034H29%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%222.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2222%22%20cy%3D%2211%22%20r%3D%222%22%20fill%3D%22%23e9c879%22%2F%3E%3C%2Fsvg%3E">
+<title>Why I built Mizan | Zakat from Lunch Money balances</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="top"><div class="wrap top-inner">
+  <a class="brand" href="./" aria-label="Mizan home">
+    <svg class="brand-mark" viewBox="0 0 44 44" aria-hidden="true" focusable="false" fill="none"><rect x="1" y="1" width="42" height="42" rx="12" fill="currentColor"/><path d="M11 29V15L22 25L33 15V29" stroke="var(--on-deep)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 34H29" stroke="var(--on-deep)" stroke-width="2" stroke-linecap="round"/><circle cx="22" cy="11" r="2" fill="var(--accent)"/></svg>
+    <span class="brand-name">Mizan<span class="brand-sub">A personal project by Mazin</span></span>
+  </a>
+  <nav class="nav" aria-label="Main"><a href="index.html">Calculator</a><a href="about.html" aria-current="page">The project</a><a href="token-guide.html">Token guide</a></nav>
+</div></header><main id="main" class="wrap"><div class="page-head project-head"><p class="eyebrow">A personal project by Mazin Kanuga</p><h1>I wanted a number<br>I could check.</h1><p class="lead">My money was already in Lunch Money. My zakat calculation should start there, too.</p></div>
+<div class="project-layout"><article class="project-story"><h2>The problem was the guessing.</h2><p>Online calculators ask you how much is in your accounts, how much you owe, and what else you own. The arithmetic is straightforward. Getting the account totals right is the part that takes the work.</p><p>I built Mizan to start with the balances I already track in Lunch Money. It reads the accounts, lets me review what belongs in the calculation, and shows the path from those amounts to the zakat estimate.</p><h2>Every dollar should have a trail.</h2><p>An imported balance is marked as imported. If I change it here, it is marked as adjusted. Cash at home, gold, silver and anything else I add are kept visible as additions. The final total can be opened up, line by line.</p><p>The graphs help explain the same numbers. They show how the account balances become a total, what changes with a different method, and what the available monthly history looks like.</p><h2>The numbers come from my budget.<br>The method is still my choice.</h2><p>Lunch Money can supply account balances. It cannot decide which zakat rules I follow, value things I have not recorded, or make an outdated bank connection current. Mizan makes those choices and data gaps visible so I can review them.</p><p>That is the point of this project: less account-entry guesswork, precise arithmetic, and a calculation I can understand.</p><p class="project-signature">Mazin Kanuga<br><span>Creator of Mizan</span></p></article><aside class="project-note"><span class="project-note-label">The idea</span><p>Your budget already has the numbers.<br><strong>Start there.</strong></p><ol><li>Read the actual balances.</li><li>Review every addition and deduction.</li><li>Trace the final amount.</li></ol><a class="button primary" href="./">Open the calculator →</a><a class="project-source" href="https://github.com/TechnoDudeX/lunchmoney-zakat" rel="noreferrer">Read the source code ↗</a></aside></div></main><footer class="foot"><div class="wrap foot-inner">
+  <div><p>Made by Mazin Kanuga.</p><p>An independent personal project for Lunch Money.</p></div>
+  <nav aria-label="Footer"><a href="zakat-guide.html">Zakat guide</a><a href="how-it-works.html">How it works &amp; privacy</a><a href="https://github.com/TechnoDudeX/lunchmoney-zakat" rel="noreferrer">Source code</a><a href="https://gold-api.com" rel="noreferrer">Metal prices</a></nav>
+</div></footer>
+</body></html>

@@ -4,9 +4,9 @@
 
 Made by Mazin Kanuga. Mizan is the Arabic word for "balance".
 
-Mizan is a web page that reads your balances from [Lunch Money](https://lunchmoney.app) and estimates your zakat. It gets today's gold and silver prices in your currency, and provides month-end history to help you review the hawl (the relevant lunar year).
+I built Mizan to stop guessing my account totals at zakat time. It is a personal project that reads my balances from [Lunch Money](https://lunchmoney.app) and estimates your zakat. It gets today's gold and silver prices in your currency, and provides month-end history to help you review the hawl (the relevant lunar year).
 
-A community project. Lunch Money did not make it and does not support it.
+An independent personal project. Lunch Money did not make it and does not support it.
 
 ## What it does
 
@@ -20,34 +20,36 @@ A community project. Lunch Money did not make it and does not support it.
   - Leave out an account, for example money that belongs to your spouse.
   - Correct an amount.
   - Add things that are not in Lunch Money: cash at home, gold, silver, other crypto, money that people owe you, and other debts.
-- Shows all 6 methods side by side.
+- Marks imported balances, edits made here, and manual additions, with a line-by-line ledger that reconciles to the final total.
+- Shows the path from account balances through additions and deductions in a waterfall graph.
+- Compares all 6 methods with selectable bars and a table.
 - Shows your month-end totals for the last 12 months. It tells you if your total was below the nisab in a month.
 - Marks balances that are not current, for example when a bank connection needs a relink. It also marks retirement accounts.
 - Shows **Incomplete** when a price needed for the selected nisab or your gold/silver holdings is missing. It never presents an incomplete calculation as zero zakat.
 - Labels partial balance-history rows and compares only rows with all selected balances against the nisab.
 - Has a sample mode, so you can try it without a token.
 
-The calculator has three steps: connect, review balances, and see your estimate. Extra assets and debts open on demand; method comparisons, prices and balance history stay in expandable sections.
+The calculator has three steps: connect, review balances, and see your estimate. Extra assets and debts open on demand; method choices, prices and comparisons open on demand. An interactive balance-history graph appears below the calculation, with a monthly table available for exact amounts.
 
-The [Token guide](token-guide.html) walks through connecting Lunch Money. [How it works](how-it-works.html) explains privacy and calculations. The [Zakat guide](zakat-guide.html) groups rules and sources into expandable topics.
+[The project](about.html) explains why I built Mizan: less account-entry guesswork and a traceable calculation. The [Token guide](token-guide.html) walks through connecting Lunch Money. [How it works](how-it-works.html) explains privacy and calculations. The [Zakat guide](zakat-guide.html) groups rules and sources into expandable topics.
 
 ## Your data and your token
 
 - **Read only.** The page sends only GET requests. It has no code that changes or deletes anything in Lunch Money.
-- **No application server.** The site has a calculator, 3 static guide pages, a shared stylesheet and 2 font files. Your browser talks directly to the Lunch Money API. No token or account balances go to the author.
+- **No application server.** The site has a calculator, 3 static guide pages, a project page, a shared stylesheet and 2 font files. Your browser talks directly to the Lunch Money API. No token or account balances go to the author.
 - **The token is not kept.** The page sends your token only to `api.lunchmoney.dev`, then forgets it. The page does not save the token in the browser, in a cookie or anywhere else. If your browser or a password manager asks to save it, click Never.
 - **Only 2 hosts.** A Content Security Policy lets the page connect only to `api.lunchmoney.dev` and `api.gold-api.com`. The fonts come from the same site as the page. Requests to gold-api.com include only your currency code (for example CAD). They do not include your token or your balances. Redirects are refused, so the token cannot follow a redirect to another host.
 - **Saved in your browser:** only your choices (nisab, mortgage method, nisab weights, gold and silver purity). Amounts are never saved.
 - **Lunch Money tokens can change data.** Lunch Money has no read-only tokens. Make a separate token for this page, and delete it on the [developers page](https://my.lunchmoney.app/developers) when you finish.
 
-You can read the calculator code in [index.html](index.html). The guide pages are plain HTML and share [styles.css](styles.css). The fonts in [fonts/](fonts/) are Nunito Sans and Red Hat Mono. On Apple devices the body text uses Avenir; large headings use the system's Georgia font. The site has no libraries and no build step.
+You can read the calculator code in [index.html](index.html). The guide pages are plain HTML and share [styles.css](styles.css). The fonts in [fonts/](fonts/) are Nunito Sans and Red Hat Mono. Nunito Sans is used for the main interface; Red Hat Mono is used for amounts and labels. Short entrance and chart animations respect reduced-motion preferences. The site has no libraries and no build step.
 
 ## How to use it
 
 1. Follow the [Token guide](token-guide.html) to create a separate access token in Lunch Money.
 2. Open https://lunchmoney-zakat.netlify.app, paste the token, and click **Connect my accounts**.
 3. Review your accounts. Open **Add other assets** or **Review debts** as needed.
-4. Click **See my estimate**. Choose your nisab and any mortgage deduction. Open the comparison or history when you need more detail.
+4. Click **See my estimate**. Choose your nisab and any mortgage deduction. Trace the total through the ledger, compare methods, and explore monthly history as needed.
 
 You can move between Review balances and Your estimate without reconnecting or losing your entered amounts. The token input is masked in every browser. Mizan still does not save it.
 
@@ -87,7 +89,7 @@ Run the calculation and account-mapping regression tests without installing depe
 node --test tests/calculator.test.cjs
 ```
 
-The tests use synthetic balances and run the actual inline script in a test context. They cover missing prices, nisab boundaries, metal purity, mortgage choices, partial history, debt credits, closed accounts, navigation and conditional settings. They do not call the live Lunch Money API.
+The tests use synthetic balances and run the actual inline script in a test context. They cover missing prices, nisab boundaries, metal purity, mortgage choices, partial history, debt credits, closed accounts, navigation, conditional settings, ledger reconciliation, adjustment provenance, chart gaps, negative totals and incomplete comparisons. They do not call the live Lunch Money API.
 
 ## Licence
 
@@ -95,4 +97,4 @@ MIT, copyright Mazin Kanuga. See [LICENSE](LICENSE).
 
 The fonts use the SIL Open Font License. The licence texts are in [fonts/](fonts/).
 
-The design takes ideas from the Lunch Money style, so that it fits next to Lunch Money. It does not use the Lunch Money logo or mascot.
+The visual identity uses a simple M mark, warm neutral surfaces, terracotta accents and restrained motion. It does not use the Lunch Money logo or mascot.

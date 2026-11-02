@@ -113,22 +113,25 @@ test('nisab equality qualifies, purity is applied, and unchecked balances are ex
 
 test('partial history cannot classify a month, including missing debt balances', () => {
   const { app, field } = calculator();
-  const accounts = [row(5000, [5000, 5000]), row(5000, [null, 5000])];
-  const debts = [row(100, [100, null])];
-  const result = app.hawlMonths(['2026-08', '2026-09', '2026-10'], accounts, debts, 1190, true);
-  for (const month of result.slice(0, 2)) {
+  // A gap between two balances, and an open debt whose history stops early, are unknown.
+  const accounts = [row(5000, [5000, 5000, 5000]), row(5000, [5000, null, 5000])];
+  const debts = [row(100, [100, 100, null])];
+  const months = ['2026-07', '2026-08', '2026-09', '2026-10'];
+  const result = app.hawlMonths(months, accounts, debts, 1190, true);
+  assert.equal(result[0].complete, true);
+  for (const month of result.slice(1, 3)) {
     assert.equal(month.has, true);
     assert.equal(month.complete, false);
     assert.equal(month.above, null);
     assert.equal(month.missing, 1);
   }
-  assert.equal(result[2].total, 9900);
-  assert.equal(result[2].complete, true);
-  app.configure(accounts, debts, ['2026-08', '2026-09', '2026-10']);
+  assert.equal(result[3].total, 9900);
+  assert.equal(result[3].complete, true);
+  app.configure(accounts, debts, months);
   app.render();
   assert.equal((field('hawlRows').innerHTML.match(/Partial: 1 missing/g) || []).length, 2);
   assert.match(field('hawlSummary').textContent, /2 rows are missing selected account balances/);
-  assert.match(field('hawlSummary').textContent, /1 complete row\./);
+  assert.match(field('hawlSummary').textContent, /2 complete rows\./);
 });
 
 test('zero history is data; no history stays unknown; credits do not increase historical wealth', () => {
@@ -142,13 +145,45 @@ test('zero history is data; no history stays unknown; credits do not increase hi
   assert.equal(app.hawlMonths(['2026-09', '2026-10'], [row(2000, [2000])], [], 0, false)[0].above, null);
 });
 
-test('deselected rows do not cause partial history; closed-account gaps remain unknown', () => {
+test('deselected rows do not cause partial history', () => {
   const { app } = calculator();
-  const accounts = [row(2000, [2000]), row(0, [null], false)];
+  const accounts = [row(2000, [2000]), row(500, [null], false)];
   assert.equal(app.hawlMonths(['2026-09', '2026-10'], accounts, [], 1190, true)[0].complete, true);
-  accounts[1].cb.checked = true;
+});
+
+test('accounts count only in the months when they were open', () => {
+  const { app, field } = calculator();
+  const months = ['2026-06', '2026-07', '2026-08', '2026-09', '2026-10'];
+  const closed = row(0, [3000, 3000, null, null]);
+  closed.data.status = 'closed';
+  const opened = row(4000, [null, null, 4000, 4000]);
+  const thisMonth = row(700, [null, null, null, null]);
+  const accounts = [row(1000, [1000, 1000, 1000, 1000]), closed, opened, thisMonth];
+  const result = app.hawlMonths(months, accounts, [], 1190, true);
+  assert.deepEqual(result.map(m => m.complete), [true, true, true, true, true]);
+  assert.deepEqual(result.map(m => m.total), [4000, 4000, 5000, 5000, 5700]);
+  // A closed account with a gap before its last balance is still unknown there.
+  closed.data.history = [3000, null, 3000, null];
+  assert.equal(app.hawlMonths(months, accounts, [], 1190, true)[1].missing, 1);
+  // The same goes for a closed debt.
+  const debt = row(0, [null, 200, null, null]);
+  debt.data.status = 'closed';
+  assert.deepEqual(app.hawlMonths(months, [row(1000, [1000, 1000, 1000, 1000])], [debt], 1190, true).map(m => m.total),
+    [1000, 800, 1000, 1000, 1000]);
+  closed.data.history = [3000, 3000, null, null];
+  app.configure(accounts, [], months);
+  app.render();
+  assert.match(field('hawlSummary').textContent, /2 selected balances start after the first month/);
+  assert.doesNotMatch(field('hawlSummary').textContent, /Partial history/);
+});
+
+test('when no balance history loaded, every earlier month stays unknown', () => {
+  const { app } = calculator();
+  const accounts = [row(2000, [null]), row(0, [null])];
   accounts[1].data.status = 'closed';
-  assert.equal(app.hawlMonths(['2026-09', '2026-10'], accounts, [], 1190, true)[0].complete, false);
+  const result = app.hawlMonths(['2026-09', '2026-10'], accounts, [], 1190, true);
+  assert.equal(result[0].has, false);
+  assert.equal(result[0].missing, 1);
 });
 
 test('mapping preserves closed history, excludes property and never values coin units as money', () => {

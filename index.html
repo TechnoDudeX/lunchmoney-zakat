@@ -494,24 +494,43 @@
              grams: grams, unit: unit, goldValue: goldValue, silverValue: silverValue };
   }
 
-  // Missing history is unknown, never an assumed zero. Closed-account gaps also
-  // stay unknown: month-end data alone cannot establish an opening/closing date.
+  // The months when each row was open: from its first month-end balance, and for a closed
+  // account up to its last one. A row with no history was opened this month, unless no row
+  // has history (then the history did not load). Other gaps stay unknown, never an assumed zero.
+  function openSpans(rows, last) {
+    var known = function (r) {
+      var first = -1, end = -1;
+      for (var i = 0; i < last; i++) if (r.data.history[i] != null) { if (first < 0) first = i; end = i; }
+      return { first: first, end: end };
+    };
+    var spans = rows.map(known);
+    var anyHistory = spans.some(function (s) { return s.first >= 0; });
+    return spans.map(function (s, n) {
+      var closed = rows[n].data.status === "closed";
+      if (s.first < 0) return anyHistory || closed ? { from: last, to: last } : { from: 0, to: last };
+      return { from: s.first, to: closed ? s.end : last };
+    });
+  }
+
   function hawlMonths(monthKeys, accounts, debts, nisab, ready) {
     var last = monthKeys.length - 1;
+    var spans = openSpans(accounts.concat(debts), last);
     return monthKeys.map(function (m, i) {
       var total = 0, has = i === last, missing = 0;
-      function add(rows, sign) {
-        rows.forEach(function (r) {
+      function add(rows, sign, offset) {
+        rows.forEach(function (r, n) {
           if (!r.cb.checked) return;
+          var span = spans[offset + n];
           if (i === last) total += sign * (sign === 1 ? num(r.input) : pos(r.input));
+          else if (i < span.from || i > span.to) return;  // not open in this month
           else if (r.data.history[i] != null) {
             has = true;
             total += sign * (sign === 1 ? r.data.history[i] : Math.max(0, r.data.history[i]));
           } else missing++;
         });
       }
-      add(accounts, 1);
-      add(debts, -1);
+      add(accounts, 1, 0);
+      add(debts, -1, accounts.length);
       var complete = has && missing === 0;
       return { month: m, total: total, has: has, missing: missing, complete: complete,
                above: complete && ready ? total >= nisab : null };
@@ -726,13 +745,17 @@
     var max = Math.max.apply(null, known.map(function (m) { return Math.abs(m.total); }).concat([t.nisab, 1]));
     var below = complete.filter(function (m) { return m.above === false; });
     var low = complete.reduce(function (a, b) { return b.total < a.total ? b : a; });
+    var selected = accountRows.concat(debtRows).filter(function (r) { return r.cb.checked; });
+    var late = openSpans(selected, last).filter(function (s, n) { return s.from > 0 && selected[n].data.status !== "closed"; }).length;
     $("hawlSummary").textContent = (!t.nisabReady ? "Enter the " + metal + " price and nisab weight under Prices & nisab weights to compare these accounts with the nisab." :
       "Lowest total with all selected balances available: " + money.format(low.total) + " (" + fdate(low.month) + "). " +
       (below.length ? "These accounts were below the " + metal + " nisab in " + below.length + " of " + completeLabel + ": " +
         below.map(function (m) { return fdate(m.month); }).join(", ") + ". Ask a scholar how this affects your zakat year."
         : "These accounts were at or above the " + metal + " nisab in all " + completeLabel + ".")) +
       (partial ? " Partial history: " + partial + (partial === 1 ? " row is missing" : " rows are missing") + " selected account balances; partial totals are not classified against the nisab." : "") +
-      (missing ? " Lunch Money has no selected balances for " + missing + (missing === 1 ? " row" : " rows") + ", so the table cannot check them." : "");
+      (missing ? " Lunch Money has no selected balances for " + missing + (missing === 1 ? " row" : " rows") + ", so the table cannot check them." : "") +
+      (late ? " " + late + (late === 1 ? " selected balance starts" : " selected balances start") + " after the first month, so the table counts " +
+        (late === 1 ? "it" : "them") + " only from the first month-end balance in Lunch Money. If one was open before then, its earlier balance is not counted." : "");
     renderHistory(months, t.nisab, t.nisabReady);
     $("hawlRows").innerHTML = months.map(function (m, i) {
       var w = Math.max(0, m.total) / max * 100;

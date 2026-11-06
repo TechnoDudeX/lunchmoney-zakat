@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src data:; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="author" content="Mazin Kanuga">
-<meta name="description" content="How Mizan works: a static page, read-only requests to the Lunch Money API, the token lifecycle, the zakat formulas and the hawl check.">
+<meta name="description" content="How Mizan works: a static page, read-only requests to the Lunch Money or YNAB API, the token lifecycle, the zakat formulas and the hawl check.">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#f5f5f2" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#17191d" media="(prefers-color-scheme: dark)">
@@ -51,6 +51,23 @@
           </tbody>
         </table></div>
         <p>After request 1 succeeds, requests 2 to 8 start at the same time. Requests 1 to 6 use the <a href="https://lunchmoney.dev/introduction" rel="noreferrer">current v2 API</a> at <code>https://api.lunchmoney.dev/v2</code>. The page asks for <code>balance_history</code> only up to last month, because the current month can be in the future for the server in some time zones. For today, the page uses the amounts on the screen.</p>
+      </div></details>
+<details class="article-topic" id="ynab"><summary><h3>Connecting YNAB</h3></summary><div class="topic-content">
+        <p class="sub">You can connect YNAB instead of Lunch Money. The token is handled the same way: it is cleared from the field before the first request, sent only in the <code>Authorization: Bearer</code> header to <code>api.ynab.com</code>, and set to <code>null</code> when the requests finish.</p>
+        <div class="scroll"><table>
+          <thead><tr><th>#</th><th>Request</th><th>Type</th><th>What the page reads</th></tr></thead>
+          <tbody>
+            <tr><td class="n">1</td><td><code>GET /v1/budgets?include_accounts=true</code></td><td><span class="tag">Required</span></td><td>Your budgets with their accounts, balances and currency. Mizan uses the budget changed most recently, and says so when you have more than one.</td></tr>
+            <tr><td class="n">2</td><td><code>GET /v1/budgets/{id}/transactions?since_date=…</code></td><td><span class="tag opt">Optional</span></td><td>Transactions from the last 13 months, used only to work out month-end balances for the hawl.</td></tr>
+          </tbody>
+        </table></div>
+        <ul>
+          <li><strong>Amounts:</strong> YNAB stores amounts in thousandths (milliunits), so Mizan divides by 1,000. Credit cards and loans are negative in YNAB and are shown as positive debts.</li>
+          <li><strong>Account types:</strong> checking, savings and cash count. Credit cards are deducted by default; loans and lines of credit are listed but not selected. Mortgages go to the mortgage setting. Tracking accounts count when their name looks like an investment (for example “TFSA” or “Brokerage”); others, such as a house or car, are listed but not selected.</li>
+          <li><strong>History:</strong> YNAB has no balance history, so each month-end balance is today’s balance less the transactions dated after that month. Months before an account’s first transaction, while it was still empty, are treated as before it opened.</li>
+          <li><strong>Not current:</strong> an account whose bank import has an error in YNAB is marked “not current”. Tracking accounts get a note, because their balances are usually updated by hand.</li>
+        </ul>
+        <div class="callout"><p><strong>YNAB tokens can change data and do not expire.</strong> Mizan never changes data, but the token itself can. Revoke it in YNAB under Account Settings → Developer Settings when you finish.</p></div>
       </div></details>
 <details class="article-topic" id="saved"><summary><h3>What the page saves</h3></summary><div class="topic-content">
         <p>The page saves only your choices, in your browser's <code>localStorage</code>, under the key <code>lunchmoney-zakat-choices-v1</code>:</p>
@@ -171,7 +188,7 @@
           <thead><tr><th>Rule</th><th>Effect</th></tr></thead>
           <tbody>
             <tr><td><code>default-src 'none'</code></td><td>The page can load nothing that the policy does not name.</td></tr>
-            <tr><td><code>connect-src</code></td><td>The script can connect only to <code>https://api.lunchmoney.dev</code> and <code>https://api.gold-api.com</code>.</td></tr>
+            <tr><td><code>connect-src</code></td><td>The script can connect only to <code>https://api.lunchmoney.dev</code>, <code>https://api.ynab.com</code> and <code>https://api.gold-api.com</code>.</td></tr>
             <tr><td><code>script-src 'unsafe-inline'</code></td><td>Inline JavaScript is allowed, including inline event handlers. External script files are blocked, including files from this site. This policy does not distinguish Mizan's script from any other injected inline script.</td></tr>
             <tr><td><code>style-src 'self' 'unsafe-inline'</code></td><td>The shared stylesheet comes from this site. Inline styles are allowed for the balance-history bars.</td></tr>
             <tr><td><code>font-src 'self'</code></td><td>Fonts come only from the site of the page.</td></tr>
@@ -181,7 +198,7 @@
         </table></div>
         <p>Netlify also sends <code>Referrer-Policy: no-referrer</code>, <code>X-Content-Type-Options: nosniff</code>, <code>X-Frame-Options: DENY</code> and a <code>Permissions-Policy</code> that turns off the camera, the microphone, location and payment.</p>
       </div></details></section></div></div></main><footer class="foot"><div class="wrap foot-inner">
-  <div><p>Made by Mazin Kanuga.</p><p>A community project for <a href="https://lunchmoney.app" rel="noreferrer">Lunch Money</a>.</p></div>
+  <div><p>Made by Mazin Kanuga.</p><p>A community project for <a href="https://lunchmoney.app" rel="noreferrer">Lunch Money</a> and <a href="https://www.ynab.com" rel="noreferrer">YNAB</a> users.</p></div>
   <nav aria-label="Footer"><a href="zakat-guide.html">Zakat guide</a><a href="how-it-works.html">How it works &amp; privacy</a><a href="https://github.com/TechnoDudeX/lunchmoney-zakat" rel="noreferrer">Source code</a><a href="https://gold-api.com" rel="noreferrer">Metal prices</a></nav>
 </div></footer>
 <script>(function () {

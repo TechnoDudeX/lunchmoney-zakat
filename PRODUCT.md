@@ -8,7 +8,7 @@ web
 
 ## Users
 
-Lunch Money users preparing a zakat estimate from their actual balances.
+Lunch Money and YNAB users preparing a zakat estimate from their actual balances.
 
 ## Product Purpose
 
@@ -20,7 +20,7 @@ A community project that reads Lunch Money balances directly, provides a traceab
 
 ## Operating Context
 
-Users connect with a Lunch Money access token or explore fictional sample data, review balances and debts, choose calculation methods, and review an estimate and balance history.
+Users connect with a Lunch Money or YNAB access token or explore fictional sample data, review balances and debts, choose calculation methods, and review an estimate and balance history.
 
 ## Capabilities and Constraints
 

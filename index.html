@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- The page can connect only to the Lunch Money API and the gold and silver price API. Fonts come only from this site. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; connect-src https://api.lunchmoney.dev https://api.gold-api.com; img-src data:; base-uri 'none'; form-action 'none'">
+<!-- The page can connect only to the Lunch Money and YNAB APIs and the gold and silver price API. Fonts come only from this site. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; connect-src https://api.lunchmoney.dev https://api.ynab.com https://api.gold-api.com; img-src data:; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="author" content="Mazin Kanuga">
-<meta name="description" content="Mizan is a zakat calculator for Lunch Money users. It reads your balances and gets today's gold and silver prices. Read only. Your token goes only to the Lunch Money API.">
+<meta name="description" content="Mizan is a zakat calculator for Lunch Money and YNAB users. It reads your balances and gets today's gold and silver prices. Read only. Your token goes only to the Lunch Money or YNAB API.">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#f5f5f2" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#17191d" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2044%2044%22%3E%3Crect%20x%3D%221%22%20y%3D%221%22%20width%3D%2242%22%20height%3D%2242%22%20rx%3D%2212%22%20fill%3D%22%23191919%22%2F%3E%3Cpath%20d%3D%22M11%2029V15L22%2025L33%2015V29M15%2034H29%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%222.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2222%22%20cy%3D%2211%22%20r%3D%222%22%20fill%3D%22%23e9c879%22%2F%3E%3C%2Fsvg%3E">
-<title>Mizan: zakat calculator for Lunch Money</title>
+<title>Mizan: zakat calculator for Lunch Money and YNAB</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body class="calculator-page">
@@ -28,9 +28,9 @@
   <section id="home" class="home" aria-labelledby="heroHead">
     <div class="hero">
       <div class="hero-copy">
-        <p class="kicker"><span class="kicker-dot" aria-hidden="true"></span>A zakat calculator for Lunch Money</p>
+        <p class="kicker"><span class="kicker-dot" aria-hidden="true"></span>A zakat calculator for Lunch Money &amp; YNAB</p>
         <h1 id="heroHead">Your zakat.<br>Made clear.</h1>
-        <p class="hero-lead">Your accounts are already in Lunch Money. Use those same balances to calculate your zakat, with every amount in view.</p>
+        <p class="hero-lead">Your accounts are already in Lunch Money or YNAB. Use those same balances to calculate your zakat, with every amount in view.</p>
         <div class="hero-actions">
           <a class="button primary cta-connect" href="#connect">Connect your account <span aria-hidden="true">→</span></a>
           <button type="button" id="sampleBtn" class="sample-start">Try the sample</button>
@@ -58,7 +58,7 @@
       <div class="band-head">
         <p class="band-kicker">Why Mizan</p>
         <h2 id="accountsTitle">Your money is already accounted for.</h2>
-        <p>Chequing, savings, investments, crypto and credit cards tend to live in different places. Pulling them all back together at zakat time takes work. Lunch Money already gives you one view, so Mizan starts there.</p>
+        <p>Chequing, savings, investments, crypto and credit cards tend to live in different places. Pulling them all back together at zakat time takes work. Your budgeting app already gives you one view, so Mizan starts there.</p>
       </div>
       <div class="flow-illo">
         <ul class="account-tiles" aria-label="Example accounts">
@@ -76,7 +76,7 @@
           <span class="flow-result-zakat">Estimated zakat <b>$811.25</b></span>
         </div>
       </div>
-      <p class="band-foot">Review what counts, add what isn’t in Lunch Money (like cash at home or gold), and watch your estimate take shape. The method stays in your hands.</p>
+      <p class="band-foot">Review what counts, add what isn’t in your budget (like cash at home or gold), and watch your estimate take shape. The method stays in your hands.</p>
     </section>
 
     <section class="home-band steps-band" aria-labelledby="stepsTitle">
@@ -87,13 +87,13 @@
       <ol class="step-cards">
         <li>
           <div class="step-illo illo-connect" aria-hidden="true">
-            <span class="mini-label">Lunch Money access token</span>
+            <span class="mini-label">Access token</span>
             <span class="mini-field">••••••••••••••••</span>
             <span class="mini-button">Connect</span>
           </div>
           <span class="step-num">01</span>
           <h3>Connect your account</h3>
-          <p>Paste a Lunch Money access token. Mizan only reads your balances, and forgets the token as soon as they arrive.</p>
+          <p>Paste a Lunch Money or YNAB access token. Mizan only reads your balances, and forgets the token as soon as they arrive.</p>
         </li>
         <li>
           <div class="step-illo illo-review" aria-hidden="true">
@@ -104,7 +104,7 @@
           </div>
           <span class="step-num">02</span>
           <h3>Review balances</h3>
-          <p>Untick anything that isn’t yours, update stale balances, and add what Lunch Money doesn’t track.</p>
+          <p>Untick anything that isn’t yours, update stale balances, and add what your budget doesn’t track.</p>
         </li>
         <li>
           <div class="step-illo illo-estimate" aria-hidden="true">
@@ -171,7 +171,7 @@
         <span class="privacy-mark" aria-hidden="true"><svg viewBox="0 0 48 48"><rect x="10" y="21" width="28" height="20" rx="5"/><path d="M16 21v-6a8 8 0 0 1 16 0v6"/><circle cx="24" cy="30" r="2.5"/><path d="M24 32.5V36"/></svg></span>
         <div>
           <h2 id="privacyTitle">Your token stays with you.</h2>
-          <p>Mizan does the maths in your browser. It sends your token only to Lunch Money, makes read-only requests, and never saves your token or balances. Only your method choices are remembered on this device.</p>
+          <p>Mizan does the maths in your browser. It sends your token only to Lunch Money or YNAB, makes read-only requests, and never saves your token or balances. Only your method choices are remembered on this device.</p>
           <a href="how-it-works.html">How your data is handled <span aria-hidden="true">→</span></a>
         </div>
       </div>
@@ -179,30 +179,42 @@
 
     <section class="final-cta" aria-labelledby="finalTitle">
       <h2 id="finalTitle">Ready to see your zakat?</h2>
-      <p>Connect Lunch Money, or look around with fictional balances first.</p>
+      <p>Connect Lunch Money or YNAB, or look around with fictional balances first.</p>
       <div class="hero-actions"><a class="button primary cta-connect" href="#connect">Connect your account <span aria-hidden="true">→</span></a><button type="button" class="sample-start">Try the sample</button></div>
       <p id="finalStatus" class="hero-status" role="status"></p>
     </section>
-    <p class="independent-note">An independent community project by Mazin Kanuga. Not made or supported by Lunch Money.</p>
+    <p class="independent-note">An independent community project by Mazin Kanuga. Not made or supported by Lunch Money or YNAB.</p>
   </section>
 
   <section id="connectView" class="connect-view" aria-labelledby="connectHead" hidden>
     <div class="connected"><a href="./" id="backHome">← Back to home</a></div>
     <nav class="progress" aria-label="Calculation steps"><span class="step-now" aria-current="step">01 Connect your account</span><span class="divider" aria-hidden="true">/</span><span>02 Review balances</span><span class="divider" aria-hidden="true">/</span><span>03 Your estimate</span></nav>
-    <div class="view-head"><h1 id="connectHead" tabindex="-1">Connect Lunch Money.</h1><p class="note">An access token lets Mizan read your balances. It takes about a minute to make one.</p></div>
+    <div class="view-head"><h1 id="connectHead" tabindex="-1">Connect your budget.</h1><p class="note">An access token lets Mizan read your balances. It takes about a minute to make one.</p></div>
     <div class="connect-layout">
       <div class="connect-panel">
+        <fieldset class="service-choice"><legend>Where are your balances?</legend>
+          <div class="service-options">
+            <label class="service-opt"><input type="radio" name="service" value="lunchmoney" checked><span>Lunch Money</span></label>
+            <label class="service-opt"><input type="radio" name="service" value="ynab"><span>YNAB</span></label>
+          </div>
+        </fieldset>
         <ol class="connect-steps">
-          <li><span>1</span><div><strong>Make a token in Lunch Money</strong><p>Go to Settings → Developers and request a new access token. Name it “Mizan” so it’s easy to revoke later. <a href="token-guide.html" target="_blank" rel="noopener">Step-by-step guide</a></p></div></li>
-          <li><span>2</span><div><strong>Paste it here</strong>
-            <div class="connect-form"><label for="token">Lunch Money access token</label><input type="password" id="token" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" data-1p-ignore data-lpignore="true" data-bwignore placeholder="Paste your access token" aria-describedby="tokenNotice"><button type="button" class="primary" id="connectBtn">Connect my accounts</button><p id="connectStatus" role="status"></p></div>
+          <li><span>1</span><div>
+            <div data-service="lunchmoney"><strong>Make a token in Lunch Money</strong><p>Go to Settings → Developers and request a new access token. Name it “Mizan” so it’s easy to revoke later. <a href="token-guide.html" target="_blank" rel="noopener">Step-by-step guide</a></p></div>
+            <div data-service="ynab" hidden><strong>Make a token in YNAB</strong><p>In YNAB, open Account Settings → Developer Settings and choose New Token. Enter your password, then copy the token while it’s shown. <a href="https://api.ynab.com/#personal-access-tokens" target="_blank" rel="noopener noreferrer">YNAB’s instructions</a></p></div>
           </div></li>
-          <li><span>3</span><div><strong>Revoke it when you’re done</strong><p>Lunch Money tokens can change data. Mizan never does, but deleting the token afterwards keeps things tidy.</p></div></li>
+          <li><span>2</span><div><strong>Paste it here</strong>
+            <div class="connect-form"><label for="token"><span data-service="lunchmoney">Lunch Money access token</span><span data-service="ynab" hidden>YNAB personal access token</span></label><input type="password" id="token" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" data-1p-ignore data-lpignore="true" data-bwignore placeholder="Paste your access token" aria-describedby="tokenNotice"><button type="button" class="primary" id="connectBtn">Connect my accounts</button><p id="connectStatus" role="status"></p></div>
+          </div></li>
+          <li><span>3</span><div><strong>Revoke it when you’re done</strong>
+            <p data-service="lunchmoney">Lunch Money tokens can change data. Mizan never does, but deleting the token afterwards keeps things tidy.</p>
+            <p data-service="ynab" hidden>YNAB tokens can change data and don’t expire. Mizan never changes anything, but revoke the token in Developer Settings afterwards.</p>
+          </div></li>
         </ol>
       </div>
       <aside class="connect-aside" aria-label="About your data">
         <h2>What happens to your token</h2>
-        <ul><li>It goes only to the Lunch Money API.</li><li>Mizan only makes read requests.</li><li id="tokenNotice">It’s cleared from the page once your balances arrive, and never saved.</li></ul>
+        <ul><li>It goes only to <span data-service="lunchmoney">the Lunch Money API</span><span data-service="ynab" hidden>the YNAB API</span>.</li><li>Mizan only makes read requests.</li><li id="tokenNotice">It’s cleared from the page once your balances arrive, and never saved.</li></ul>
         <a href="how-it-works.html" target="_blank" rel="noopener">How your data is handled</a>
         <div class="aside-sample"><p>Just looking?</p><button type="button" class="sample-start">Use fictional sample balances</button><p id="connectSampleStatus" class="hero-status" role="status"></p></div>
       </aside>
@@ -213,7 +225,7 @@
     <nav class="progress" aria-label="Calculation steps"><span>✓ 01 Connected</span><span class="divider" aria-hidden="true">/</span><button type="button" id="reviewStep" aria-controls="reviewView" aria-current="step">02 Review balances</button><span class="divider" aria-hidden="true">/</span><button type="button" id="estimateStep" aria-controls="estimateView">03 Your estimate</button></nav>
     <div class="warn" id="dataWarn" hidden></div>
     <section id="reviewView" class="flow-view" aria-labelledby="reviewHead">
-      <div class="view-head"><h1 id="reviewHead" tabindex="-1">Check your balances.</h1><p class="note">These came from Lunch Money. Uncheck anything that doesn't belong in your zakat, and update any balance that's out of date.</p></div>
+      <div class="view-head"><h1 id="reviewHead" tabindex="-1">Check your balances.</h1><p class="note">These came from <span class="provider-name">Lunch Money</span>. Uncheck anything that doesn't belong in your zakat, and update any balance that's out of date.</p></div>
       <div class="review-layout">
         <div class="review-main">
           <div class="review-warnings"><div class="warn" id="staleWarn" hidden></div></div>
@@ -274,8 +286,8 @@
 
       </div>
       <section class="history-panel chart-card" id="history" aria-labelledby="historyTitle">
-        <div class="chart-heading"><h2 id="historyTitle">Your balances over the past year.</h2><span class="chart-unit">Lunch Money history</span></div>
-        <p class="note">Selected Lunch Money accounts and debts only. Added assets, other debts and mortgage deductions are excluded. This history supports your hawl review; it cannot confirm a completed hawl.</p>
+        <div class="chart-heading"><h2 id="historyTitle">Your balances over the past year.</h2><span class="chart-unit"><span class="provider-name">Lunch Money</span> history</span></div>
+        <p class="note">Selected <span class="provider-name">Lunch Money</span> accounts and debts only. Added assets, other debts and mortgage deductions are excluded. This history supports your hawl review; it cannot confirm a completed hawl.</p>
         <div class="history-readout"><div><span id="historyDate" class="history-date"></span><strong id="historyAmount"></strong></div><span id="historyState" class="history-state"></span></div>
         <div id="historyChart" class="history-chart"></div>
         <div id="historyTicks" class="history-ticks" aria-hidden="true"></div>
@@ -289,7 +301,7 @@
   </div>
 </main>
 <footer class="foot"><div class="wrap foot-inner">
-  <div><p>Made by Mazin Kanuga.</p><p>A community project for <a href="https://lunchmoney.app" rel="noreferrer">Lunch Money</a>.</p></div>
+  <div><p>Made by Mazin Kanuga.</p><p>A community project for <a href="https://lunchmoney.app" rel="noreferrer">Lunch Money</a> and <a href="https://www.ynab.com" rel="noreferrer">YNAB</a> users.</p></div>
   <nav aria-label="Footer"><a href="zakat-guide.html">Zakat guide</a><a href="how-it-works.html">How it works &amp; privacy</a><a href="https://github.com/TechnoDudeX/lunchmoney-zakat" rel="noreferrer">Source code</a><a href="https://gold-api.com" rel="noreferrer">Metal prices</a></nav>
 </div></footer>
 <script>(function () {
@@ -329,19 +341,26 @@
   // Reading data. The only request method in this file is GET.
   // ---------------------------------------------------------------------------
 
-  function lmGet(token, path) {
-    return fetch(API + path, {
+  var SERVICES = {
+    lunchmoney: { name: "Lunch Money", api: API },
+    ynab: { name: "YNAB", api: "https://api.ynab.com/v1" }
+  };
+
+  function apiGet(service, token, path) {
+    var s = SERVICES[service];
+    return fetch(s.api + path, {
       method: "GET", credentials: "omit", cache: "no-store", redirect: "error", referrerPolicy: "no-referrer",
       headers: { "Authorization": "Bearer " + token, "Accept": "application/json" }
     }).then(function (r) {
       if (r.status === 401 || r.status === 403) throw new Error("The token does not work. Copy all of it again, or make a new token.");
-      if (r.status === 429) throw new Error("Lunch Money received too many requests. Wait 1 minute, then try again.");
-      if (!r.ok) throw new Error("Lunch Money sent error " + r.status + " for " + path.split("?")[0] + ".");
+      if (r.status === 429) throw new Error(s.name + " received too many requests. Wait a few minutes, then try again.");
+      if (!r.ok) throw new Error(s.name + " sent error " + r.status + " for " + path.split("?")[0] + ".");
       return r.json();
     }, function () {
-      throw new Error("The page cannot connect to Lunch Money. Check your internet connection.");
+      throw new Error("The page cannot connect to " + s.name + ". Check your internet connection.");
     });
   }
+  function lmGet(token, path) { return apiGet("lunchmoney", token, path); }
 
   function metalPrices(currency) {
     var cur = currency.toUpperCase();
@@ -515,8 +534,106 @@
             name: (src.display_name || src.name || "Deleted account") + " (closed)", note: CLOSED_NOTE });
     });
 
-    return { generated: todayIso(), budget: me.budget_name || "", currency: currency, months: months,
+    return { generated: todayIso(), budget: me.budget_name || "", currency: currency, months: months, provider: "Lunch Money",
              accounts: accounts, debts: debts, mortgages: mortgages, prices: prices, sample: false, warnings: warnings };
+  }
+
+  // ---------------------------------------------------------------------------
+  // YNAB. Its accounts are turned into the same rows as Lunch Money accounts, so the calculator is shared.
+  // YNAB amounts are in milliunits (1000 = 1.00), and liabilities are negative.
+  // ---------------------------------------------------------------------------
+
+  var YNAB_INVEST = /\b(invest\w*|brokerage|stocks?|shares|etfs?|index|funds?|tfsa|isa|crypto\w*|bitcoin|btc|eth|gold|silver)\b/i;
+  var YNAB_LOANS = ["lineOfCredit", "otherLiability", "autoLoan", "studentLoan", "personalLoan", "medicalDebt", "otherDebt"];
+
+  // The Lunch Money type that kindOf understands, for a YNAB account.
+  function ynabType(a) {
+    var t = a.type;
+    if (t === "checking" || t === "savings" || t === "cash") return "cash";
+    if (t === "creditCard") return "credit";
+    if (t === "mortgage") return "loan";
+    if (YNAB_LOANS.indexOf(t) >= 0) return "loan";
+    // Tracking accounts: investments are usually named as such; a home or car is not zakat wealth.
+    if (t === "otherAsset") return YNAB_INVEST.test(a.name || "") || RETIREMENT.test(a.name || "") ? "investment" : "other asset";
+    return "";
+  }
+  var ynabSign = function (a) { var t = ynabType(a); return t === "credit" || t === "loan" ? -1 : 1; };
+
+  // Month-end balances: today's balance less the transactions dated after each month's end.
+  function ynabHistory(accounts, transactions, months) {
+    var last = months.length - 1;
+    var ends = months.map(function (m) {
+      var p = m.split("-");
+      return m + "-" + pad(new Date(+p[0], +p[1], 0).getDate());
+    });
+    var byAccount = {};
+    transactions.forEach(function (t) {
+      if (t.deleted) return;
+      (byAccount[t.account_id] = byAccount[t.account_id] || []).push(t);
+    });
+    return accounts.map(function (a) {
+      var txs = byAccount[a.id] || [], sign = ynabSign(a);
+      var first = txs.reduce(function (min, t) { return !min || t.date < min ? t.date : min; }, "");
+      var balances = [];
+      for (var i = 0; i < last; i++) {
+        var after = 0;
+        txs.forEach(function (t) { if (t.date > ends[i]) after += t.amount; });
+        var value = (a.balance - after) / 1000;
+        // Empty before its first transaction in this period: the account was most likely not open yet.
+        if (first && ends[i] < first && Math.abs(value) < 0.005) continue;
+        balances.push({ month: months[i], to_base: sign * value });
+      }
+      return { source: { type: "plaid", plaid_account_id: a.id }, balances: balances };
+    });
+  }
+
+  function ynabData(budget, accounts, transactions, prices, months) {
+    var currency = ((budget.currency_format && budget.currency_format.iso_code) || "usd").toLowerCase();
+    var live = accounts.filter(function (a) { return !a.deleted; });
+    var tracking = {};
+    var rows = live.map(function (a) {
+      if (a.type === "otherAsset") tracking["plaid:" + a.id] = true;
+      return { id: a.id, name: a.name, display_name: a.name, type: ynabType(a), subtype: a.type === "mortgage" ? "mortgage" : "",
+               status: a.closed ? "closed" : a.direct_import_in_error ? "error" : "active", currency: currency,
+               to_base: ynabSign(a) * (Number(a.balance) || 0) / 1000 };
+    });
+    var history = transactions ? ynabHistory(live, transactions, months) : [];
+    var data = buildData({ budget_name: budget.name, primary_currency: currency }, rows, [], [], [], history, prices, months);
+    data.provider = "YNAB";
+    data.accounts.forEach(function (row) {
+      if (tracking[row.key] && row.status !== "closed") {
+        row.note = ("YNAB tracking account. These balances are often updated by hand, so check that it is current. " + row.note).trim();
+      }
+    });
+    return data;
+  }
+
+  function loadFromYnab(token) {
+    var months = lastMonths(13), warnings = [];
+    return apiGet("ynab", token, "/budgets?include_accounts=true").then(function (r) {
+      var budgets = ((r.data && r.data.budgets) || []).slice();
+      if (!budgets.length) throw new Error("No budgets were found in this YNAB account.");
+      // The budget changed most recently is the one in use.
+      budgets.sort(function (a, b) { return String(b.last_modified_on || "").localeCompare(String(a.last_modified_on || "")); });
+      var budget = budgets[0], id = encodeURIComponent(budget.id);
+      if (budgets.length > 1) {
+        warnings.push("You have " + budgets.length + " budgets in YNAB. Mizan used “" + budget.name + "”, the one changed most recently.");
+      }
+      var currency = ((budget.currency_format && budget.currency_format.iso_code) || "usd").toLowerCase();
+      var accounts = budget.accounts ? Promise.resolve(budget.accounts)
+        : apiGet("ynab", token, "/budgets/" + id + "/accounts").then(function (a) { return (a.data && a.data.accounts) || []; });
+      return Promise.all([
+        accounts,
+        apiGet("ynab", token, "/budgets/" + id + "/transactions?since_date=" + months[0] + "-01").then(
+          function (t) { return (t.data && t.data.transactions) || []; },
+          function () { warnings.push("The page could not read your YNAB transactions, so the hawl table is not complete."); return null; }),
+        metalPrices(currency)
+      ]).then(function (res) {
+        var data = ynabData(budget, res[0], res[1], res[2], months);
+        data.warnings = warnings.concat(data.warnings);
+        return data;
+      });
+    });
   }
 
   function sampleData() {
@@ -526,7 +643,7 @@
     };
     return metalPrices("cad").then(function (prices) {
       return {
-        generated: todayIso(), budget: "Sample budget", currency: "cad", months: months, sample: true, prices: prices, warnings: [],
+        generated: todayIso(), budget: "Sample budget", currency: "cad", months: months, sample: true, provider: "Lunch Money", prices: prices, warnings: [],
         accounts: [
           { key: "s1", name: "Sample Bank Chequing", amount: 4200, status: "active", updated: todayIso(), note: "", include: true, history: grow(2500, 150, 4200) },
           { key: "s2", name: "Sample Bank Savings", amount: 8500, status: "active", updated: todayIso(), note: "", include: true, history: grow(5000, 300, 8500) },
@@ -569,6 +686,7 @@
     money = new Intl.NumberFormat(undefined, { style: "currency", currency: cur });
     price = new Intl.NumberFormat(undefined, { style: "currency", currency: cur, maximumFractionDigits: 3 });
     document.querySelectorAll(".cur").forEach(function (el) { el.textContent = cur; });
+    document.querySelectorAll(".provider-name").forEach(function (el) { el.textContent = D.provider || "Lunch Money"; });
 
     $("sub").textContent = D.sample ? "Sample accounts · " + cur + " · Fictional balances" : D.budget + " · " + cur + " · " + fdate(D.generated);
     $("priceInfo").textContent = D.prices.fallback ? "You can enter prices manually." : "Prices from " + D.prices.source + " · " + fdate(D.prices.date) + ". You can edit these values.";
@@ -580,7 +698,7 @@
     accountRows = buildRows(D.accounts, "accountRows");
     debtRows = buildRows(D.debts, "debtRows");
     $("noDebts").hidden = D.debts.length > 0;
-    $("mortgageInfo").textContent = D.mortgages.length ? "A mortgage was found in Lunch Money. Enter only the amount you can deduct; the full balance is not deducted automatically." : "";
+    $("mortgageInfo").textContent = D.mortgages.length ? "A mortgage was found in " + D.provider + ". Enter only the amount you can deduct; the full balance is not deducted automatically." : "";
     var stale = accountRows.concat(debtRows).filter(function (r) { return r.stale && r.data.include && r.data.amount; })
       .map(function (r) { return r.data.name; });
     $("staleWarn").hidden = !stale.length;
@@ -607,9 +725,11 @@
       tr.innerHTML =
         '<td><label class="include-target"><input type="checkbox" aria-label="Include ' + esc(a.name) + '"' + (a.include ? " checked" : "") + '></label></td>' +
         '<td><span class="name">' + esc(a.name) + "</span>" +
-        '<div class="note"><span class="source-state">' + (D.sample ? "Sample balance" : "Lunch Money") + '</span></div>' +
-        (a.status === "closed" ? "" : '<div class="note">Balance from ' + esc(fdate(a.updated)) +
-          (stale ? ' <span class="badge">not current</span>' : "") + "</div>") +
+        '<div class="note"><span class="source-state">' + (D.sample ? "Sample balance" : D.provider) + '</span></div>' +
+        (a.status === "closed" ? "" : a.updated || D.provider !== "YNAB" ? '<div class="note">Balance from ' + esc(fdate(a.updated)) +
+          (stale ? ' <span class="badge">not current</span>' : "") + "</div>"
+          // YNAB balances have no date: the only warning is a bank import error.
+          : stale ? '<div class="note">Bank import error in YNAB <span class="badge">not current</span></div>' : "") +
         (a.note ? '<div class="note">' + esc(a.note) + "</div>" : "") + "</td>" +
         '<td class="num"><input type="number" step="0.01" aria-label="Amount for ' + esc(a.name) + '"></td>';
       var cb = tr.querySelector("input[type=checkbox]"), input = tr.querySelector("input[type=number]");
@@ -756,7 +876,7 @@
   }
 
   function sourceOf(row) {
-    return isAdjusted(row) ? "Adjusted here" : D.sample ? "Sample balance" : "Lunch Money";
+    return isAdjusted(row) ? "Adjusted here" : D.sample ? "Sample balance" : D.provider || "Lunch Money";
   }
 
   function calculationItems(t) {
@@ -857,7 +977,7 @@
     $("historyCursor").disabled = false;
     if (historySelection == null) historySelection = months.length - 1;
     historySelection = Math.min(historySelection, months.length - 1);
-    var svg = '<svg viewBox="0 0 720 240" role="img" aria-labelledby="historySvgTitle historySvgDesc"><title id="historySvgTitle">Your selected Lunch Money balances over time</title><desc id="historySvgDesc">Complete totals are connected only across adjacent complete months. Hollow markers show partial subtotals. Missing months have no marker. Use the slider or data table for exact amounts.</desc>';
+    var svg = '<svg viewBox="0 0 720 240" role="img" aria-labelledby="historySvgTitle historySvgDesc"><title id="historySvgTitle">Your selected ' + esc(D.provider || "Lunch Money") + ' balances over time</title><desc id="historySvgDesc">Complete totals are connected only across adjacent complete months. Hollow markers show partial subtotals. Missing months have no marker. Use the slider or data table for exact amounts.</desc>';
     [18, 84, 150, 216].forEach(function (at) { svg += '<line class="chart-grid" x1="20" x2="700" y1="' + at + '" y2="' + at + '"/>'; });
     svg += '<line class="chart-zero" x1="20" x2="700" y1="' + historyModel.zeroY.toFixed(2) + '" y2="' + historyModel.zeroY.toFixed(2) + '"/>';
     if (ready) svg += '<line class="chart-threshold" x1="20" x2="700" y1="' + historyModel.thresholdY.toFixed(2) + '" y2="' + historyModel.thresholdY.toFixed(2) + '"/>';
@@ -941,9 +1061,9 @@
         below.map(function (m) { return fdate(m.month); }).join(", ") + ". Ask a scholar how this affects your zakat year."
         : "These accounts were at or above the " + metal + " nisab in all " + completeLabel + ".")) +
       (partial ? " Partial history: " + partial + (partial === 1 ? " row is missing" : " rows are missing") + " selected account balances; partial totals are not classified against the nisab." : "") +
-      (missing ? " Lunch Money has no selected balances for " + missing + (missing === 1 ? " row" : " rows") + ", so the table cannot check them." : "") +
+      (missing ? " " + (D.provider || "Lunch Money") + " has no selected balances for " + missing + (missing === 1 ? " row" : " rows") + ", so the table cannot check them." : "") +
       (late ? " " + late + (late === 1 ? " selected balance starts" : " selected balances start") + " after the first month, so the table counts " +
-        (late === 1 ? "it" : "them") + " only from the first month-end balance in Lunch Money. If one was open before then, its earlier balance is not counted." : "");
+        (late === 1 ? "it" : "them") + " only from the first month-end balance in " + (D.provider || "Lunch Money") + ". If one was open before then, its earlier balance is not counted." : "");
     renderHistory(months, t.nisab, t.nisabReady);
     $("hawlRows").innerHTML = months.map(function (m, i) {
       var w = Math.max(0, m.total) / max * 100;
@@ -977,23 +1097,33 @@
   // The home page and the connect screen. Once balances are loaded, the calculator stays in view.
   function route() {
     if (D) return;
-    var connecting = location.hash === "#connect" || location.hash === "#token";  // #token: older links from the token guide
+    var connecting = /^#(connect|token)/.test(location.hash);  // #token: older links from the token guide
     $("home").hidden = connecting;
     $("connectView").hidden = !connecting;
+    if (location.hash === "#connect-ynab") { document.querySelector("input[name=service][value=ynab]").checked = true; showService(); }
     if (connecting) {
       window.scrollTo(0, 0);
       $("connectHead").focus({ preventScroll: true });
     }
   }
+  // The connect screen's instructions follow the chosen service.
+  function showService() {
+    var service = radio("service");
+    document.querySelectorAll("[data-service]").forEach(function (el) { el.hidden = el.getAttribute("data-service") !== service; });
+    $("connectStatus").textContent = "";
+  }
+  document.querySelectorAll("input[name=service]").forEach(function (el) { el.addEventListener("change", showService); });
   window.addEventListener("hashchange", route);
   route();
 
   $("connectBtn").addEventListener("click", function () {
     var token = $("token").value.trim();
     $("token").value = "";  // the token is not kept in the page
-    if (!token) { busy(false, "Paste your Lunch Money access token first.", true, "connectStatus"); return; }
-    busy(true, "The page reads your balances from Lunch Money...", false, "connectStatus");
-    loadFromLunchMoney(token).then(function (data) {
+    var service = radio("service");
+    var name = SERVICES[service].name;
+    if (!token) { busy(false, "Paste your " + name + " access token first.", true, "connectStatus"); return; }
+    busy(true, "The page reads your balances from " + name + "...", false, "connectStatus");
+    (service === "ynab" ? loadFromYnab(token) : loadFromLunchMoney(token)).then(function (data) {
       token = null;
       busy(false, "");
       show(data);

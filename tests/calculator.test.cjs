@@ -27,7 +27,7 @@ function calculator() {
   } });
   // Expose private functions in this test VM only; production has no test hooks.
   vm.runInContext(script.replace(/\}\)\(\);\s*$/, `
-    globalThis.subject = { totals, hawlMonths, buildData, kindOf, render, setView, waterfallModel, historyPlot, calculationItems, isAdjusted, sourceOf, methodChartMarkup, renderHomePrices,
+    globalThis.subject = { totals, hawlMonths, buildData, kindOf, render, setView, waterfallModel, historyPlot, calculationItems, isAdjusted, sourceOf, methodChartMarkup, renderHomePrices, ynabData, ynabHistory,
       configure: function (accounts, debts, months) {
         accountRows = accounts; debtRows = debts; D = { months: months };
         money = new Intl.NumberFormat('en-CA', { style: 'currency', currency: 'CAD' });
@@ -351,4 +351,55 @@ test('method graphs distinguish a genuine zero from incomplete input', () => {
   assert.match(markup, /Incomplete/);
   assert.match(markup, /aria-pressed="true"/);
   assert.doesNotMatch(markup, /NaN|Infinity|--bar-size:-/);
+});
+
+test('YNAB accounts map to the same rows, with liabilities as positive debts and tracking assets sorted', () => {
+  const { app } = calculator();
+  const months = ['2026-09', '2026-10', '2026-11'];
+  const accounts = [
+    { id: 'chq', name: 'Chequing', type: 'checking', balance: 1500000, closed: false, deleted: false },
+    { id: 'cc', name: 'Visa', type: 'creditCard', balance: -250500, closed: false, deleted: false },
+    { id: 'car', name: 'Car loan', type: 'autoLoan', balance: -9000000, closed: false, deleted: false },
+    { id: 'home', name: 'Home', type: 'mortgage', balance: -300000000, closed: false, deleted: false },
+    { id: 'tfsa', name: 'Brokerage TFSA', type: 'otherAsset', balance: 4000000, closed: false, deleted: false },
+    { id: 'house', name: 'House value', type: 'otherAsset', balance: 500000000, closed: false, deleted: false },
+    { id: 'old', name: 'Old savings', type: 'savings', balance: 0, closed: true, deleted: false },
+    { id: 'gone', name: 'Deleted', type: 'checking', balance: 999000, closed: false, deleted: true },
+    { id: 'err', name: 'Linked savings', type: 'savings', balance: 200000, closed: false, deleted: false, direct_import_in_error: true }
+  ];
+  const tx = [
+    { account_id: 'chq', date: '2026-11-03', amount: 500000, deleted: false },
+    { account_id: 'chq', date: '2026-10-15', amount: -200000, deleted: false },
+    { account_id: 'chq', date: '2026-10-20', amount: 999999, deleted: true },
+    { account_id: 'cc', date: '2026-11-02', amount: -50500, deleted: false },
+    { account_id: 'old', date: '2026-10-05', amount: -700000, deleted: false }
+  ];
+  const d = app.ynabData({ name: 'Home budget', currency_format: { iso_code: 'CAD' } }, accounts, tx, { gold: 1, silver: 1 }, months);
+  assert.equal(d.provider, 'YNAB');
+  assert.equal(d.currency, 'cad');
+  assert.equal(d.budget, 'Home budget');
+  const byName = Object.fromEntries(d.accounts.concat(d.debts).map(r => [r.name, r]));
+  assert.equal(byName.Chequing.amount, 1500);
+  // Sep end: 1500 - (500 - 200) = 1200; Oct end: 1500 - 500 = 1000; today is not from history.
+  assert.deepEqual(byName.Chequing.history, [1200, 1000, null]);
+  assert.equal(byName.Visa.amount, 250.5);
+  assert.deepEqual(byName.Visa.history, [200, 200, null]);
+  assert.equal(byName.Visa.include, true);
+  assert.equal(byName['Car loan'].include, false);
+  assert.ok(!byName.Home, 'a mortgage is not a debt row');
+  assert.deepEqual(JSON.parse(JSON.stringify(d.mortgages)), [{ name: 'Home', balance: 300000 }]);
+  assert.equal(byName['Brokerage TFSA'].include, true);
+  assert.match(byName['Brokerage TFSA'].note, /tracking account/i);
+  assert.equal(byName['House value'].include, false);
+  assert.equal(byName['Old savings (closed)'].amount, 0);
+  assert.deepEqual(byName['Old savings (closed)'].history, [700, 0, null]);
+  assert.ok(!byName.Deleted);
+  assert.equal(byName['Linked savings'].status, 'error');
+});
+
+test('YNAB history leaves months before a new account opened unknown', () => {
+  const { app } = calculator();
+  const h = app.ynabHistory([{ id: 'new', type: 'savings', balance: 300000 }],
+    [{ account_id: 'new', date: '2026-10-10', amount: 300000, deleted: false }], ['2026-08', '2026-09', '2026-10', '2026-11']);
+  assert.deepEqual(JSON.parse(JSON.stringify(h[0].balances)), [{ month: '2026-10', to_base: 300 }]);
 });

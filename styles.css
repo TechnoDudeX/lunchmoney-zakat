@@ -2333,3 +2333,14 @@ input[type=text],input[type=password],input[type=number],select { border-radius:
 @media(prefers-color-scheme:dark) {
   .why-inner,.flow-result { box-shadow:inset 0 0 0 1px #3a3c40; }
 }
+
+/* Connect screen: which service the balances come from */
+.service-choice { margin:0 0 30px; padding:0 0 26px; border:0; border-bottom:1px solid var(--line); }
+.service-choice legend { padding:0; margin-bottom:12px; color:var(--ink); font-size:15px; font-weight:800; }
+.service-options { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; max-width:420px; }
+.service-opt { position:relative; display:flex; }
+.service-opt input { position:absolute; opacity:0; pointer-events:none; }
+.service-opt span { flex:1; display:flex; align-items:center; justify-content:center; min-height:52px; padding:10px 16px; border:1px solid var(--line); border-radius:14px; background:var(--bg); color:var(--text); font-weight:800; cursor:pointer; transition:border-color .15s,background .15s,color .15s; }
+.service-opt span:hover { border-color:var(--muted); }
+.service-opt input:checked+span { border-color:var(--deep); background:var(--deep); color:var(--on-deep); }
+.service-opt input:focus-visible+span { outline:2px solid var(--deep); outline-offset:3px; }

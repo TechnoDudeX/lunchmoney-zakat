@@ -1,4 +1,4 @@
-# Mizan: zakat calculator for Lunch Money
+# Mizan: zakat calculator for Lunch Money and YNAB
 
 **Use it here: https://lunchmoney-zakat.netlify.app**
 
@@ -38,13 +38,25 @@ The calculator has three steps: connect, review balances, and see your estimate.
 - **Read only.** The page sends only GET requests. It has no code that changes or deletes anything in Lunch Money.
 - **No application server.** The site has a calculator, 3 static guide pages, a project page, a shared stylesheet and 2 font files. Your browser talks directly to the Lunch Money API. No token or account balances go to the author.
 - **The token is not kept.** The page sends your token only to `api.lunchmoney.dev`, then forgets it. The page does not save the token in the browser, in a cookie or anywhere else. If your browser or a password manager asks to save it, click Never.
-- **Only 2 hosts.** A Content Security Policy lets the page connect only to `api.lunchmoney.dev` and `api.gold-api.com`. The fonts come from the same site as the page. Requests to gold-api.com include only your currency code (for example CAD). They do not include your token or your balances. Redirects are refused, so the token cannot follow a redirect to another host.
+- **Only 3 hosts.** A Content Security Policy lets the page connect only to `api.lunchmoney.dev`, `api.ynab.com` and `api.gold-api.com`. The fonts come from the same site as the page. Requests to gold-api.com include only your currency code (for example CAD). They do not include your token or your balances. Redirects are refused, so the token cannot follow a redirect to another host.
 - **Saved in your browser:** only your choices (nisab, mortgage method, nisab weights, gold and silver purity). Amounts are never saved.
 - **Lunch Money tokens can change data.** Lunch Money has no read-only tokens. Make a separate token for this page, and revoke it on the [developers page](https://my.lunchmoney.app/developers) when you finish.
 
 You can read the calculator code in [index.html](index.html). The guide pages are plain HTML and share [styles.css](styles.css). The fonts in [fonts/](fonts/) are Nunito Sans and Red Hat Mono. Nunito Sans is used for the main interface; Red Hat Mono is used for amounts and labels. Short entrance and chart animations respect reduced-motion preferences. The site has no libraries and no build step.
 
 Official references: [developer tools and community projects](https://lunchmoney.app/developers), [API introduction](https://lunchmoney.dev/introduction), [token setup](https://lunchmoney.dev/getting-started), and [amounts and balances](https://lunchmoney.dev/amounts-and-balances). The integration already uses the current v2 base URL and the recommended `to_base` amounts for a consistent budget currency.
+
+## YNAB
+
+You can connect [YNAB](https://www.ynab.com) instead of Lunch Money. Choose **YNAB** on the connect screen (or open `/#connect-ynab`) and paste a personal access token from Account Settings → Developer Settings.
+
+- Two GET requests: `/v1/budgets?include_accounts=true` and the last 13 months of `/v1/budgets/{id}/transactions`. The token goes only to `api.ynab.com`.
+- Mizan uses the budget changed most recently, and tells you when you have more than one.
+- YNAB has no balance history, so month-end balances are rebuilt from today's balance and the transactions after each month's end.
+- Checking, savings and cash count. Credit cards are deducted. Loans are listed but not selected. Mortgages go to the mortgage setting. Tracking accounts count when the name looks like an investment, such as "TFSA" or "Brokerage".
+- YNAB tokens can change data and don't expire. Revoke the token in Developer Settings when you finish.
+
+Mizan is not made or supported by YNAB.
 
 ## How to use it
 

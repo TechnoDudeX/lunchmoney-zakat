@@ -87,18 +87,18 @@
     </section>
 
     <section id="estimateView" class="flow-view" aria-labelledby="estimateHead" hidden>
-      <div class="view-head"><p class="eyebrow">Step 3 of 3</p><h1 id="estimateHead" tabindex="-1">Your zakat estimate.</h1><p class="note">Check the breakdown to see where each amount came from. You can change your method below or go back to edit a balance.</p></div>
+      <div class="view-head"><h1 id="estimateHead" tabindex="-1">Your zakat estimate.</h1><p class="note">Check the breakdown to see where each amount came from. You can change your method below or go back to edit a balance.</p></div>
       <div class="estimate-layout">
-        <aside class="result" aria-labelledby="resultHead"><h2 class="due-label" id="resultHead" tabindex="-1">Estimated zakat</h2><div class="due" id="due" aria-live="polite" aria-atomic="true"></div><p id="resultMethod" class="result-method"></p><p class="due-hint">Assumes your hawl is complete. Confirm your method with your scholar.</p><p class="estimate-summary" id="estimateSummary"></p><details class="result-breakdown" id="resultBreakdown"><summary>How this is calculated</summary><div class="lines" id="lines"></div></details></aside>
+        <aside class="result" aria-labelledby="resultHead"><div class="result-primary"><h2 class="due-label" id="resultHead" tabindex="-1">Estimated zakat</h2><div class="due" id="due" aria-live="polite" aria-atomic="true"></div><p class="estimate-summary" id="estimateSummary"></p></div><div class="result-context"><p id="resultMethod" class="result-method"></p><p class="due-hint">Assumes your hawl is complete. Confirm your method with your scholar.</p><details class="result-breakdown" id="resultBreakdown"><summary>How this is calculated</summary><div class="lines" id="lines"></div></details></div></aside>
         <div class="estimate-main">
           <section class="calculation-card" id="calculation" aria-labelledby="calculationTitle">
-            <div class="chart-heading"><div><p class="eyebrow">The breakdown</p><h2 id="calculationTitle">How the total adds up.</h2></div><span class="chart-unit cur"></span></div>
+            <div class="chart-heading"><h2 id="calculationTitle">How the total adds up.</h2><span class="chart-unit cur"></span></div>
             <p class="note">Your selected accounts, plus anything you add, less eligible debts.</p>
             <div id="calculationChart" class="waterfall-chart"></div>
             <dl id="calculationSteps" class="calculation-steps"></dl>
             <details class="ledger-detail"><summary>See every amount in this total</summary><div class="scroll" tabindex="0" role="region" aria-label="Calculation line items"><table><thead><tr><th>Item</th><th>Source</th><th class="num">Amount</th></tr></thead><tbody id="calculationItems"></tbody><tfoot><tr><th colspan="2" scope="row">Total after debts</th><td class="num" id="ledgerTotal"></td></tr></tfoot></table></div></details>
           </section>
-          <details class="disclosure" id="methodSettings"><summary><span>Your method &amp; prices<span class="note" id="methodSummary"></span></span></summary><div class="method-content">
+          <details class="disclosure" id="methodSettings" open><summary><span>Your method &amp; prices<span class="note" id="methodSummary"></span></span></summary><div class="method-content">
           <div class="estimate-choice"><fieldset><legend>Your nisab</legend><p class="note">The minimum wealth threshold. Choose the metal your method uses.</p><div class="choice-options"><label class="opt"><input type="radio" name="nisab" value="silver" checked>Silver</label><label class="opt"><input type="radio" name="nisab" value="gold">Gold</label></div></fieldset><p class="inline-note"><a href="zakat-guide.html#which-nisab" target="_blank" rel="noopener">Help choosing a nisab</a></p></div>
           <details class="disclosure" id="mortgageSettings"><summary><span>Mortgage deduction<span class="note" id="mortgageChoice">Not deducted</span></span></summary>
             <p class="note">Scholars differ about mortgage deductions. Use the approach you follow.</p><fieldset><legend class="sr">Mortgage method</legend><div class="stacked-options"><label class="opt"><input type="radio" name="mortgage" value="none" checked>Do not deduct</label><label class="opt"><input type="radio" name="mortgage" value="next">Deduct the next payment</label><label class="opt"><input type="radio" name="mortgage" value="year">Deduct the next 12 months</label></div></fieldset>
@@ -115,7 +115,7 @@
 
       </div>
       <section class="history-panel chart-card" id="history" aria-labelledby="historyTitle">
-        <div class="chart-heading"><div><p class="eyebrow">Your balances over time</p><h2 id="historyTitle">Your balances over the past year.</h2></div><span class="chart-unit">Lunch Money history</span></div>
+        <div class="chart-heading"><h2 id="historyTitle">Your balances over the past year.</h2><span class="chart-unit">Lunch Money history</span></div>
         <p class="note">Selected Lunch Money accounts and debts only. Added assets, other debts and mortgage deductions are excluded. This history supports your hawl review; it cannot confirm a completed hawl.</p>
         <div class="history-readout"><div><span id="historyDate" class="history-date"></span><strong id="historyAmount"></strong></div><span id="historyState" class="history-state"></span></div>
         <div id="historyChart" class="history-chart"></div>
@@ -429,7 +429,7 @@
       var old = a.updated ? (new Date(D.generated) - new Date(a.updated)) / 86400000 > 3 : false;
       var stale = old || ["relink", "error", "revoked", "not found"].indexOf(a.status) >= 0;
       tr.innerHTML =
-        '<td><input type="checkbox" aria-label="Include ' + esc(a.name) + '"' + (a.include ? " checked" : "") + "></td>" +
+        '<td><label class="include-target"><input type="checkbox" aria-label="Include ' + esc(a.name) + '"' + (a.include ? " checked" : "") + '></label></td>' +
         '<td><span class="name">' + esc(a.name) + "</span>" +
         '<div class="note"><span class="source-state">' + (D.sample ? "Sample balance" : "Lunch Money") + '</span></div>' +
         (a.status === "closed" ? "" : '<div class="note">Balance from ' + esc(fdate(a.updated)) +
@@ -667,6 +667,18 @@
 
   function renderHistory(months, nisab, ready) {
     historyModel = historyPlot(months, nisab, ready);
+    if (!months.length) {
+      historySelection = null;
+      $("historyChart").innerHTML = '<p class="chart-empty">No balance history is available.</p>';
+      $("historyTicks").innerHTML = "";
+      $("historyDate").textContent = "";
+      $("historyAmount").textContent = "No data";
+      $("historyState").textContent = "No balance history available";
+      $("historyCursor").disabled = true;
+      $("thresholdLegend").textContent = "";
+      return;
+    }
+    $("historyCursor").disabled = false;
     if (historySelection == null) historySelection = months.length - 1;
     historySelection = Math.min(historySelection, months.length - 1);
     var svg = '<svg viewBox="0 0 720 240" role="img" aria-labelledby="historySvgTitle historySvgDesc"><title id="historySvgTitle">Your selected Lunch Money balances over time</title><desc id="historySvgDesc">Complete totals are connected only across adjacent complete months. Hollow markers show partial subtotals. Missing months have no marker. Use the slider or data table for exact amounts.</desc>';
@@ -744,10 +756,10 @@
     var partial = known.length - complete.length;
     var max = Math.max.apply(null, known.map(function (m) { return Math.abs(m.total); }).concat([t.nisab, 1]));
     var below = complete.filter(function (m) { return m.above === false; });
-    var low = complete.reduce(function (a, b) { return b.total < a.total ? b : a; });
+    var low = complete.reduce(function (a, b) { return !a || b.total < a.total ? b : a; }, null);
     var selected = accountRows.concat(debtRows).filter(function (r) { return r.cb.checked; });
     var late = openSpans(selected, last).filter(function (s, n) { return s.from > 0 && selected[n].data.status !== "closed"; }).length;
-    $("hawlSummary").textContent = (!t.nisabReady ? "Enter the " + metal + " price and nisab weight under Prices & nisab weights to compare these accounts with the nisab." :
+    $("hawlSummary").textContent = (!low ? "No complete balance history is available to compare with the nisab." : !t.nisabReady ? "Enter the " + metal + " price and nisab weight under Prices & nisab weights to compare these accounts with the nisab." :
       "Lowest total with all selected balances available: " + money.format(low.total) + " (" + fdate(low.month) + "). " +
       (below.length ? "These accounts were below the " + metal + " nisab in " + below.length + " of " + completeLabel + ": " +
         below.map(function (m) { return fdate(m.month); }).join(", ") + ". Ask a scholar how this affects your zakat year."

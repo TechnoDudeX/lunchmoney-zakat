@@ -44,6 +44,15 @@ const row = (amount, history = [], checked = true) => ({
   data: { history, amount }, tr: { classList: { toggle() {} } }
 });
 
+test('an empty history leaves the estimate usable and explains the missing comparison', () => {
+  const { app, field } = calculator();
+  app.configure([], [], []);
+  assert.doesNotThrow(() => app.render());
+  assert.match(field('hawlSummary').textContent, /No complete balance history/);
+  assert.equal(field('historyCursor').disabled, true);
+  assert.match(field('historyChart').innerHTML, /No balance history/);
+});
+
 test('sample estimate remains 811.25, with all six method combinations', () => {
   const { app, field } = calculator();
   app.configure([4200, 8500, 6300, 12000, 2100].map(x => row(x)), [row(650)], ['2026-10']);

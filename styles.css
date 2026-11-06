@@ -919,7 +919,16 @@ td.num,td.n {
 }
 
 .list td:first-child input {
-  margin:5px 0 0
+  margin:0
+}
+
+.include-target {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:44px;
+  min-height:44px;
+  cursor:pointer
 }
 
 .name {
@@ -1857,4 +1866,71 @@ button.primary:active,.button.primary:active { transform:translateY(0); }
 }
 @media(prefers-reduced-motion:reduce) {
   *,*::before,*::after { animation:none!important; transition:none!important; scroll-behavior:auto!important; }
+}
+
+/* Keep financial details legible at the sizes people use to review them. */
+.brand-sub { font-size:11px; }
+.calculation-steps dt, .chart-help, .chart-legend, #calculationItems td:nth-child(2),
+.method-bar-zero { font-size:13px; }
+.calculation-steps dd, .method-bar-heading, .method-bar-value { font-size:14px; }
+.history-ticks { font-size:12px; }
+.list th { font-size:12px; }
+
+@media(max-width:760px) {
+  .brand-sub { font-size:11px; }
+  .list th, .list th:first-child::after { font-size:12px; }
+  .list th:first-child { font-size:0; }
+  .list input[type=number], .field input, .field select { font-size:16px; }
+  .calculation-steps { grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+  .calculation-steps dt, .chart-legend, .chart-help { font-size:13px; }
+  .calculation-steps dd, .method-bar-heading, .method-bar-value { font-size:14px; }
+  .chart-unit { font-size:12px; }
+}
+
+/* The estimate reads in order: result, calculation, then method choices. */
+#estimateView .view-head { margin-bottom:24px; }
+.estimate-layout { display:block; }
+.estimate-layout>.result {
+  position:static;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(220px,320px);
+  gap:32px 56px;
+  align-items:end;
+  padding:clamp(28px,4vw,48px);
+  margin-bottom:48px;
+  background:var(--panel);
+  border:0;
+  border-top:3px solid var(--deep);
+  box-shadow:none;
+}
+.result-primary,.result-context { min-width:0; }
+.result .due-label { font-size:15px; margin:0; }
+.result .due { font-size:clamp(42px,6vw,72px); line-height:1.1; letter-spacing:-.04em; margin:16px 0; }
+.result .due.incomplete { font-size:clamp(32px,4vw,48px); }
+.result .estimate-summary { font-size:15px; margin:0; }
+.result .result-method { font:700 14px/1.5 var(--font); color:var(--deep); }
+.result .due-hint { font-size:14px; line-height:1.6; margin-bottom:18px; }
+.result-breakdown summary { font-size:14px; }
+.estimate-main { max-width:850px; margin:0 auto; }
+.estimate-main .calculation-card {
+  padding:0 0 32px;
+  margin:0 0 12px;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  box-shadow:none;
+}
+.estimate-main .chart-heading h2 { font-size:clamp(24px,3vw,32px); }
+.estimate-main .calculation-card>.note { font-size:15px; }
+.estimate-main #methodSettings>summary,
+.estimate-main #comparison>summary { font-size:20px; }
+.estimate-main #methodSettings { padding:28px 0; }
+.estimate-main .method-content { padding-top:8px; }
+
+@media(max-width:760px) {
+  .estimate-layout>.result { grid-template-columns:1fr; gap:24px; padding:26px; margin-bottom:36px; }
+  .result-context { border-top:1px solid var(--line); padding-top:20px; }
+  .estimate-main .calculation-card { padding-bottom:26px; }
+  .estimate-main #methodSettings>summary,
+  .estimate-main #comparison>summary { font-size:18px; }
 }

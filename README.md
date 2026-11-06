@@ -99,4 +99,4 @@ MIT, copyright Mazin Kanuga. See [LICENSE](LICENSE).
 
 The fonts use the SIL Open Font License. The licence texts are in [fonts/](fonts/).
 
-The visual identity uses a simple M mark, warm neutral surfaces, terracotta accents and restrained motion. It does not use the Lunch Money logo or mascot.
+The visual identity uses a simple M mark, neutral surfaces, bold typography, rounded controls and restrained motion. It does not use the Lunch Money logo or mascot.

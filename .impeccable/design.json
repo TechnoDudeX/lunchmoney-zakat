@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-06T13:37:08.886344+00:00",
+  "title": "Design System: Mizan",
+  "extensions": {
+    "shadows": [
+      {
+        "name": "card-shadow",
+        "value": "0 12px 36px rgba(0,0,0,.06)",
+        "purpose": "Shared subtle card shadow; the calculator workspace, result and history panel are flat."
+      }
+    ],
+    "motion": [
+      {
+        "name": "control-transition",
+        "value": "background .18s ease, border-color .18s ease, transform .18s ease",
+        "purpose": "Button interaction; removed for reduced motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "compact-desktop",
+        "value": "1000px"
+      },
+      {
+        "name": "mobile",
+        "value": "760px"
+      },
+      {
+        "name": "small-mobile",
+        "value": "380px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The main action.",
+      "html": "<button class=\"ds-primary\">Connect my accounts</button>",
+      "css": ".ds-primary{min-height:44px;padding:10px 20px;border:1px solid var(--deep,#191919);border-radius:999px;background:var(--deep,#191919);color:var(--on-deep,#fff);font:700 16px/1.4 Mizan,system-ui,sans-serif;cursor:pointer;transition:background .18s ease}.ds-primary:hover{background:var(--hover,#424242)}.ds-primary:focus-visible{outline:2px solid var(--deep,#191919);outline-offset:4px}"
+    },
+    {
+      "name": "Secondary button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "A secondary action.",
+      "html": "<button class=\"ds-secondary\">Start again</button>",
+      "css": ".ds-secondary{min-height:44px;padding:10px 20px;border:1px solid var(--line,#d8d8d3);border-radius:999px;background:var(--card,#fff);color:var(--ink,#191919);font:700 16px/1.4 Mizan,system-ui,sans-serif;cursor:pointer}.ds-secondary:hover{background:var(--panel,#eaeae7)}.ds-secondary:focus-visible{outline:2px solid var(--deep,#191919);outline-offset:4px}"
+    },
+    {
+      "name": "Text field",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "A labelled token or text field.",
+      "html": "<label class=\"ds-label\">Lunch Money access token<input class=\"ds-field\" type=\"password\" placeholder=\"Paste your access token\"></label>",
+      "css": ".ds-label{display:block;color:var(--ink,#191919);font:700 14px Mizan,system-ui,sans-serif}.ds-field{display:block;margin-top:8px;padding:10px 12px;min-height:44px;border:1px solid var(--line,#d8d8d3);border-radius:10px;background:var(--card,#fff);color:var(--ink,#191919);font:16px Mizan,system-ui,sans-serif}.ds-field:focus{outline:2px solid var(--deep,#191919);outline-offset:2px}"
+    },
+    {
+      "name": "Source tag",
+      "kind": "chip",
+      "description": "Identifies where an amount originated.",
+      "html": "<span class=\"ds-tag\">Adjusted here</span>",
+      "css": ".ds-tag{display:inline-block;padding:3px 6px;border-radius:3px;background:var(--panel,#eaeae7);color:var(--deep,#191919);font:11px/1.5 Mizan,system-ui,sans-serif;white-space:nowrap}"
+    },
+    {
+      "name": "Example calculation workspace",
+      "kind": "custom",
+      "description": "A fictional calculation with aligned amounts and a sample action.",
+      "html": "<div class=\"ds-workspace\"><div class=\"ds-calculation\"><strong>From balances to zakat</strong><div class=\"ds-row\"><span>Accounts</span><strong>$33,100.00</strong></div><div class=\"ds-row\"><span>Debts due now</span><strong>− $650.00</strong></div><div class=\"ds-row\"><span>Total after debts</span><strong>$32,450.00</strong></div><div class=\"ds-row ds-total\"><span>Estimated zakat (2.5%)</span><strong>$811.25</strong></div></div><div class=\"ds-action\"><h2>Start with a sample.</h2><p>Explore a complete calculation with fictional balances. No token needed.</p><button>Try the sample calculation</button></div></div>",
+      "css": ".ds-workspace{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.48fr);background:#ededeb;color:#191919;border-radius:24px;overflow:hidden;font:16px/1.65 Mizan,system-ui,sans-serif}.ds-calculation{padding:clamp(28px,4vw,52px)}.ds-row{display:flex;justify-content:space-between;gap:12px;padding:15px 0;border-bottom:1px solid #d1d1ce;color:#50514e}.ds-row strong{color:#191919;font:700 clamp(20px,2.4vw,30px)/1.2 Mizan,system-ui,sans-serif}.ds-total{border:0;color:#191919;font-weight:800}.ds-total strong{font-size:clamp(28px,3.8vw,48px)}.ds-action{background:#1b1d20;color:#dededb;padding:clamp(28px,3.5vw,48px)}.ds-action h2{color:#fff;font:800 clamp(28px,3vw,38px)/1.1 Mizan,system-ui,sans-serif}.ds-action button{width:100%;min-height:52px;background:#fff;border:1px solid #fff;color:#191919;border-radius:999px;font-weight:700}@media(max-width:760px){.ds-workspace{grid-template-columns:1fr;border-radius:18px}.ds-calculation,.ds-action{padding:26px}}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Calm Ledger",
+    "overview": "A calculation-first workspace that makes sources and choices clear through neutral surfaces, a charcoal result, fine rules and aligned figures.",
+    "keyCharacteristics": [
+      "Fictional calculation and sample action lead the opening",
+      "Expandable Lunch Money connection",
+      "Charcoal result, bold sans headings and financial figures",
+      "Traceable calculations"
+    ],
+    "rules": [],
+    "dos": [
+      "Keep sources, choices and calculation steps visible.",
+      "Preserve keyboard focus and table alternatives for charts."
+    ],
+    "donts": [
+      "Present partial data as complete."
+    ]
+  }
+}

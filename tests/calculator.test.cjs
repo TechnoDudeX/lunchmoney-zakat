@@ -27,7 +27,7 @@ function calculator() {
   } });
   // Expose private functions in this test VM only; production has no test hooks.
   vm.runInContext(script.replace(/\}\)\(\);\s*$/, `
-    globalThis.subject = { totals, hawlMonths, buildData, kindOf, render, setView, waterfallModel, historyPlot, calculationItems, isAdjusted, sourceOf, methodChartMarkup,
+    globalThis.subject = { totals, hawlMonths, buildData, kindOf, render, setView, waterfallModel, historyPlot, calculationItems, isAdjusted, sourceOf, methodChartMarkup, renderHomePrices,
       configure: function (accounts, debts, months) {
         accountRows = accounts; debtRows = debts; D = { months: months };
         money = new Intl.NumberFormat('en-CA', { style: 'currency', currency: 'CAD' });
@@ -42,6 +42,15 @@ function calculator() {
 const row = (amount, history = [], checked = true) => ({
   cb: { checked }, input: { value: String(amount) },
   data: { history, amount }, tr: { classList: { toggle() {} } }
+});
+
+test('homepage prices identify successful lookups and explain unavailable prices', () => {
+  const { app, field } = calculator();
+  app.renderHomePrices({ gold: 120.25, silver: 1.2345, goldUpdatedAt: '2026-01-01T11:00:00Z', fallback: false }, new Date('2026-01-01T12:00:00Z'));
+  assert.match(field('homeMetalPrices').textContent, /Gold.*120\.25.*updated.*Silver.*1\.2345.*quote time unavailable.*Fetched.*gold-api\.com/);
+  app.renderHomePrices({ fallback: true }, new Date());
+  assert.match(field('homeMetalPrices').textContent, /unavailable.*enter them/i);
+  assert.doesNotMatch(field('homeMetalPrices').textContent, /Fetched/);
 });
 
 test('an empty history leaves the estimate usable and explains the missing comparison', () => {

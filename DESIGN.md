@@ -94,7 +94,7 @@ Mizan is the local Nunito Sans face, with Avenir Next and system sans-serif fall
 
 ## Layout
 
-The main wrapper is `min(1120px, 100% - 64px)`; narrow content is capped at 760px. The opening centers its introduction above a fictional calculation workspace, with the calculation beside a sample action. An expandable Lunch Money connection follows. At 760px and below the introduction aligns left and the workspace and connection content stack. The estimate places the result first, followed by a calculation and method area capped at 850px. Tables can scroll horizontally. Other responsive adjustments occur at 1000px and 380px.
+The main wrapper is `min(1120px, 100% - 64px)`; narrow content is capped at 760px. The home page is a marketing page in bands that scroll normally (nothing is sticky): a two-column hero (headline, Connect your account and Try the sample actions, trust list) beside the fictional calculation workspace; “Your money is already accounted for” with account tiles flowing into one total; three illustrated steps; a charcoal “Why zakat” band with Quran and hadith quotes; the basics (rate, nisab, hawl) with today's metal prices and a link to the zakat guide; a privacy card; and a closing call to action. “Connect your account” opens a dedicated step 01 screen at `#connect` (token instructions and form, with a sample option in the aside), which leads into 02 Review balances and 03 Your estimate. At 1000px and below the hero, flow illustration and card grids stack. The estimate places the result first, followed by a calculation and method area capped at 850px. Tables can scroll horizontally. Other responsive adjustments occur at 760px and 380px.
 
 ## Elevation and shapes
 

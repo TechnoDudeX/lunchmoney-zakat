@@ -25,11 +25,20 @@
   <nav class="nav" aria-label="Main"><a href="index.html" aria-current="page">Calculator</a><a href="about.html">The project</a><a href="token-guide.html">Token guide</a></nav>
 </div></header>
 <main id="main" class="wrap">
-  <section id="connect" aria-labelledby="heroHead">
-    <div class="opening">
-      <div class="opening-intro">
+  <section id="home" class="home" aria-labelledby="heroHead">
+    <div class="hero">
+      <div class="hero-copy">
+        <p class="kicker"><span class="kicker-dot" aria-hidden="true"></span>A zakat calculator for Lunch Money</p>
         <h1 id="heroHead">Your zakat.<br>Made clear.</h1>
-        <div class="opening-explanation"><p>Your accounts are already in Lunch Money. Use those same balances to calculate your zakat, with every amount in view.</p><a href="how-it-works.html">How Mizan works</a></div>
+        <p class="hero-lead">Your accounts are already in Lunch Money. Use those same balances to calculate your zakat, with every amount in view.</p>
+        <div class="hero-actions">
+          <a class="button primary cta-connect" href="#connect">Connect your account <span aria-hidden="true">→</span></a>
+          <button type="button" id="sampleBtn" class="sample-start">Try the sample</button>
+        </div>
+        <p id="status" class="hero-status" role="status"></p>
+        <ul class="trust-list" aria-label="How Mizan handles your data">
+          <li>Read-only</li><li>Runs in your browser</li><li>Nothing saved</li><li>Free &amp; open source</li>
+        </ul>
       </div>
       <div class="workspace" aria-label="Example zakat calculation">
         <div class="workspace-main">
@@ -42,27 +51,166 @@
           </div>
           <p class="workspace-note">This example assumes the total meets the nisab and the hawl is complete. Your estimate depends on your balances and the method you follow.</p>
         </div>
-        <div class="workspace-action">
-          <div><h2>Start with a sample.</h2><p>Explore a complete calculation with fictional balances. No token needed.</p><button type="button" id="sampleBtn" class="primary">Try the sample calculation</button></div>
+      </div>
+    </div>
+
+    <section class="home-band accounts-band" aria-labelledby="accountsTitle">
+      <div class="band-head">
+        <p class="band-kicker">Why Mizan</p>
+        <h2 id="accountsTitle">Your money is already accounted for.</h2>
+        <p>Chequing, savings, investments, crypto and credit cards tend to live in different places. Pulling them all back together at zakat time takes work. Lunch Money already gives you one view, so Mizan starts there.</p>
+      </div>
+      <div class="flow-illo">
+        <ul class="account-tiles" aria-label="Example accounts">
+          <li><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 10h18M7 15h4"/></svg></span><span class="tile-name">Chequing<small>Counts in full</small></span><strong>$4,200</strong></li>
+          <li><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="12" cy="12" r="3.5"/><path d="M12 8.5V7M12 17v-1.5M18 9v6"/></svg></span><span class="tile-name">Savings<small>Counts in full</small></span><strong>$8,500</strong></li>
+          <li><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 19h18"/><path d="M4 15l5-5 4 3 7-7"/><path d="M15 6h5v5"/></svg></span><span class="tile-name">Investments<small>Edit to match your method</small></span><strong>$18,300</strong></li>
+          <li><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="12" r="6"/><path d="M14.5 6.6a6 6 0 0 1 0 10.8"/><path d="M17.5 5.2a8 8 0 0 1 0 13.6"/></svg></span><span class="tile-name">Crypto<small>At market value</small></span><strong>$2,100</strong></li>
+          <li class="tile-debt"><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 9.5h18"/><path d="M8 15h-1"/></svg></span><span class="tile-name">Credit card<small>Deducted if due now</small></span><strong>− $650</strong></li>
+        </ul>
+        <svg class="flow-lines" viewBox="0 0 120 300" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 30C60 30 60 150 120 150M0 90C60 90 60 150 120 150M0 150H120M0 210C60 210 60 150 120 150M0 270C60 270 60 150 120 150"/></svg>
+        <div class="flow-result">
+          <span class="result-mark" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M24 8v32M14 40h20M8 14h32"/><circle cx="24" cy="8" r="2.4"/><path d="M8 14l-5 12h10zM40 14l-5 12h10z"/><path d="M3 26a5 3 0 0 0 10 0M35 26a5 3 0 0 0 10 0"/></svg></span>
+          <span class="flow-result-label">One total to review</span>
+          <strong>$32,450</strong>
+          <span class="flow-result-zakat">Estimated zakat <b>$811.25</b></span>
         </div>
       </div>
-      <p id="status" role="status"></p>
-      <div class="price-preview" aria-live="polite"><div><strong>Gold &amp; silver prices</strong><span>Latest available rates · CAD per gram</span></div><p id="homeMetalPrices">Loading prices…</p></div>
-      <details class="connect-entry">
-        <summary><span>Ready to use your own balances?<small>Connect your Lunch Money account</small></span></summary>
-        <div class="connect-content">
-          <div><h2>Connect Lunch Money</h2><p>An access token lets Mizan read your balances from Lunch Money.</p><p id="tokenNotice">Mizan only reads your data. Your token and balances are never saved by Mizan. <a href="how-it-works.html">How your data is handled</a></p></div>
-          <div class="connect-form"><label for="token">Lunch Money access token</label><input type="password" id="token" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" data-1p-ignore data-lpignore="true" data-bwignore placeholder="Paste your access token" aria-describedby="tokenNotice"><button type="button" class="primary" id="connectBtn">Connect my accounts</button><p id="connectStatus" role="status"></p><p><a href="token-guide.html" target="_blank" rel="noopener">Get a token with the step-by-step guide</a></p></div>
+      <p class="band-foot">Review what counts, add what isn’t in Lunch Money (like cash at home or gold), and watch your estimate take shape. The method stays in your hands.</p>
+    </section>
+
+    <section class="home-band steps-band" aria-labelledby="stepsTitle">
+      <div class="band-head">
+        <p class="band-kicker">How it works</p>
+        <h2 id="stepsTitle">Three steps. A few minutes.</h2>
+      </div>
+      <ol class="step-cards">
+        <li>
+          <div class="step-illo illo-connect" aria-hidden="true">
+            <span class="mini-label">Lunch Money access token</span>
+            <span class="mini-field">••••••••••••••••</span>
+            <span class="mini-button">Connect</span>
+          </div>
+          <span class="step-num">01</span>
+          <h3>Connect your account</h3>
+          <p>Paste a Lunch Money access token. Mizan only reads your balances, and forgets the token as soon as they arrive.</p>
+        </li>
+        <li>
+          <div class="step-illo illo-review" aria-hidden="true">
+            <span class="mini-row"><i class="mini-check on"></i>Chequing<b>$4,200</b></span>
+            <span class="mini-row"><i class="mini-check on"></i>Savings<b>$8,500</b></span>
+            <span class="mini-row off"><i class="mini-check"></i>Partner’s account<b>$3,000</b></span>
+            <span class="mini-row"><i class="mini-check on"></i>Gold, 18k<b>+ 20 g</b></span>
+          </div>
+          <span class="step-num">02</span>
+          <h3>Review balances</h3>
+          <p>Untick anything that isn’t yours, update stale balances, and add what Lunch Money doesn’t track.</p>
+        </li>
+        <li>
+          <div class="step-illo illo-estimate" aria-hidden="true">
+            <span class="mini-label">Estimated zakat</span>
+            <span class="mini-due">$811<small>.25</small></span>
+            <span class="mini-bars"><i style="height:78%"></i><i style="height:54%"></i><i style="height:92%"></i><i class="neg" style="height:18%"></i><i class="tot" style="height:88%"></i></span>
+          </div>
+          <span class="step-num">03</span>
+          <h3>See your estimate</h3>
+          <p>Get a traceable breakdown, choose a gold or silver nisab, and compare how other methods change the amount.</p>
+        </li>
+      </ol>
+      <div class="band-actions"><a class="button primary cta-connect" href="#connect">Connect your account <span aria-hidden="true">→</span></a></div>
+    </section>
+
+    <section class="home-band why-band" aria-labelledby="whyTitle">
+      <div class="why-inner">
+        <div class="band-head">
+          <p class="band-kicker">Why zakat</p>
+          <h2 id="whyTitle">An obligation, not a nice-to-have.</h2>
+          <p>Zakat is one of the five pillars of Islam. For Muslims whose wealth reaches the nisab and is held for a lunar year, giving 2.5% of it is a duty, owed to the people Allah names in the Quran.</p>
         </div>
-      </details>
-      <section class="why-mizan" aria-labelledby="whyMizanTitle"><div><h2 id="whyMizanTitle">Your money is already accounted for.</h2></div><div><p>Chequing, savings, investments, stocks, credit cards and other debts can be spread across different accounts. Bringing those numbers together again at zakat time takes work.</p><p>Lunch Money already gives you one view of your finances. Mizan uses those balances as a starting point: review what counts, add what’s missing, and see your zakat estimate take shape.</p><p>For Muslims who meet the conditions for zakat, the amount is generally 2.5% of eligible net wealth. Working out what to include can be complicated; Mizan makes the numbers easier to review, while leaving the method in your hands.</p><a href="zakat-guide.html">Learn about zakat and the nisab</a></div></section>
-      <p class="independent-note">An independent community project by Mazin Kanuga. Not made or supported by Lunch Money.</p>
-    </div>
+        <figure class="ayah">
+          <p class="ayah-ar" lang="ar" dir="rtl">خُذْ مِنْ أَمْوَالِهِمْ صَدَقَةً تُطَهِّرُهُمْ وَتُزَكِّيهِم بِهَا</p>
+          <blockquote><p>“Take from their wealth a charity by which you purify them and cause them to grow.”</p></blockquote>
+          <figcaption><a href="https://quran.com/9/103" rel="noreferrer">Quran 9:103</a></figcaption>
+        </figure>
+        <div class="proof-grid">
+          <figure class="proof">
+            <span class="proof-tag">A pillar of Islam</span>
+            <blockquote><p>“Islam is built upon five: testifying that there is no god but Allah and that Muhammad is His Messenger, establishing prayer, giving zakat, Hajj, and fasting Ramadan.”</p></blockquote>
+            <figcaption><a href="https://sunnah.com/bukhari:8" rel="noreferrer">Sahih al-Bukhari 8</a></figcaption>
+          </figure>
+          <figure class="proof">
+            <span class="proof-tag">Commanded with prayer</span>
+            <blockquote><p>“And establish prayer and give zakat, and bow with those who bow.”</p></blockquote>
+            <figcaption><a href="https://quran.com/2/43" rel="noreferrer">Quran 2:43</a></figcaption>
+          </figure>
+          <figure class="proof">
+            <span class="proof-tag">A right of those in need</span>
+            <blockquote><p>Zakat goes to eight groups, including the poor, the needy, people in debt and the stranded traveller.</p></blockquote>
+            <figcaption><a href="https://quran.com/9/60" rel="noreferrer">Quran 9:60</a></figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-band basics-band" aria-labelledby="basicsTitle">
+      <div class="band-head">
+        <p class="band-kicker">The basics</p>
+        <h2 id="basicsTitle">Three ideas behind every calculation.</h2>
+      </div>
+      <div class="basics-grid">
+        <div class="basic"><span class="basic-figure">2.5%</span><h3>The rate</h3><p>Of your whole eligible wealth after debts, not just the part above the threshold.</p></div>
+        <div class="basic"><span class="basic-figure">Nisab</span><h3>The threshold</h3><p>The value of 85 g of gold or 595 g of silver. Below it, no zakat is due. Scholars differ on which metal to use.</p></div>
+        <div class="basic"><span class="basic-figure">Hawl</span><h3>The year</h3><p>Your wealth has to be held for one lunar year (354 days) before zakat on it is due.</p></div>
+      </div>
+      <div class="price-preview" aria-live="polite"><div><strong>Today’s nisab prices</strong><span>Latest available rates · CAD per gram</span></div><p id="homeMetalPrices">Loading prices…</p></div>
+      <p class="band-link"><a href="zakat-guide.html">Read the full zakat guide <span aria-hidden="true">→</span></a></p>
+    </section>
+
+    <section class="home-band privacy-band" aria-labelledby="privacyTitle">
+      <div class="privacy-card">
+        <span class="privacy-mark" aria-hidden="true"><svg viewBox="0 0 48 48"><rect x="10" y="21" width="28" height="20" rx="5"/><path d="M16 21v-6a8 8 0 0 1 16 0v6"/><circle cx="24" cy="30" r="2.5"/><path d="M24 32.5V36"/></svg></span>
+        <div>
+          <h2 id="privacyTitle">Your token stays with you.</h2>
+          <p>Mizan does the maths in your browser. It sends your token only to Lunch Money, makes read-only requests, and never saves your token or balances. Only your method choices are remembered on this device.</p>
+          <a href="how-it-works.html">How your data is handled <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="final-cta" aria-labelledby="finalTitle">
+      <h2 id="finalTitle">Ready to see your zakat?</h2>
+      <p>Connect Lunch Money, or look around with fictional balances first.</p>
+      <div class="hero-actions"><a class="button primary cta-connect" href="#connect">Connect your account <span aria-hidden="true">→</span></a><button type="button" class="sample-start">Try the sample</button></div>
+      <p id="finalStatus" class="hero-status" role="status"></p>
+    </section>
+    <p class="independent-note">An independent community project by Mazin Kanuga. Not made or supported by Lunch Money.</p>
   </section>
 
+  <section id="connectView" class="connect-view" aria-labelledby="connectHead" hidden>
+    <div class="connected"><a href="./" id="backHome">← Back to home</a></div>
+    <nav class="progress" aria-label="Calculation steps"><span class="step-now" aria-current="step">01 Connect your account</span><span class="divider" aria-hidden="true">/</span><span>02 Review balances</span><span class="divider" aria-hidden="true">/</span><span>03 Your estimate</span></nav>
+    <div class="view-head"><h1 id="connectHead" tabindex="-1">Connect Lunch Money.</h1><p class="note">An access token lets Mizan read your balances. It takes about a minute to make one.</p></div>
+    <div class="connect-layout">
+      <div class="connect-panel">
+        <ol class="connect-steps">
+          <li><span>1</span><div><strong>Make a token in Lunch Money</strong><p>Go to Settings → Developers and request a new access token. Name it “Mizan” so it’s easy to revoke later. <a href="token-guide.html" target="_blank" rel="noopener">Step-by-step guide</a></p></div></li>
+          <li><span>2</span><div><strong>Paste it here</strong>
+            <div class="connect-form"><label for="token">Lunch Money access token</label><input type="password" id="token" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" data-1p-ignore data-lpignore="true" data-bwignore placeholder="Paste your access token" aria-describedby="tokenNotice"><button type="button" class="primary" id="connectBtn">Connect my accounts</button><p id="connectStatus" role="status"></p></div>
+          </div></li>
+          <li><span>3</span><div><strong>Revoke it when you’re done</strong><p>Lunch Money tokens can change data. Mizan never does, but deleting the token afterwards keeps things tidy.</p></div></li>
+        </ol>
+      </div>
+      <aside class="connect-aside" aria-label="About your data">
+        <h2>What happens to your token</h2>
+        <ul><li>It goes only to the Lunch Money API.</li><li>Mizan only makes read requests.</li><li id="tokenNotice">It’s cleared from the page once your balances arrive, and never saved.</li></ul>
+        <a href="how-it-works.html" target="_blank" rel="noopener">How your data is handled</a>
+        <div class="aside-sample"><p>Just looking?</p><button type="button" class="sample-start">Use fictional sample balances</button><p id="connectSampleStatus" class="hero-status" role="status"></p></div>
+      </aside>
+    </div>
+  </section>
   <div id="app" class="app" hidden>
     <div class="connected"><span id="sub"></span><button type="button" id="restart">Start again</button></div>
-    <nav class="progress" aria-label="Calculation steps"><span>✓ Connected</span><span class="divider" aria-hidden="true">/</span><button type="button" id="reviewStep" aria-controls="reviewView" aria-current="step">02 Review balances</button><span class="divider" aria-hidden="true">/</span><button type="button" id="estimateStep" aria-controls="estimateView">03 Your estimate</button></nav>
+    <nav class="progress" aria-label="Calculation steps"><span>✓ 01 Connected</span><span class="divider" aria-hidden="true">/</span><button type="button" id="reviewStep" aria-controls="reviewView" aria-current="step">02 Review balances</button><span class="divider" aria-hidden="true">/</span><button type="button" id="estimateStep" aria-controls="estimateView">03 Your estimate</button></nav>
     <div class="warn" id="dataWarn" hidden></div>
     <section id="reviewView" class="flow-view" aria-labelledby="reviewHead">
       <div class="view-head"><h1 id="reviewHead" tabindex="-1">Check your balances.</h1><p class="note">These came from Lunch Money. Uncheck anything that doesn't belong in your zakat, and update any balance that's out of date.</p></div>
@@ -441,7 +589,8 @@
     $("dataWarn").hidden = !(D.warnings && D.warnings.length);
     $("dataWarn").textContent = (D.warnings || []).join(" ");
 
-    $("connect").hidden = true;
+    $("home").hidden = true;
+    $("connectView").hidden = true;
     $("app").hidden = false;
     load();
     render();
@@ -812,35 +961,55 @@
     metalPrices("CAD").then(function (prices) { renderHomePrices(prices, new Date()); });
   }
 
-  function busy(on, text, isError, connection) {
+  var STATUS_IDS = ["status", "finalStatus", "connectStatus", "connectSampleStatus"];
+  var sampleButtons = document.querySelectorAll(".sample-start");
+
+  // statusId: which status line, next to the button that was used, shows the message.
+  function busy(on, text, isError, statusId) {
     $("connectBtn").disabled = on;
-    $("sampleBtn").disabled = on;
-    $("status").textContent = "";
-    $("connectStatus").textContent = "";
-    var status = $(connection ? "connectStatus" : "status");
+    sampleButtons.forEach(function (b) { b.disabled = on; });
+    STATUS_IDS.forEach(function (id) { $(id).textContent = ""; });
+    var status = $(statusId || "status");
     status.textContent = text || "";
-    status.className = isError ? "error" : "";
+    status.className = "hero-status" + (isError ? " error" : "");
   }
+
+  // The home page and the connect screen. Once balances are loaded, the calculator stays in view.
+  function route() {
+    if (D) return;
+    var connecting = location.hash === "#connect" || location.hash === "#token";  // #token: older links from the token guide
+    $("home").hidden = connecting;
+    $("connectView").hidden = !connecting;
+    if (connecting) {
+      window.scrollTo(0, 0);
+      $("connectHead").focus({ preventScroll: true });
+    }
+  }
+  window.addEventListener("hashchange", route);
+  route();
 
   $("connectBtn").addEventListener("click", function () {
     var token = $("token").value.trim();
     $("token").value = "";  // the token is not kept in the page
-    if (!token) { busy(false, "Paste your Lunch Money access token first.", true, true); return; }
-    busy(true, "The page reads your balances from Lunch Money...", false, true);
+    if (!token) { busy(false, "Paste your Lunch Money access token first.", true, "connectStatus"); return; }
+    busy(true, "The page reads your balances from Lunch Money...", false, "connectStatus");
     loadFromLunchMoney(token).then(function (data) {
       token = null;
       busy(false, "");
       show(data);
     }, function (e) {
       token = null;
-      busy(false, e.message, true, true);
+      busy(false, e.message, true, "connectStatus");
     });
   });
   $("token").addEventListener("keydown", function (e) { if (e.key === "Enter") $("connectBtn").click(); });
-  $("sampleBtn").addEventListener("click", function () {
-    $("token").value = "";  // sample mode does not use a token, so do not keep one in the page
-    busy(true, "The page gets today's gold and silver prices...");
-    sampleData().then(function (data) { busy(false, ""); show(data); });
+  sampleButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
+      $("token").value = "";  // sample mode does not use a token, so do not keep one in the page
+      var statusId = button.closest("#connectView") ? "connectSampleStatus" : button.closest(".final-cta") ? "finalStatus" : "status";
+      busy(true, "The page gets today's gold and silver prices...", false, statusId);
+      sampleData().then(function (data) { busy(false, ""); show(data); });
+    });
   });
   $("restart").addEventListener("click", function () { location.reload(); });
   $("continueEstimate").addEventListener("click", function () { setView("estimate"); });

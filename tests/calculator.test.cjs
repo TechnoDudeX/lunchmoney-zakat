@@ -20,7 +20,7 @@ function calculator() {
     setAttribute(name, value) { this.attributes[name] = value; },
     toggleAttribute(name, present) { if (present) this.attributes[name] = ''; else delete this.attributes[name]; },
     focus() { focused = id; }, scrollIntoView() {} };
-  const context = vm.createContext({ Intl, Date, window: { scrollTo() {} }, document: {
+  const context = vm.createContext({ Intl, Date, window: { scrollTo() {}, addEventListener() {} }, location: { hash: '' }, document: {
     getElementById: element,
     querySelector: selector => ({ value: radio[selector.match(/name=(\w+)/)[1]] }),
     querySelectorAll: () => [], addEventListener() {}
